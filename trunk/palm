@@ -1,0 +1,44 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 2 $
+# $Date: 2004-02-25 12:53:24 -0500 (Wed, 25 Feb 2004) $
+# $Author: dmorelli $
+#
+# Script to do some common tasks with Palm PDAs
+#--------------------------------------------------------------------------
+
+SYNCFOLDER=~/.palmpda
+
+waitForDevice()
+{
+	echo Waiting for PDA...
+	sleep 7s
+
+	echo Connecting now...
+}
+
+case $1 in
+	-i)
+		waitForDevice
+
+		pilot-xfer -i $2 $3 $4 $5 $6 $7 $8 $9
+		break;;
+
+	-s)
+		waitForDevice
+
+		pilot-xfer -s ${SYNCFOLDER}
+		break;;
+
+	--help|*)
+		echo "Perform Palm PDA operations"
+		echo "usage:"
+		echo "  palm -i file1 file2 ...   Install files"
+		echo "  palm -s                   Sync the PDA"
+		echo "  palm --help               This help information."
+esac
+echo Done.
+

@@ -1,0 +1,22 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 2 $
+# $Date: 2004-02-25 12:53:24 -0500 (Wed, 25 Feb 2004) $
+# $Author: dmorelli $
+#
+# Script to quickly check the contents of the inserted CD and then
+# umount it.
+#--------------------------------------------------------------------------
+
+# Script to quickly display back the root dir of the CD in the 
+# drive and then umount it.
+
+CDDIR=/mnt/cdrom
+
+mount $CDDIR
+ls -lh $CDDIR
+umount $CDDIR
+

@@ -1,0 +1,62 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 2 $
+# $Date: 2004-02-25 12:53:24 -0500 (Wed, 25 Feb 2004) $
+# $Author: dmorelli $
+#
+# Script to open a terminal window with a certain geometry and optional
+# color choices.
+#--------------------------------------------------------------------------
+
+TITLE=$1
+BGCOLOR=$2
+FGCOLOR=$3
+
+PARAMS="-geometry 80x50 -fn 9x15 -sl 200"
+
+# If no title specified, use a default.
+if [ "$TITLE" = "" ]
+then
+        TITLE="aterm"
+fi
+
+# No colors specified, use defaults.
+if [ "$BGCOLOR" = "" ]
+then
+        BGCOLOR="white"
+        FGCOLOR="black"
+fi
+
+# Evaluate the params that were given.
+NAME="$TITLE"
+# FIXME
+PARAMS="$PARAMS -title $TITLE -n $NAME"
+#PARAMS="$PARAMS -title $TITLE -name $NAME"
+#PARAMS="$PARAMS -title $TITLE -name $NAME -n $NAME"
+
+case $1 in
+        # User requested help.
+        --help)
+                echo "Open a new aterm terminal window with optional color settings."
+                echo "usage: te"
+                echo "       te title [ bgcolor from rgb.txt ] [ fgcolor ]"
+                echo "       te [ --help ]"
+                exit 1;;
+
+        *)
+                PARAMS="$PARAMS -bg $BGCOLOR"
+                break;;
+esac
+
+# If a foreground (text) color was specified.
+if [ "$FGCOLOR" != "" ]
+then
+        PARAMS="$PARAMS -fg $FGCOLOR"
+fi
+
+# Open the shell.
+aterm $PARAMS &
+

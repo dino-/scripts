@@ -1,0 +1,14 @@
+# Use from Pine to pipe false positive spam to SpamAssassin's learn tool.
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 2 $
+# $Date: 2004-02-25 12:53:24 -0500 (Wed, 25 Feb 2004) $
+# $Author: dmorelli $
+#
+# Script to teach SpamAssassin about a spam email.
+#--------------------------------------------------------------------------
+
+sa-learn --ham --no-rebuild $1
+
