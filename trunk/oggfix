@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 27 $
-# $Date: 2004-06-27 17:08:44 -0400 (Sun, 27 Jun 2004) $
+# $Revision: 28 $
+# $Date: 2004-06-28 14:42:43 -0400 (Mon, 28 Jun 2004) $
 # $Author: dmorelli $
 #
 # Fill missing information in ID3 and properly rename ogg files.
@@ -18,10 +18,10 @@ use Getopt::Std;
 sub displayUsage()
 {
 	print "$0 - Fix ogg files from allofmp3\n";
-	print "version 1.0.1  Dino Morelli  dmorelli\@reactorweb.net\n";
+	print "version 1.0.2  Dino Morelli  dmorelli\@reactorweb.net\n";
 	print "\nRun this from one directory above for playlist creation.\n";
 	print "\nusage:\n";
-	print "   $0 [-n] -a artist [-G \"genre\"] [-d date] [-c \"comment\"] files...\n";
+	print "   $0 [-n] -a artist [-G \"genre\"] [-d date] [-c \"comment\"] [-p] files...\n";
 	print "   $0 --help\n";
 	print "   $0 --version\n";
 	print "\nswitches:\n";
@@ -34,7 +34,7 @@ sub displayUsage()
 	print "   --help     This information.\n";
 	print "   --version  This information.\n";
 	print "\nexamples:\n";
-	print "   $0 -n -a SteelyDan -G Rock -d 1972 -c \"encoded by Butch\" *\n";
+	print "   $0 -n -a \"Steely Dan\" -G Rock -d 1972 -c \"encoded by Butch\" AlbumDir/*\n";
 }  # sub displayUsage
 
 
@@ -58,7 +58,7 @@ sub changeName($)
 	$trackName =~ s/'//g;
 	$trackName =~ s/[_(]+(.)/\U$1/g;
 
-	my $artistForPath = $opt_a;
+	$artistForPath = $opt_a;
 	$artistForPath =~ s/ //g;
 
 	$newfile = "$prefixPath$artistForPath$trackName$extension";
@@ -67,8 +67,9 @@ sub changeName($)
 	# Only do the move if not in dry run mode.
 	if($opt_n == 0)
 	{
-		qx|vorbiscomment -a -t "artist=$opt_a" -t "tracknumber=$trackNum" -t "genre=$opt_G" -t "date=$opt_d" -t "comment=$opt_c" $oldfile $newfile|;
-		unlink $oldfile;
+		qx|vorbiscomment -a -t "artist=$opt_a" -t "tracknumber=$trackNum" -t "genre=$opt_G" -t "date=$opt_d" -t "comment=$opt_c" "$oldfile" $newfile|;
+		# Only delete the original if this was successful!!
+		if (-e $newfile) { unlink "$oldfile"; }
 	}
 
 	print "$oldfile => $newfile\n";
@@ -84,11 +85,11 @@ sub changeName($)
 sub buildPlaylist()
 {
 	$prefixPath =~ s/(.*)\//$1/g;
-	$plPath = "$opt_a-$prefixPath.m3u";
+	$plPath = "$artistForPath-$prefixPath.m3u";
 	open PLAYLIST, ">$plPath";
 	foreach $item (@list)
 	{
-		if($item ne "")
+		if(defined $item)
 		{ print PLAYLIST "$item\n"; }
 	}
 	close PLAYLIST;
