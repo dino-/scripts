@@ -1,10 +1,10 @@
-#! /usr/bin/perl -w
+#! /home/dwm/bin/perl -w
 
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 55 $
-# $Date: 2004-10-08 23:30:34 -0400 (Fri, 08 Oct 2004) $
+# $Revision: 58 $
+# $Date: 2004-10-27 14:56:47 -0400 (Wed, 27 Oct 2004) $
 # $Author: dmorelli $
 #
 # Configure Perl scripts
@@ -16,20 +16,21 @@ use File::Find;
 use Tie::File;
 
 
-if (@ARGV && ($ARGV[0] eq "--help")) {
-	print "$0 - configure Perl scripts\n";
-   print "This script will modify other Perl scripts to configure them for your\n";
-   print "system by:\n";
-   print "  -Changing the \#! line to point to your Perl binary\n";
-	print "\n";
-	print "usage: $0 [-n] [dirs]\n";
-	print "       $0 --help\n";
-	print "\n";
-	print "  -n      Dry-run mode, don't change anything\n";
-	print "  dirs    Directories to search, defaults to .\n";
-	print "  --help  This help information\n";
-	exit(1);
-}
+my $usage = <<EOF;
+$0 - configure Perl scripts
+This script will modify other Perl scripts to configure them for your
+system by:
+  -Changing the \#! line to point to your Perl binary
+
+usage: $0 [-n] [dirs]
+       $0 --help
+
+  -n      Dry-run mode, don't change anything
+  dirs    Directories to search, defaults to .
+  --help  This help information
+EOF
+
+die "$usage\n" if (@ARGV && ($ARGV[0] eq "--help"));
 
 my $perlPath = `which perl`;
 chomp $perlPath;
