@@ -3,59 +3,46 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 22 $
-# $Date: 2004-06-11 00:23:39 -0400 (Fri, 11 Jun 2004) $
+# $Revision: 47 $
+# $Date: 2004-09-17 14:13:46 -0400 (Fri, 17 Sep 2004) $
 # $Author: dmorelli $
 #
 # Script to open a terminal window with a certain geometry and optional
 # color choices.
 #--------------------------------------------------------------------------
 
+APP=Eterm
 TITLE=$1
-BGCOLOR=$2
-FGCOLOR=$3
+FONT='10x20'
 
-PARAMS="-geometry 80x50 -fn 9x15 -sl 200"
+#PARAMS="-g 80x43 -F $FONT -O --cmod 96"
+PARAMS="-g 80x43 -F $FONT -O --cmod 64"
 
 # If no title specified, use a default.
 if [ "$TITLE" = "" ]
 then
-        TITLE="aterm"
-fi
-
-# No colors specified, use defaults.
-if [ "$BGCOLOR" = "" ]
-then
-        BGCOLOR="white"
-        FGCOLOR="black"
+        TITLE="$APP"
 fi
 
 # Evaluate the params that were given.
 NAME="$TITLE"
 # FIXME
-PARAMS="$PARAMS -title $TITLE -n $NAME"
+PARAMS="$PARAMS -T $TITLE -n $NAME"
 #PARAMS="$PARAMS -title $TITLE -name $NAME"
 #PARAMS="$PARAMS -title $TITLE -name $NAME -n $NAME"
 
 case $1 in
         # User requested help.
         --help)
-                echo "Open a new aterm terminal window with optional color settings."
+                echo "Open a new $APP terminal window with optional color settings."
                 echo "usage: te"
                 echo "       te title [ bgcolor from rgb.txt ] [ fgcolor ]"
                 echo "       te [ --help ]"
                 exit 1;;
 
         *)
-                PARAMS="$PARAMS -bg $BGCOLOR"
                 break;;
 esac
 
-# If a foreground (text) color was specified.
-if [ "$FGCOLOR" != "" ]
-then
-        PARAMS="$PARAMS -fg $FGCOLOR"
-fi
-
 # Open the shell.
-rxvt $PARAMS &
+$APP $PARAMS &
