@@ -1,4 +1,20 @@
 --
+Perl script for backup spanning
+
+-Can Perl see the media type/size?
+
++Can Perl eject it? Yes, see below.
+
+-Build path list to all dirs, sorted.
+
+-Then calculate sizes and where divisions will occur.
+
+-cli tool called eject
+
+-Will growisofs work on a CD-R? No, use mkisofs redirected to cdrecord?
+
+
+--
 *new backup script* for getting CD ISOs ready:
 
 -On yakuza, and as root:
@@ -41,7 +57,7 @@ general notes
 ---------------------------------------------------------------------------
 $RCSfile$
 ------------------------------------------------------------------------
-$Revision: 46 $
-$Date: 2004-08-11 17:07:08 -0400 (Wed, 11 Aug 2004) $
+$Revision: 53 $
+$Date: 2004-10-08 23:20:36 -0400 (Fri, 08 Oct 2004) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
