@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 43 $
-# $Date: 2004-07-28 09:45:06 -0400 (Wed, 28 Jul 2004) $
+# $Revision: 44 $
+# $Date: 2004-07-29 09:56:02 -0400 (Thu, 29 Jul 2004) $
 # $Author: dmorelli $
 #
 # Create a new Perl script or module file
@@ -26,7 +26,7 @@ my ($fullPath, $path, $suffix);
 # Detect if no params given
 if(@ARGV == 0 || $ARGV[0] eq "--help") {
 	print "$0 - Create a new Perl script or module file\n";
-	print "version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net\n";
+	print "version 1.1.0  Dino Morelli  dmorelli\@reactorweb.net\n";
 	print "\nusage:\n";
 	print "   $0 [-f] file\n";
 	print "   $0 --help\n";
