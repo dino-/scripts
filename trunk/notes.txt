@@ -50,6 +50,8 @@ newperl
 
 	Will create a file Foo/Bar.pm with package Foo::Bar; in it
 
++Make new modules have 'use strict;'
+
 
 --
 relpath
@@ -74,7 +76,7 @@ general notes
 ---------------------------------------------------------------------------
 $RCSfile$
 ------------------------------------------------------------------------
-$Revision: 68 $
-$Date: 2005-03-04 00:25:47 -0500 (Fri, 04 Mar 2005) $
+$Revision: 76 $
+$Date: 2005-03-26 10:57:16 -0500 (Sat, 26 Mar 2005) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
