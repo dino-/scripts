@@ -1,0 +1,80 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 35 $
+# $Date: 2004-07-08 11:54:24 -0400 (Thu, 08 Jul 2004) $
+# $Author: dmorelli $
+#
+# Create a new Perl script or module file
+#--------------------------------------------------------------------------
+
+use File::Basename;
+use File::Path;
+use Getopt::Std;
+
+
+#--------------------------------------------------------------------------
+# It all starts here
+
+# Detect if no params given
+if(@ARGV == 0 || $ARGV[0] eq "--help")
+{
+	print "$0 - Create a new Perl script or module file\n";
+	print "version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net\n";
+	print "\nusage:\n";
+	print "   $0 [-f] file\n";
+	print "   $0 --help\n";
+	print "\nswitches:\n";
+	print "   -f      Force overwrite existing file\n";
+	print "   --help  This information.\n";
+	exit;
+}
+
+# Parse arguments
+undef $opt_f;
+getopts("f");
+$fullPath = shift;
+
+($name, $path, $suffix) = fileparse($fullPath, "\.pm");
+undef $name;  # We don't need this
+
+if(! -e $path) { mkpath($path, 1); }
+
+# Existing file?
+if(!defined $opt_f && -e $fullPath)
+{
+	print "File $fullPath exists!\n";
+	exit;
+}
+
+if ((defined $suffix) && ($suffix eq ".pm"))
+{
+	# Make the package from the path
+	$package = $fullPath;
+	$package =~ s|/|::|g;
+	$package =~ s|\.pm||;
+
+	# Create the file
+	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath\n";
+	print OUTFILE "package $package;\n\n";
+	print OUTFILE "1;  # Module initialized successfully.\n";
+	close (OUTFILE);
+}
+else
+{
+	# Locate where perl is on this system
+	$perlPath = qx/which perl/;
+	chop $perlPath;
+
+	# Create the file
+	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath\n";
+	print OUTFILE "#! $perlPath -w\n";
+	close (OUTFILE);
+
+	# Make the file executable
+	print qx/chmod +x $fullPath/;
+}
+
+print "file $fullPath created\n";
