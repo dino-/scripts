@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 16 $
-# $Date: 2004-06-06 14:12:06 -0400 (Sun, 06 Jun 2004) $
+# $Revision: 18 $
+# $Date: 2004-06-06 19:06:35 -0400 (Sun, 06 Jun 2004) $
 # $Author: dmorelli $
 #
 # Script to train SpamAssassin from the supplied mbox file and then
@@ -14,7 +14,8 @@
 mailFolder=$1
 
 # Train SpamAssassin with the mail in the supplied folder
-sa-learn --spam --mbox --no-rebuild $mailFolder
+#sa-learn --spam --mbox --no-rebuild $mailFolder
+sa-learn --spam --mbox $mailFolder
 
 
 # Remove the spam from the folder
