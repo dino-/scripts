@@ -3,15 +3,12 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 24 $
-# $Date: 2004-06-23 09:56:49 -0400 (Wed, 23 Jun 2004) $
+# $Revision: 26 $
+# $Date: 2004-06-27 17:07:28 -0400 (Sun, 27 Jun 2004) $
 # $Author: dmorelli $
 #
 # MP3 name fixer, uses rren
 #--------------------------------------------------------------------------
-
-# This script is broken, doesn't work right. :(
-# Rewriting in Perl
 
 use Getopt::Std;
 
@@ -22,48 +19,35 @@ sub displayUsage()
 	print "$0 - Fix music filenames (no spaces, etc)\n";
 	print "version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net\n";
 	print "\nusage:\n";
-	print "   $0 [-n] \'expression\' files...\n";
+	print "   $0 [-n] files...\n";
 	print "   $0 --help\n";
 	print "   $0 --version\n";
 	print "\nswitches:\n";
 	print "   -n         No execution mode. AKA dry run.\n";
 	print "   --help     This information.\n";
 	print "   --version  This information.\n";
+
+	exit;
 }  # sub displayUsage
 
 
 #--------------------------------------------------------------------------
 # Detect if no params given.
 if(@ARGV == 0 || $ARGV[0] eq "--help" || $ARGV[0] eq "--version")
-{
-	displayUsage();
-	exit;
-}
+{ displayUsage(); }
 
 # Parse arguments.
 $opt_n = 0;
 getopts("-n");
-#$re = shift;
 
 if($opt_n == 1) { $dryRun = "-n"; }
 else { $dryRun = ""; }
 
-# Loop through the files given
+# Loop through the files given, wrapping each one with double quotes.
 for $current (@ARGV)
 {
 	push @files, "\"$current\"";
 }
 
-#print "dryRun: $dryRun\n";
-# Loop through the files given
-#for $current (@files)
-#{
-	#print "[$current]\n";
-#}
-
-#echo dryRun: $dryRun
-#echo args: $args
-
-#rren $dryRun "s/\(The\) //g;s/(.*), (.*) (-) (.*)/\2\1\3\4/g;s/[,'#]//g;s/[ )](.)/\U\1/g;s/[(](.)/\U\1/g" $args
-#print q|rren $dryRun "s/\(The\) //g;s/(\.*), (\.*) (-) (.*)/\2\1\3\4/g;s/[,'#]//g;s/[ )](\.)/\U\1/g;s/[(](\.)/\U\1/g" @files|;
-print qx|rren $dryRun 'q{s/\(The\) //g;s/(\.*), (\.*) (-) (.*)/\2\1\3\4/g;s/[,\'#]//g;s/[ )](\.)/\U\1/g;s/[(](\.)/\U\1/g}' @files|;
+$expression = 's/\(The\) //g;s/(.*), (.*) (-) (.*)/\$2\$1\$3\$4/g;s/[,\'#]//g;s/[ )](.)/\U\$1/g;s/[(](.)/\U\$1/g';
+print qx|rren $dryRun \"$expression\" @files|;
