@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 74 $
-# $Date: 2005-03-26 10:52:46 -0500 (Sat, 26 Mar 2005) $
+# $Revision: 75 $
+# $Date: 2005-03-26 10:55:51 -0500 (Sat, 26 Mar 2005) $
 # $Author: dmorelli $
 #
 # Create a new Perl script or module file
@@ -59,7 +59,8 @@ if ($suffix && ($suffix =~ m|.p[lm]|)) {  # Set up new Perl library/module
 
 	# Create the file
 	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath: $!\n";
-	print OUTFILE "package $package;\n\n";
+	print OUTFILE "package $package;\n";
+	print OUTFILE "\nuse strict;\n\n";
 	print OUTFILE "1;\n";
 	close (OUTFILE);
 } else {  # Set up new Perl binary
@@ -69,7 +70,7 @@ if ($suffix && ($suffix =~ m|.p[lm]|)) {  # Set up new Perl library/module
 	# Create the file
 	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath: $!\n";
 	print OUTFILE "#! $perlPath -w\n";
-	print OUTFILE "\nuse strict;\n";
+	print OUTFILE "\nuse strict;\n\n";
 	close (OUTFILE);
 
 	# Make the file executable
