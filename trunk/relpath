@@ -1,0 +1,59 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 46 $
+# $Date: 2004-08-11 17:07:08 -0400 (Wed, 11 Aug 2004) $
+# $Author: dmorelli $
+#
+# Make paths in a file relative to the file's path
+#--------------------------------------------------------------------------
+
+use strict;
+use Cwd qw(abs_path);
+use File::Basename;
+use File::Copy;
+
+
+my $srcPath = shift;
+die "ERROR: No file supplied\n" unless ($srcPath);
+
+# Bust apart the original list path
+my ($listPath) = (fileparse($srcPath, ""))[1];
+my $listAbsPath = abs_path($listPath);
+
+# Change the original list file name
+my $destPath = $srcPath;
+$srcPath .= "-OLD";
+# This is *backwards*, renaming the destPath to srcPath!
+# We're doing this to backup while building the new file
+move($destPath, $srcPath);
+
+# Copy the contents to a new file, fixing the paths
+open(SRC, "<$srcPath") or die "Can't open $srcPath: $!";
+open(DEST, ">$destPath") or die "Can't open $destPath: $!";
+
+while(<SRC>) {
+	chomp;
+
+	# Comments and blank lines, pass them straight through
+	if (/^\#/ || /^$/) {
+		print DEST "$_\n";
+		next;
+	};
+
+	my ($itemName, $itemPath) = fileparse($_, "");
+	my $itemAbsPath = abs_path($itemPath);
+
+	$itemAbsPath =~ m|$listAbsPath/(.*)|;
+	my $itemNewPath = ($1 ? "$1/" : "") . $itemName;
+
+	print DEST "$itemNewPath\n";
+}
+
+close(DEST);
+close(SRC);
+
+# Confirm the copy was successful and remove the original
+if(-e $destPath) { unlink $srcPath; }
