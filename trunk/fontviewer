@@ -1,4 +1,4 @@
-#! /home/dwm/bin/perl -w
+#! /usr/bin/perl -w
 
 use Tk;
 use Tk::BrowseEntry;
