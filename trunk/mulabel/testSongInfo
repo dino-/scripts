@@ -1,0 +1,31 @@
+#! /usr/bin/perl -w
+
+use FindBin qw($RealBin);
+use lib "$RealBin";
+use SongInfo::Song;
+
+
+sub showStuff($)
+{
+	my $songPath = shift;
+	$song = new SongInfo::Song($songPath);
+
+	print "file: $songPath\n";
+	if(defined $song)
+	{
+		print "artist=", $song->getComment("artist"), "\n";
+		print "album=", $song->getComment("album"), "\n";
+		print "title=", $song->getComment("title"), "\n";
+
+		$song->close();
+	}
+	else { print "ERROR: not a music file!\n"; }
+}
+
+showStuff("/usr/share/doc/music/U2/UnforgettableFire/U2-4thOfJuly.mp3");
+print "\n";
+showStuff("/usr/share/doc/music/RollingStones/FortyLicks/RollingStones-GimmeShelter.ogg");
+print "\n";
+showStuff("/usr/share/doc/music/RollingStones/FortyLicks/RollingStones-ItsOnlyRockNRoll.ogg");
+print "\n";
+showStuff("fucketyfuckfuck");

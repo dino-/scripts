@@ -1,0 +1,45 @@
+#! /usr/bin/perl -w
+
+use FindBin qw($RealBin);
+use lib "$RealBin";
+use SongInfo::Song;
+
+
+#--------------------------------------------------------------------------
+$listPath = shift;
+$listPath =~ m|(.*)/([^.]*).*|;
+$listDir = $1;
+$psPath = $2 . ".ps";
+
+open (LIST_FILE, "$listPath") or die "Can't open $listPath\n";
+$track = 0;
+while(<LIST_FILE>)
+{
+	chop;
+	/^([^#].*)$/ && do
+	{
+		$song = new SongInfo::Song($listDir . "/" . $_);
+
+		if(!defined $category) { $category = $song->getComment("artist"); }
+		if(!defined $subcategory) { $subcategory = $song->getComment("album"); }
+
+		if($track > 0) { $items .= "%"; }
+		$items .= ++$track . " " . $song->getComment("title");
+
+		$song->close();
+	};
+}
+
+close LIST_FILE;
+
+# Get rid of those fucking Russian backwards apostrophes. sh hates them
+$items =~ tr/`/'/;
+
+# For debugging
+print "category=$category\n";
+print "subcategory=$subcategory\n";
+print "items=$items\n";
+print "psPath=$psPath\n";
+
+print qx|cdlabelgen -c "$category" -s "$subcategory" -i "$items" -D -o $psPath|;
+if (-e $psPath) { print "CD label created: $psPath\n"; }
