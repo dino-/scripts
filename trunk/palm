@@ -3,12 +3,13 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 2 $
-# $Date: 2004-02-25 12:53:24 -0500 (Wed, 25 Feb 2004) $
+# $Revision: 38 $
+# $Date: 2004-07-12 00:51:41 -0400 (Mon, 12 Jul 2004) $
 # $Author: dmorelli $
 #
 # Script to do some common tasks with Palm PDAs
 #--------------------------------------------------------------------------
+
 
 SYNCFOLDER=~/.palmpda
 
@@ -20,25 +21,47 @@ waitForDevice()
 	echo Connecting now...
 }
 
-case $1 in
-	-i)
+displayUsage()
+{
+	echo "Perform Palm PDA operations"
+	echo "usage:"
+	echo "  palm -i file1 file2 ...   Install files"
+	echo "  palm -s                   Sync the PDA"
+	echo "  palm --help               This help information."
+
+	exit
+}
+
+# It all starts here
+
+# No args or user requested help
+if [ "$#" -lt "1" -o "$1" == "--help" ]
+then displayUsage; fi
+
+# Parse arguments
+while getopts "is" opt
+do
+	if [ ! "$action" == "" ]
+	then
+		echo "Only one action must be chosen"
+		displayUsage
+	fi
+	action=$opt
+done
+
+# Perform action
+case $action in
+	i)
 		waitForDevice
 
-		pilot-xfer -i $2 $3 $4 $5 $6 $7 $8 $9
+		shift
+		pilot-xfer -i $@
 		break;;
 
-	-s)
+	s)
 		waitForDevice
 
 		pilot-xfer -s ${SYNCFOLDER}
 		break;;
-
-	--help|*)
-		echo "Perform Palm PDA operations"
-		echo "usage:"
-		echo "  palm -i file1 file2 ...   Install files"
-		echo "  palm -s                   Sync the PDA"
-		echo "  palm --help               This help information."
 esac
-echo Done.
-
+echo Done
