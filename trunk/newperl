@@ -3,24 +3,28 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 35 $
-# $Date: 2004-07-08 11:54:24 -0400 (Thu, 08 Jul 2004) $
+# $Revision: 42 $
+# $Date: 2004-07-28 09:23:11 -0400 (Wed, 28 Jul 2004) $
 # $Author: dmorelli $
 #
 # Create a new Perl script or module file
 #--------------------------------------------------------------------------
 
+use strict;
 use File::Basename;
 use File::Path;
 use Getopt::Std;
+
+
+our $opt_f;
+my ($fullPath, $path, $suffix);
 
 
 #--------------------------------------------------------------------------
 # It all starts here
 
 # Detect if no params given
-if(@ARGV == 0 || $ARGV[0] eq "--help")
-{
+if(@ARGV == 0 || $ARGV[0] eq "--help") {
 	print "$0 - Create a new Perl script or module file\n";
 	print "version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net\n";
 	print "\nusage:\n";
@@ -33,44 +37,35 @@ if(@ARGV == 0 || $ARGV[0] eq "--help")
 }
 
 # Parse arguments
-undef $opt_f;
 getopts("f");
 $fullPath = shift;
 
-($name, $path, $suffix) = fileparse($fullPath, "\.pm");
-undef $name;  # We don't need this
+(undef, $path, $suffix) = fileparse($fullPath, "\.pm");
 
-if(! -e $path) { mkpath($path, 1); }
+mkpath($path, 1) if(! -e $path);
 
 # Existing file?
-if(!defined $opt_f && -e $fullPath)
-{
-	print "File $fullPath exists!\n";
-	exit;
-}
+die "File $fullPath exists!\n" if(!$opt_f && -e $fullPath);
 
-if ((defined $suffix) && ($suffix eq ".pm"))
-{
+if ($suffix && ($suffix eq ".pm")) {  # Set up new Perl module
 	# Make the package from the path
-	$package = $fullPath;
+	my $package = $fullPath;
 	$package =~ s|/|::|g;
 	$package =~ s|\.pm||;
 
 	# Create the file
-	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath\n";
+	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath: $!\n";
 	print OUTFILE "package $package;\n\n";
-	print OUTFILE "1;  # Module initialized successfully.\n";
+	print OUTFILE "1;\n";
 	close (OUTFILE);
-}
-else
-{
+} else {  # Set up new Perl binary
 	# Locate where perl is on this system
-	$perlPath = qx/which perl/;
-	chop $perlPath;
+	chomp(my $perlPath = qx/which perl/);
 
 	# Create the file
-	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath\n";
+	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath: $!\n";
 	print OUTFILE "#! $perlPath -w\n";
+	print OUTFILE "\nuse strict;\n";
 	close (OUTFILE);
 
 	# Make the file executable
