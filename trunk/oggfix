@@ -1,0 +1,115 @@
+#! /usr/bin/perl
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 15 $
+# $Date: 2004-05-30 10:10:50 -0400 (Sun, 30 May 2004) $
+# $Author: dmorelli $
+#
+# Fill missing information in ID3 and properly rename ogg files.
+#--------------------------------------------------------------------------
+
+use File::Copy;
+use Getopt::Std;
+
+
+# Detect if no params given.
+if(@ARGV == 0 || @ARGV[0] eq "--help" || @ARGV[0] eq "--version")
+{
+	displayUsage();
+	exit;
+}
+
+# Parse arguments.
+$opt_n = 0;
+$opt_p = 0;
+getopts("na:G:d:c:p");
+
+# Requires parameter(s)
+if (!$opt_a) { die "Artist required!\n"; }
+
+if($opt_n == 1) { print "*No execution mode*\n"; }
+
+# Loop through the files given and do the change.
+for $current (@ARGV) { changeName($current); }
+
+if($opt_p == 1) { buildPlaylist(); }
+
+
+#--------------------------------------------------------------------------
+sub displayUsage()
+{
+	print "$0 - Fix ogg files from allofmp3\n";
+	print "version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net\n";
+	print "\nRun this from one directory above for playlist creation.\n";
+	print "\nusage:\n";
+	print "   $0 [-n] -a artist [-G \"genre\"] [-d date] [-c \"comment\"] files...\n";
+	print "   $0 --help\n";
+	print "   $0 --version\n";
+	print "\nswitches:\n";
+	print "   -n         No execution mode. AKA dry run.\n";
+	print "   -a         artist\n";
+	print "   -G         genre\n";
+	print "   -d         date\n";
+	print "   -c         comment\n";
+	print "   -p         create playlist";
+	print "   --help     This information.\n";
+	print "   --version  This information.\n";
+	print "\nexamples:\n";
+	print "   $0 -n -a SteelyDan -G Rock -d 1972 -c \"encoded by Butch\" *\n";
+}  # sub displayUsage
+
+
+#--------------------------------------------------------------------------
+sub changeName($)
+{
+	my $oldfile = shift;
+	$_ = $oldfile;
+
+	m/([^0-9]*)([0-9]{2})(_?-_?.*)_[0-9]{2,3}_(?:ogg|mp3)_cbr(.(?:ogg|mp3))/;
+
+	$prefixPath = $1;
+	my $trackNum = $2;
+	my $trackName = $3;
+	my $extension = $4;
+
+	$trackNum =~ s/^[0]//g;
+
+	$trackName =~ s/(-.)/\U\1/g;
+	$trackName =~ s/\)//g;
+	$trackName =~ s/[_(]+(.)/\U\1/g;
+
+	$newfile = "$prefixPath$opt_a$trackName$extension";
+
+
+	# Only do the move if not in dry run mode.
+	if($opt_n == 0)
+	{
+		qx|vorbiscomment -a "$oldfile" $newfile -t "artist=$opt_a" -t "tracknumber=$trackNum" -t "genre=$opt_G" -t "date=$opt_d" -t "comment=$opt_c"|;
+		unlink $oldfile;
+	}
+
+	print "$oldfile => $newfile\n";
+
+	if($opt_p == 1)
+	{
+		$list[$trackNum] = $newfile;
+	}
+}  # sub changeName
+
+
+#--------------------------------------------------------------------------
+sub buildPlaylist()
+{
+	$prefixPath =~ s/(.*)\//\1/g;
+	$plPath = "$opt_a-$prefixPath.m3u";
+	open PLAYLIST, ">$plPath";
+	foreach $item (@list)
+	{
+		if($item ne "")
+		{ print PLAYLIST "$item\n"; }
+	}
+	close PLAYLIST;
+}  # sub buildPlaylist
+
