@@ -1,0 +1,83 @@
+#! /usr/bin/perl
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 9 $
+# $Date: 2004-03-16 14:16:49 -0500 (Tue, 16 Mar 2004) $
+# $Author: dmorelli $
+#
+# Rename files with a regular expression
+#--------------------------------------------------------------------------
+
+use File::Copy;
+use Getopt::Std;
+
+
+# Detect if no params given.
+if(@ARGV == 0 || @ARGV[0] eq "--help" || @ARGV[0] eq "--version")
+{
+	displayUsage();
+	exit;
+}
+
+# Parse arguments.
+$opt_n = 0;
+getopts("-n");
+$re = shift;
+
+if($opt_n == 1) { print "*No execution mode*\n"; }
+
+# Loop through the files given and do the change.
+for $current (@ARGV) { changeName($current); }
+
+
+#--------------------------------------------------------------------------
+sub displayUsage()
+{
+	print "$0 - Rename files with a regular expression\n";
+	print "version 1.0.0  Dino Morelli  dino.morelli\@snet.net\n";
+	print "\nusage:\n";
+	print "   $0 [-n] \'expression\' files...\n";
+	print "   $0 --help\n";
+	print "   $0 --version\n";
+	print "\nswitches:\n";
+	print "   -n         No execution mode. AKA dry run.\n";
+	print "   --help     This information.\n";
+	print "   --version  This information.\n";
+	print "\nexamples:\n";
+	print "   $0 \'s/[ ](.)/\\U\\1/g\' file1 file2\n";
+	print "      Remove spaces and hyphens, upcase the char after.\n";
+	print "   $0 -n \'s/,//g;s/z/X/g\' file*\n";
+	print "      Remove all commas.\n";
+}  # sub displayUsage
+
+
+#--------------------------------------------------------------------------
+sub changeName($)
+{
+	my $oldfile = shift;
+	$_ = $oldfile;
+	eval $re;
+	my $newfile = $_;
+
+	# Same name, no change needed.
+	if($oldfile eq $newfile)
+	{
+		print "No change needed for $oldfile\n";
+		return;
+	}
+
+	# Check for file already exists. DO NOT OVERWRITE.
+	if(-e $newfile)
+	{
+		print "File $newfile already exists! Aborting!\n";
+		return;
+	}
+
+	# Only do the move if not in dry run mode.
+	if($opt_n == 0) { move($oldfile, $newfile); }
+
+	print "\"$oldfile\" -> $newfile\n";
+}  # sub rename
+
