@@ -1,14 +1,104 @@
-#! /bin/sh
+#! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 2 $
-# $Date: 2004-02-25 12:53:24 -0500 (Wed, 25 Feb 2004) $
+# $Revision: 41 $
+# $Date: 2004-07-16 00:12:58 -0400 (Fri, 16 Jul 2004) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
 #--------------------------------------------------------------------------
 
-cdrecord driveropts=burnfree dev=1,0,0 -eject speed=8 -v $1
+use Getopt::Std;
 
+
+#--------------------------------------------------------------------------
+sub displayUsage()
+{
+	print "$0 - Burn a data or music CD\n";
+	print "version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net\n";
+	print "\nusage:\n";
+	print "   $0 [-d #,#,#] [-e] [-s] [-x speed] [-k] [-v] file\n";
+	print "   $0 --help\n";
+	print "\nswitches:\n";
+	print "   -d #,#,#   SCSI device, default: 1,0,0\n";
+   print "              To determine yours, use cdrecord -scanbus\n";
+	print "   -e         Eject when finished, default: false\n";
+	print "   -s         Simulate, don't really burn, default: false\n";
+	print "   -x speed   Burn speed, default: 8\n";
+	print "   -k         Check disk after burn, default: false\n";
+	print "              This is only valid for ISO and will ignore -e\n";
+	print "   -v         Verbose, default: false\n";
+	print "   file       ISO or TOC file to burn\n";
+	print "   --help     This information.\n";
+
+	exit;
+}  # sub displayUsage
+
+
+#--------------------------------------------------------------------------
+# It all starts here
+
+# Detect if no params given or user requested help
+if(@ARGV == 0 || $ARGV[0] eq "--help") { displayUsage(); }
+
+# Parse arguments
+$opt_d = "1,0,0";
+$opt_e = 0;
+$opt_s = 0;
+$opt_x = 8;
+$opt_k = 0;
+$opt_v = 0;
+getopts("d:esx:kv");
+$file = shift;
+
+# No file given
+if(!defined $file) { displayUsage(); }
+
+# Figure out what type of file we have and set up the commands
+SWITCH:
+{
+	$file =~ m|.*\.iso| && do
+	{
+		$command = "cdrecord driveropts=burnfree dev=$opt_d ";
+		if(!$opt_k)
+		{ $command .= ($opt_e ? "-eject " : ""); }
+		$command .= ($opt_s ? "-dummy " : "");
+		$command .= "speed=$opt_x ";
+		$command .= ($opt_v ? "-v " : "");
+		$command .= $file;
+		push(@commands, $command);
+
+		if($opt_k)
+		{
+			push(@commands, "mount /mnt/cdrom");
+			push(@commands, "ls -l /mnt/cdrom");
+			push(@commands, "umount /mnt/cdrom");
+		}
+
+		last SWITCH;
+	};
+	$file =~ m|.*\.toc| && do
+	{
+		if($opt_k) { print "** Note: -k switch not possible for CDDA\n"; }
+
+		$command = "cdrdao ";
+		$command .= ($opt_s ? "simulate " : "write ");
+		$command .= "--device $opt_d ";
+		$command .= "--speed $opt_x ";
+		$command .= ($opt_e ? "--eject " : "");
+		$command .= ($opt_v ? "-v 1" : "");
+		$command .= $file;
+		push(@commands, $command);
+
+		last SWITCH;
+	};
+}
+
+# Perform the commands
+foreach (@commands)
+{
+	print "$0 executing command: $_\n";
+	system $_;
+}
