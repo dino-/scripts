@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 50 $
-# $Date: 2004-09-27 15:05:55 -0400 (Mon, 27 Sep 2004) $
+# $Revision: 67 $
+# $Date: 2005-03-04 00:25:04 -0500 (Fri, 04 Mar 2005) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
@@ -22,7 +22,7 @@ sub displayUsage()
 	print "   $0 [-d #,#,#] [-e] [-s] [-x speed] [-k] [-v] file\n";
 	print "   $0 --help\n";
 	print "\nswitches:\n";
-	print "   -d #,#,#   SCSI device, default: 0,0,0\n";
+	print "   -d #,#,#   SCSI device, default: ATA:1,0,0\n";
    print "              To determine yours, use cdrecord -scanbus\n";
 	print "   -e         Eject when finished, default: false\n";
 	print "   -s         Simulate, don't really burn, default: false\n";
@@ -44,7 +44,7 @@ sub displayUsage()
 if(@ARGV == 0 || $ARGV[0] eq "--help") { displayUsage(); }
 
 # Parse arguments
-$opt_d = "0,0,0";
+$opt_d = "ATA:1,0,0";
 $opt_e = 0;
 $opt_s = 0;
 $opt_x = 24;
