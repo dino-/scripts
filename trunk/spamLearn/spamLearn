@@ -1,0 +1,30 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 16 $
+# $Date: 2004-06-06 14:12:06 -0400 (Sun, 06 Jun 2004) $
+# $Author: dmorelli $
+#
+# Script to train SpamAssassin from the supplied mbox file and then
+# delete the messages.
+#--------------------------------------------------------------------------
+
+mailFolder=$1
+
+# Train SpamAssassin with the mail in the supplied folder
+sa-learn --spam --mbox --no-rebuild $mailFolder
+
+
+# Remove the spam from the folder
+
+mailFolderNew=${mailFolder}.new
+
+awk '/^From / { messages++ }; messages > 1 { exit 0 }; { print }' $mailFolder > $mailFolderNew
+
+if [ -e $mailFolderNew ]
+then
+	rm $mailFolder
+	mv $mailFolderNew $mailFolder
+fi
