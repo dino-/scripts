@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 47 $
-# $Date: 2004-09-17 14:13:46 -0400 (Fri, 17 Sep 2004) $
+# $Revision: 73 $
+# $Date: 2005-03-19 18:41:08 -0500 (Sat, 19 Mar 2005) $
 # $Author: dmorelli $
 #
 # Script to open a terminal window with a certain geometry and optional
@@ -13,10 +13,16 @@
 
 APP=Eterm
 TITLE=$1
-FONT='10x20'
+#FONT='10x20'
+#FONT='9x15'
+FONT='8x13'
 
 #PARAMS="-g 80x43 -F $FONT -O --cmod 96"
-PARAMS="-g 80x43 -F $FONT -O --cmod 64"
+#PARAMS="-g 80x43 -F $FONT -O --cmod 64"
+#PARAMS="-g 80x43 -F $FONT"
+#PARAMS="-g 80x43 -F $FONT --cmod 192"
+# Eterm has its own config, just do geometry
+PARAMS="-g 80x43"
 
 # If no title specified, use a default.
 if [ "$TITLE" = "" ]
