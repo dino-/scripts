@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 52 $
-# $Date: 2004-10-04 09:33:41 -0400 (Mon, 04 Oct 2004) $
+# $Revision: 61 $
+# $Date: 2004-12-15 14:43:45 -0500 (Wed, 15 Dec 2004) $
 # $Author: dmorelli $
 #
 # Pretty print XML documents.
@@ -17,29 +17,31 @@ use XML::Handler::YAWriter;
 use XML::Parser::PerlSAX;
 
 
-our ($opt_c, $opt_p, $opt_s);
+our ($opt_c, $opt_p, $opt_a, $opt_s);
+my $usage=<<EOF;
+$0 - XML formatter  v1.0.1
+  usage: $0 [-c] [-p|s] xmlFile
+
+  -c        Remove all comments
+  -p        Pretty print the document
+  -a        When pretty printing, put attrs on own line
+  -s        Strip all meaningless whitespace
+  xmlFile   XML document to format
+EOF
 
 # Parse args
-getopts('cps');
+getopts('cpas');
 my $inFile = shift;
 
 # Bad args, show help and quit
-unless ($inFile) {
-	print "$0 - XML formatter\n";
-	print "  usage: $0 [-c] [-p|s] xmlFile\n";
-	print "\n";
-	print "  -c        Remove all comments\n";
-	print "  -p        Pretty print the document\n";
-	print "  -s        Strip all meaningless whitespace\n";
-	print "  xmlFile   XML document to format\n";
-	exit(1);
-}
+unless ($inFile) { die "$usage\n"; }
 
 # Construct the options hashes
 my %options = (
 	Output => new IO::File ( ">-" ),
 	Pretty => {
 		CatchEmptyElement => 1,
+		CompactAttrIndent => 1,
 	}
 );
 if($opt_c) {
@@ -48,6 +50,9 @@ if($opt_c) {
 if($opt_p) {
 	$options{Pretty}{PrettyWhiteIndent} = 1;
 	$options{Pretty}{PrettyWhiteNewline} = 1;
+}
+if($opt_a) {
+	$options{Pretty}{CompactAttrIndent} = 0;
 }
 if($opt_s) {
 	$options{Pretty}{NoWhiteSpace} = 1;
