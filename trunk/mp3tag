@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 29 $
-# $Date: 2004-06-28 15:26:29 -0400 (Mon, 28 Jun 2004) $
+# $Revision: 30 $
+# $Date: 2004-06-28 23:42:49 -0400 (Mon, 28 Jun 2004) $
 # $Author: dmorelli $
 #
 # Query or set MP3 ID3v1 tag information
@@ -17,52 +17,40 @@ use MP3::Tag;
 
 $DEBUG = 0;
 
-# We're not using the columns at the moment,
-# maybe I'll write the colunarizer
-$defaultColumns = 3;
-
 
 #--------------------------------------------------------------------------
 sub displayUsage()
 {
-	print "$0 v1.0.0 - Query or set MP3 ID3v1 tag information\n";
+	print "$0 v1.0.0 - Query or set MP3 ID3 tag information\n";
 	print "\nusage:\n";
-	print "  $0 -a -t \"key=value\" file\n";
-	print "  $0 -w -t \"key=value\" file\n";
-	print "  $0 [-l] file\n";
-	#print "  $0 -g [columns] file\n";
-	print "  $0 -g file\n";
+	print "  $0 [-l] inFile\n";
+	print "  $0 -2 inFile\n";
+	print "  $0 -b inFile\n";
+	print "  $0 -a|w [-k] -t \"key=value\" inFile outFile\n";
+	print "  $0 -a|w [-k] -c commentfile inFile outFile\n";
+	print "  $0 -k inFile outFile\n";
 	print "  $0 --help\n";
 	print "\n";
-	print "  -a      Append to existing tags\n";
+	print "  -a      Append comments\n";
+	print "  -c commentfile\n";
+	print "          Take comments from a file. The file is the same format as is\n";
+	print "          output by the -l option: one element per line in 'tag=value'\n";
+	print "          format.\n";
 	print "  -k      Kill ID3v2 tags altogether\n";
 	print "  -l      List the tags\n";
-	#print "  -g      Output a list of all music genres, default 3 columns\n";
-	print "  -g      Output a list of all music genres\n";
-	print "  -t      Tag name and value, can use multiple -t switches\n";
-	print "  -w      Replace existing tags\n";
-	print "  --help  This help information.\n";
+	print "  -t 'tag=value'\n";
+	print "          Tag name and value, can use multiple -t switches\n";
+	print "          Specify a new tag on the command line. Each tag is given as a\n";
+	print "          single string. The part before the '=' is treated as the tag\n";
+	print "          name and the part after as the value.\n";
+	print "  -w      Replace comments with the new set given either on the command\n";
+	print "          line with -t or from a file with -c.\n";
+	print "  --help  Show command help.\n";
 	print "\n";
 	print "  Valid tag keys are: title artist album comment year track genre\n";
-	print "  Using the -a or -w switches will modify your files! Make backups!\n";
+	print "  This program is meant to work almost exactly like vorbiscomment,\n";
+	print "  the command help was borrowed nearly word-for-word from it.\n";
 	exit;
-
-	# Below is from vorbiscomment, we're borrowing their commands
-
-       #-a     Append comments.
-       #-c commentfile
-              #Take comments from a file. The file is the  same  format  as  is
-              #output by the the -l option: one element per line in 'tag=value'
-              #format.
-       #-h     Show command help.
-       #-l     List the comments in the ogg vorbis file.
-       #-q     Quiet mode.  No messages are displayed.
-       #-t 'tag=value'
-              #Specify a new tag on the command line. Each tag is  given  as  a
-              #single  string.  The  part  before the '=' is treated as the tag
-              #name and the part after as the value.
-       #-w     Replace comments with the new set given either  on  the  command
-              #line with -t or from a file with -c.
 }  # sub displayUsage
 
 
@@ -70,22 +58,22 @@ sub displayUsage()
 # Show ID3v1 tags for the file
 sub showV1Tags($)
 {
-	my $mp3 = shift;
+	$mp3 = new MP3::Tag(shift);
+	$mp3->get_tags();
 
 	if (exists $mp3->{ID3v1})
 	{
 		$id3v1 = $mp3->{ID3v1};
-		print "ID3v1 tags\n";
-		print "title:   ", $id3v1->title, "\n";
-		print "artist:  ", $id3v1->artist, "\n";
-		print "album:   ", $id3v1->album, "\n";
-		print "comment: ", $id3v1->comment, "\n";
-		print "year:    ", $id3v1->year, "\n";
-		print "track:   ", $id3v1->track, "\n";
-		print "genre:   ", $id3v1->genre, "\n";
+		print "title=", $id3v1->title, "\n";
+		print "artist=", $id3v1->artist, "\n";
+		print "album=", $id3v1->album, "\n";
+		print "comment=", $id3v1->comment, "\n";
+		print "year=", $id3v1->year, "\n";
+		print "track=", $id3v1->track, "\n";
+		print "genre=", $id3v1->genre, "\n";
 	}
-	else
-	{ print "* No ID3v1 tags in this file *\n"; }
+
+	$mp3->close();
 }  # sub showV1Tags
 
 
@@ -93,13 +81,12 @@ sub showV1Tags($)
 # Show ID3v2 tags for the file
 sub showV2Tags($)
 {
-	my $mp3 = shift;
+	$mp3 = new MP3::Tag(shift);
+	$mp3->get_tags();
 
-	print "\n";
 	if (exists $mp3->{ID3v2})
 	{
 		$id3v2 = $mp3->{ID3v2};
-		print "ID3v2 tags\n";
 		$frameIDs_hash = $id3v2->get_frame_ids('truename');
 
 		foreach my $frame (keys %$frameIDs_hash)
@@ -118,26 +105,38 @@ sub showV2Tags($)
 			}
 		}  # foreach
 	}  # if
-	else
-	{ print "* No ID3v2 tags in this file *\n"; }
+
+	$mp3->close();
 }  # sub showV2Tags
 
 
 #--------------------------------------------------------------------------
 # Remove ID3v2 tags.
-sub killV2Tags($)
+sub killV2Tags($$)
 {
-	my $mp3 = shift;
+	my ($inPath, $outPath) = @_;
+
+	copy("$inPath", "$outPath") or die "Copy failed: $!";
+
+	$mp3 = new MP3::Tag("$outPath");
+	$mp3->get_tags();
 
 	if (exists $mp3->{ID3v2}) { $mp3->{ID3v2}->remove_tag(); }
+
+	$mp3->close();
 }  # sub killV2Tags
 
 
 #--------------------------------------------------------------------------
 # Edit ID3v1 tags
-sub editV1Tags($)
+sub editV1Tags($$)
 {
-	my $mp3 = shift;
+	my ($inPath, $outPath) = @_;
+
+	copy("$inPath", "$outPath") or die "Copy failed: $!";
+
+	$mp3 = new MP3::Tag("$outPath");
+	$mp3->get_tags();
 
 	$id3v1 = $mp3->{ID3v1} if exists $mp3->{ID3v1};
 
@@ -166,7 +165,33 @@ sub editV1Tags($)
 	}
 
 	if(defined $tagsChanged) { $id3v1->write_tag(); }
+
+	if(defined $opt_k)
+	{
+		if (exists $mp3->{ID3v2})
+			{ $mp3->{ID3v2}->remove_tag(); }
+	}
+
+	$mp3->close();
 }  # sub editV1Tags
+
+
+#--------------------------------------------------------------------------
+sub loadCommentFile($)
+{
+	my $commentPath = shift;
+
+	open (COMMENT_FILE, "$commentPath") || die "Can't open $commentPath\n";
+	while (<COMMENT_FILE>)
+	{
+		# Get rid of the trailing newline.
+		chop;
+
+		/(.*)=(.*)/;
+		$tags{$1} = $2;
+	}
+	close COMMENT_FILE;
+}  # sub loadCommentFile
 
 
 #--------------------------------------------------------------------------
@@ -179,52 +204,28 @@ while (@ARGV)
 	$_ = shift;
 	SWITCH:
 	{
-		/^-a/ && do
+		/^-2/ && do { $anySwitches = 1; $opt_2 = 1; last SWITCH; };
+		/^-a/ && do { $anySwitches = 1; $opt_a = 1; last SWITCH; };
+		/^-b/ && do { $anySwitches = 1; $opt_b = 1; last SWITCH; };
+		/^-c/ && do
 		{
 			$anySwitches = 1;
-			$opt_a = 1;
+			loadCommentFile(shift);
 			last SWITCH;
 		};
-		/^-g/ && do
-		{
-			$anySwitches = 1;
-			$opt_g = shift;
-			# If it's not a integer...
-			if(!($opt_g =~ /^\d+$/))
-			{
-				# Put the arg back and use default.
-				unshift @ARGV, $opt_g;
-				$opt_g = $defaultColumns;
-			}
-			last SWITCH;
-		};
-		/^-k/ && do
-		{
-			$anySwitches = 1;
-			$opt_k = 1;
-			last SWITCH;
-		};
-		/^-l/ && do
-		{
-			$anySwitches = 1;
-			$opt_l = 1;
-			last SWITCH;
-		};
+		/^-k/ && do { $anySwitches = 1; $opt_k = 1; last SWITCH; };
+		/^-l/ && do { $anySwitches = 1; $opt_l = 1; last SWITCH; };
 		/^-t/ && do
 		{
 			shift =~ /(.*)=(.*)/;
 			$tags{$1} = $2;
 			last SWITCH;
 		};
-		/^-w/ && do
-		{
-			$anySwitches = 1;
-			$opt_w = 1;
-			last SWITCH;
-		};
+		/^-w/ && do { $anySwitches = 1; $opt_w = 1; last SWITCH; };
 
-		# Remaining non-switch is the file path.
-		$filePath = $_;
+		# Remaining non-switches are the file paths.
+		if(defined $inPath) { $outPath = $_; }
+		else { $inPath = $_; }
 	}
 }  # while
 
@@ -235,12 +236,15 @@ if(!defined $anySwitches) { $opt_l = 1; }
 if($DEBUG)
 {
 	print "--\n";
+	print "opt_2: ", (defined $opt_2 ? $opt_2 : "[undefined]"), "\n";
 	print "opt_a: ", (defined $opt_a ? $opt_a : "[undefined]"), "\n";
+	print "opt_b: ", (defined $opt_b ? $opt_b : "[undefined]"), "\n";
+	print "opt_c: ", (defined $opt_c ? $opt_c : "[undefined]"), "\n";
+	print "opt_k: ", (defined $opt_k ? $opt_k : "[undefined]"), "\n";
 	print "opt_l: ", (defined $opt_l ? $opt_l : "[undefined]"), "\n";
-	print "opt_g: ", (defined $opt_g ? $opt_g : "[undefined]"), "\n";
-	print "opt_t: ", (defined $opt_t ? $opt_t : "[undefined]"), "\n";
+	#print "opt_t: ", (defined $opt_t ? $opt_t : "[undefined]"), "\n";
 	print "opt_w: ", (defined $opt_w ? $opt_w : "[undefined]"), "\n";
-	print "filePath: ", (defined $filePath ? $filePath : "[undefined]",
+	print "inPath: ", (defined $inPath ? $inPath : "[undefined]",
 		"\n");
 	print "outPath: ", (defined $outPath ? $outPath : "[undefined]",
 		"\n");
@@ -248,34 +252,37 @@ if($DEBUG)
 }
 
 # No file given, this is bad.
-if(!defined $filePath)
+if(!defined $inPath)
 {
-	print "No MP3 file path given.\n";
+	print "No input MP3 file path given.\n";
 	displayUsage();
 }
 
-# Open the file and get the tags. Everybody needs this.
-$mp3 = new MP3::Tag("$filePath");
-$mp3->get_tags();
-
 # Figure out what to do based on the switches
-# Show genres
-if(defined $opt_g)
+if(defined $opt_l) { showV1Tags($inPath); }
+elsif(defined $opt_2) { showV2Tags($inPath); }
+elsif(defined $opt_b)
 {
-	$id3v1 = $mp3->{ID3v1} if exists $mp3->{ID3v1};
-
-	for($index = 0; $index <= 125; $index++)
+	print "ID3v1 tags\n";
+	showV1Tags($inPath);
+	print "\nID3v2 tags\n";
+	showV2Tags($inPath);
+}
+elsif((defined $opt_a) || (defined $opt_w))
+{
+	if(!defined $outPath)
 	{
-		print "$index: ", $id3v1->genres($index), "\n";
+		print "No output MP# file path given.\n";
+		displayUsage();
 	}
+	editV1Tags($inPath, $outPath);
 }
-elsif(defined $opt_l)
+elsif(defined $opt_k)
 {
-	showV1Tags($mp3);
-	showV2Tags($mp3);
+	if(!defined $outPath)
+	{
+		print "No output MP# file path given.\n";
+		displayUsage();
+	}
+	killV2Tags($inPath, $outPath);
 }
-elsif(defined $opt_k) { killV2Tags($mp3); }
-elsif((defined $opt_a) || (defined $opt_w)) { editV1Tags($mp3); }
-
-# Everybody is done, close the file.
-$mp3->close();
