@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 69 $
-# $Date: 2005-03-13 14:07:59 -0500 (Sun, 13 Mar 2005) $
+# $Revision: 70 $
+# $Date: 2005-03-14 15:47:44 -0500 (Mon, 14 Mar 2005) $
 # $Author: dmorelli $
 #
 # Script to start XFree86 with a certain layout.
@@ -23,8 +23,16 @@ PROFILE=$1
 
 if [ "$PROFILE" = "" ]
 then
-	# When you get another keyboard, this will have to be changed.
-	DOCKED=`grep "Microsoft Internet Keyboard Pro" /proc/bus/usb/devices`
+	USBDEVS="/proc/bus/usb/devices"
+
+	# This is the keyboard at home
+	DOCKED=`grep "Microsoft Internet Keyboard Pro" $USBDEVS`
+	if [ "$DOCKED" = "" ]
+	then
+		# This is the keyboard at work at SCK
+		DOCKED=`grep "USBPS2" $USBDEVS`
+	fi
+
 	if [ "$DOCKED" = "" ]
 	then
 		echo "Machine detected to be NOT docked"
@@ -33,6 +41,9 @@ then
 		echo "Machine detected to be docked"
 		PROFILE="docked"
 	fi
+
+	# For debugging
+	#exit 1
 elif [ "$PROFILE" = "--help" ]
 then
 	displayHelp
