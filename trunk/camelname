@@ -1,0 +1,58 @@
+#! /usr/bin/perl
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 6 $
+# $Date: 2004-02-26 12:34:08 -0500 (Thu, 26 Feb 2004) $
+# $Author: dmorelli $
+#
+# Takes a filename with spaces and camel-cases it.
+#--------------------------------------------------------------------------
+
+use File::Copy;
+
+# Detect if no params given.
+if(@ARGV == 0)
+{
+	print "No parameter given.\n";
+	exit;
+}
+
+# Construct filenames.
+$oldfile = $ARGV[0];
+
+# Create an array of the characters.
+@chars = split(//, $oldfile);
+
+# Loop through the chars, building the new name.
+for($i = 0; $i < @chars; $i++)
+{
+	$c = $chars[$i];
+	if($c eq " ")
+	{
+		$newfile = $newfile . "\U$chars[++$i]";
+	}
+	else
+	{
+		$newfile = $newfile . $c;
+	}
+}
+
+# Same name, no change needed.
+if($oldfile eq $newfile)
+{
+	print "No change needed for $oldfile\n";
+	exit;
+}
+
+# Check for file already exists. DO NOT OVERWRITE.
+if(-e $newfile)
+{
+	print "File $newfile already exists! Aborting!\n";
+	exit;
+}
+
+print "\"$oldfile\" -> $newfile\n";
+move($oldfile, $newfile);
+
