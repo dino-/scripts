@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 41 $
-# $Date: 2004-07-16 00:12:58 -0400 (Fri, 16 Jul 2004) $
+# $Revision: 50 $
+# $Date: 2004-09-27 15:05:55 -0400 (Mon, 27 Sep 2004) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
@@ -22,11 +22,11 @@ sub displayUsage()
 	print "   $0 [-d #,#,#] [-e] [-s] [-x speed] [-k] [-v] file\n";
 	print "   $0 --help\n";
 	print "\nswitches:\n";
-	print "   -d #,#,#   SCSI device, default: 1,0,0\n";
+	print "   -d #,#,#   SCSI device, default: 0,0,0\n";
    print "              To determine yours, use cdrecord -scanbus\n";
 	print "   -e         Eject when finished, default: false\n";
 	print "   -s         Simulate, don't really burn, default: false\n";
-	print "   -x speed   Burn speed, default: 8\n";
+	print "   -x speed   Burn speed, default: 24\n";
 	print "   -k         Check disk after burn, default: false\n";
 	print "              This is only valid for ISO and will ignore -e\n";
 	print "   -v         Verbose, default: false\n";
@@ -44,10 +44,10 @@ sub displayUsage()
 if(@ARGV == 0 || $ARGV[0] eq "--help") { displayUsage(); }
 
 # Parse arguments
-$opt_d = "1,0,0";
+$opt_d = "0,0,0";
 $opt_e = 0;
 $opt_s = 0;
-$opt_x = 8;
+$opt_x = 24;
 $opt_k = 0;
 $opt_v = 0;
 getopts("d:esx:kv");
@@ -61,7 +61,7 @@ SWITCH:
 {
 	$file =~ m|.*\.iso| && do
 	{
-		$command = "cdrecord driveropts=burnfree dev=$opt_d ";
+		$command = "cdrecord driveropts=burnfree -tao dev=$opt_d ";
 		if(!$opt_k)
 		{ $command .= ($opt_e ? "-eject " : ""); }
 		$command .= ($opt_s ? "-dummy " : "");
@@ -88,7 +88,7 @@ SWITCH:
 		$command .= "--device $opt_d ";
 		$command .= "--speed $opt_x ";
 		$command .= ($opt_e ? "--eject " : "");
-		$command .= ($opt_v ? "-v 1" : "");
+		$command .= ($opt_v ? "-v 1 " : "");
 		$command .= $file;
 		push(@commands, $command);
 
