@@ -1,0 +1,17 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 3 $
+# $Date: 2004-02-25 12:57:16 -0500 (Wed, 25 Feb 2004) $
+# $Author: dmorelli $
+#
+# Script to invoke the command-line Jing RelaxNG 
+# schema validator for XML
+#
+# Jing home page: http://www.thaiopensource.com/relaxng/jing.html
+#--------------------------------------------------------------------------
+
+java -classpath ~/lib/java/jing.jar com.thaiopensource.relaxng.util.Driver $1 $2 $3 $4 $5 $6 $7 $8 $9
+
