@@ -1,0 +1,19 @@
+--
+cdburn
+
+-I'd like it to do both data CDs and CD-DA with cdrdao. Based on the file extension? .iso or .toc
+
+
+--
+general notes
+
+-All apps should check for binary dependencies like cdlabelgen, vorbiscomment, etc
+
+
+---------------------------------------------------------------------------
+$RCSfile$
+------------------------------------------------------------------------
+$Revision: 37 $
+$Date: 2004-07-08 12:03:42 -0400 (Thu, 08 Jul 2004) $
+$Author: dmorelli $
+---------------------------------------------------------------------------
