@@ -53,11 +53,13 @@ general notes
 
 -All apps should check for binary dependencies like cdlabelgen, vorbiscomment, etc
 
+-Change all scripts to use here document for usage notes
+
 
 ---------------------------------------------------------------------------
 $RCSfile$
 ------------------------------------------------------------------------
-$Revision: 53 $
-$Date: 2004-10-08 23:20:36 -0400 (Fri, 08 Oct 2004) $
+$Revision: 62 $
+$Date: 2005-01-11 23:38:51 -0500 (Tue, 11 Jan 2005) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
