@@ -1,4 +1,8 @@
 --
+Need to put out the binary search code in musicUtil/mkplaylist and put it here somewhere. Also, needs to be prototyped more like sort() and take a coderef for the comparison.
+
+
+--
 Perl script for backup spanning
 
 -Can Perl see the media type/size?
@@ -35,6 +39,17 @@ cdburn
 
 -I'd like it to do both data CDs and CD-DA with cdrdao. Based on the file extension? .iso or .toc
 
+-Change this to use strict and also make the docs use the $opt_* vars.
+
+
+--
+newperl
+
+-Update usage notes to explain how to make modules in subdirs with the paths, like this:
+	newperl Foo/Bar.pm
+
+	Will create a file Foo/Bar.pm with package Foo::Bar; in it
+
 
 --
 relpath
@@ -59,7 +74,7 @@ general notes
 ---------------------------------------------------------------------------
 $RCSfile$
 ------------------------------------------------------------------------
-$Revision: 62 $
-$Date: 2005-01-11 23:38:51 -0500 (Tue, 11 Jan 2005) $
+$Revision: 68 $
+$Date: 2005-03-04 00:25:47 -0500 (Fri, 04 Mar 2005) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
