@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 65 $
-# $Date: 2005-01-13 13:56:46 -0500 (Thu, 13 Jan 2005) $
+# $Revision: 66 $
+# $Date: 2005-01-14 11:06:07 -0500 (Fri, 14 Jan 2005) $
 # $Author: dmorelli $
 #
 # Find things in multiple jar files
@@ -14,6 +14,14 @@ use strict;
 use File::Find;
 use Getopt::Std;
 
+
+# If we can, make sure the jar utility is present
+# for OS name strings see: perldoc perlport
+unless($^O =~ /dos|os2|MSWin32/) {
+	`whereis jar` =~ /.*:.+/ or die
+		"No jar utility found using Unix-style whereis utility.$/" .
+		"Maybe you don't have Java installed.$/";
+}
 
 our ($opt_d);
 my $usage = <<EOF;
