@@ -1,0 +1,33 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 36 $
+# $Date: 2004-07-08 12:00:50 -0400 (Thu, 08 Jul 2004) $
+# $Author: dmorelli $
+#
+# Test the TextUI::ProgressBar class
+#--------------------------------------------------------------------------
+
+use TextUI::ProgressBar;
+
+
+my $delay = 1;
+
+#my $max = 1332;
+#my $max = 332;
+#my $max = 50;
+my $max = 40;
+
+$bar = new TextUI::ProgressBar($max);
+$bar->setDisplayWidth(50);
+$bar->setPercentFormat("%#5.1f");
+#$bar->setPercentFormat("%#6.2f");
+print "$max items to process...\n";
+for(my $i = 0; $i <= $max; $i++)
+{
+	$bar->update($i);
+	sleep($delay);
+}
+print "\n";
