@@ -1,0 +1,55 @@
+#! /usr/bin/perl -w
+#! /home/dwm/bin/perl -w
+
+use strict;
+use Getopt::Std;
+use IO::File;
+use XML::Handler::YAWriter;
+use XML::Parser::PerlSAX;
+
+
+our ($opt_c, $opt_p, $opt_s);
+
+# Parse args
+getopts('cps');
+my $inFile = shift;
+
+# Bad args, show help and quit
+unless ($inFile) {
+	print "$0 - XML formatter\n";
+	print "  usage: $0 [-c] [-p|s] xmlFile\n";
+	print "\n";
+	print "  -c        Remove all comments\n";
+	print "  -p        Pretty print the document\n";
+	print "  -s        Strip all meaningless whitespace\n";
+	print "  xmlFile   XML document to format\n";
+	exit(1);
+}
+
+# Construct the options hashes
+my %options = (
+	Output => new IO::File ( ">-" ),
+	Pretty => {
+		CatchEmptyElement => 1,
+	}
+);
+if($opt_c) {
+	$options{Pretty}{NoComments} = 1;
+}
+if($opt_p) {
+	$options{Pretty}{PrettyWhiteIndent} = 1;
+	$options{Pretty}{PrettyWhiteNewline} = 1;
+}
+if($opt_s) {
+	$options{Pretty}{NoWhiteSpace} = 1;
+}
+
+# Construct a handler
+my $handler = new XML::Handler::YAWriter(%options);
+
+# Construct a parser and do it
+my $parser = XML::Parser::PerlSAX->new(
+	Handler => $handler,
+	Source => { ByteStream => new IO::File($inFile) }
+);
+$parser->parse();
