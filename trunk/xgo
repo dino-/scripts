@@ -3,30 +3,40 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 21 $
-# $Date: 2004-06-09 22:23:48 -0400 (Wed, 09 Jun 2004) $
+# $Revision: 69 $
+# $Date: 2005-03-13 14:07:59 -0500 (Sun, 13 Mar 2005) $
 # $Author: dmorelli $
 #
 # Script to start XFree86 with a certain layout.
 #--------------------------------------------------------------------------
 
-displayHelp ()
-{
+displayHelp () {
 	echo "`basename $0` - start XFree86 with a specific layout"
+   echo "  Program will attempt to detect docked status"
+	echo ""
 	echo "usage:"
-	echo "  xgo laptop|docked"
+	echo "  xgo [laptop|docked]"
 	echo "  xgo --help"
 }
 
+PROFILE=$1
 
-if [ "$1" = "" ]
+if [ "$PROFILE" = "" ]
 then
-	displayHelp
-	exit 1
-elif [ "$1" = "--help" ]
+	# When you get another keyboard, this will have to be changed.
+	DOCKED=`grep "Microsoft Internet Keyboard Pro" /proc/bus/usb/devices`
+	if [ "$DOCKED" = "" ]
+	then
+		echo "Machine detected to be NOT docked"
+		PROFILE="laptop"
+	else
+		echo "Machine detected to be docked"
+		PROFILE="docked"
+	fi
+elif [ "$PROFILE" = "--help" ]
 then
 	displayHelp
 	exit 1
 fi
 
-startx -- -layout $1
+startx -- -layout $PROFILE
