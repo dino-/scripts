@@ -1,0 +1,22 @@
+#! /bin/sh
+
+displayHelp ()
+{
+	echo "`basename $0` - start XFree86 with a specific layout"
+	echo "usage:"
+	echo "  xgo laptop|docked"
+	echo "  xgo --help"
+}
+
+
+if [ "$1" = "" ]
+then
+	displayHelp
+	exit 1
+elif [ "$1" = "--help" ]
+then
+	displayHelp
+	exit 1
+fi
+
+startx -- -layout $1
