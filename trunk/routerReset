@@ -1,0 +1,85 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 39 $
+# $Date: 2004-07-13 22:58:37 -0400 (Tue, 13 Jul 2004) $
+# $Author: dmorelli $
+#
+# Reset the SMC Barricade router
+#--------------------------------------------------------------------------
+
+use WWW::Mechanize;
+
+
+#--------------------------------------------------------------------------
+# Modify to reflect your setup
+$routerUrl = "http://192.168.2.1:88/";
+
+
+#--------------------------------------------------------------------------
+# FIXME
+# Need to fix this, different pages have different setups for logout,
+# as stupid as that sounds.
+sub logout($)
+{
+	my $mech = shift;
+
+	$mech->submit_form(form_name => 'tF');
+}
+
+#--------------------------------------------------------------------------
+# Output the current page and exit, for debugging.
+sub debugDisplay($)
+{
+	my $mech = shift;
+	print $mech->content(), "\n";
+	exit;
+}
+
+#--------------------------------------------------------------------------
+# It all starts here
+
+# Get the password from the user.
+system "stty -echo";
+print "Router admin password: ";
+chomp($routerPassword = <STDIN>);
+print "\n";
+system "stty echo";
+
+$mech = new WWW::Mechanize();
+
+# Get the login page
+$mech->get($routerUrl);
+
+# Login
+$mech->submit_form
+(
+	form_name => 'tF',
+	fields => { pws => "$routerPassword" }
+);
+
+# Next page is in a meta tag, extract it:
+$mech->content() =~ /url=(.*)'/;
+$mech->get("${routerUrl}$1");
+
+# Bad password? Then exit now.
+$mech->content() =~ /Login Error/ && do
+{
+	print "Login Error! Possibly bad password.\n";
+	exit;
+};
+
+# Navigate to the tools page
+$mech->follow_link(text => "Tools");
+
+# Navigate to the reboot confirm page
+$mech->follow_link(text => "Reset");
+
+# Warn the user...
+print "*** WARNING *** router reset occurring now.\n";
+print "You may be disconnected if accessing remotely.\n";
+
+# and confirm
+$mech->submit_form(form_name => 'RebootForm');
