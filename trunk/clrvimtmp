@@ -1,0 +1,81 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 77 $
+# $Date: 2005-03-30 10:17:13 -0500 (Wed, 30 Mar 2005) $
+# $Author: dmorelli $
+#
+# List and optionally remove Vim swap files
+#--------------------------------------------------------------------------
+
+# todo:
+#   -Specify an optional starting dir on the command-line.
+#   -Usage notes.
+
+use strict;
+use File::Basename;
+use File::Find;
+
+
+my @files;
+my $dir;
+
+
+# Used by find(), the real work is done here
+sub wanted {
+   # We're only concerned with Vim swap files
+   return unless /.*\.sw[mnop]/;
+
+   # Store the paths for later possible deletion
+   push @files, $File::Find::name;
+
+   # Display the path and modified date
+   print $File::Find::name . $/;
+   my ($sec, $min, $hour, $mday, $mon, $year) = localtime((stat)[9]);
+   print "   last modified: " . 
+      sprintf("%4ld-%.2ld-%.2ld %.2ld:%.2ld:%.2ld", 
+         1900 + $year, ++$mon, $mday, $hour, $min, $sec) . $/;
+}
+
+# User requested help
+if(@ARGV && $ARGV[0] eq "--help") {
+   my ($basename) = fileparse $0;
+
+   print <<USAGE;
+$basename - List and optionally remove Vim swap files
+version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net
+
+usage:
+   $basename [path]
+   $basename --help
+
+switches:
+   path    Path to start search from within, defaults to user's home
+   --help This information
+USAGE
+
+   exit;
+}
+
+# Pull the starting dir off the args
+$dir = shift;
+# If none given, use the HOME environment variable
+$dir ||= $ENV{HOME};
+
+print "Starting from: $dir ...$/";
+
+# Perform the recursive find, starting in the user's home dir
+find \&wanted, $dir;
+
+# Prompt for removal
+if(@files) {
+   print "Remove these swap files [y/N]? ";
+   chomp (my $input = <STDIN>);
+
+   # Remove the files
+   if($input eq 'y') {
+      print (unlink (@files) . " file(s) removed.$/");
+   }
+} else { print "No swap files found.$/"; }
