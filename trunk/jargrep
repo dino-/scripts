@@ -3,37 +3,31 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 66 $
-# $Date: 2005-01-14 11:06:07 -0500 (Fri, 14 Jan 2005) $
+# $Revision: 80 $
+# $Date: 2005-04-08 23:03:42 -0400 (Fri, 08 Apr 2005) $
 # $Author: dmorelli $
 #
 # Find things in multiple jar files
 #--------------------------------------------------------------------------
 
 use strict;
+use File::Basename;
 use File::Find;
 use Getopt::Std;
 
 
-# If we can, make sure the jar utility is present
-# for OS name strings see: perldoc perlport
-unless($^O =~ /dos|os2|MSWin32/) {
-	`whereis jar` =~ /.*:.+/ or die
-		"No jar utility found using Unix-style whereis utility.$/" .
-		"Maybe you don't have Java installed.$/";
-}
-
 our ($opt_d);
-my $usage = <<EOF;
-$0 - Find things in multiple jar files
+my ($basename) = fileparse $0;
+my $usage = <<USAGE;
+$basename - Find things in multiple jar files
 
-usage: $0 [-d depth] startingDir searchString
-       $0 --help
+usage: $basename [-d depth] startingDir searchString
+       $basename --help
 
 options:
-   -d      Depth to descent from the starting dir, default: no restriction
+   -d      Depth to descend from the starting dir, default: no restriction
    --help  This help information
-EOF
+USAGE
 
 # No args or user requested help
 (!@ARGV || $ARGV[0] eq '--help') and die "$usage$/";
