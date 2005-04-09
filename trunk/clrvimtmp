@@ -3,16 +3,12 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 77 $
-# $Date: 2005-03-30 10:17:13 -0500 (Wed, 30 Mar 2005) $
+# $Revision: 79 $
+# $Date: 2005-04-08 22:55:37 -0400 (Fri, 08 Apr 2005) $
 # $Author: dmorelli $
 #
 # List and optionally remove Vim swap files
 #--------------------------------------------------------------------------
-
-# todo:
-#   -Specify an optional starting dir on the command-line.
-#   -Usage notes.
 
 use strict;
 use File::Basename;
@@ -45,7 +41,7 @@ if(@ARGV && $ARGV[0] eq "--help") {
 
    print <<USAGE;
 $basename - List and optionally remove Vim swap files
-version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net
+version 1.0.1  Dino Morelli  dmorelli\@reactorweb.net
 
 usage:
    $basename [path]
@@ -60,9 +56,8 @@ USAGE
 }
 
 # Pull the starting dir off the args
-$dir = shift;
 # If none given, use the HOME environment variable
-$dir ||= $ENV{HOME};
+$dir = shift || $ENV{HOME};
 
 print "Starting from: $dir ...$/";
 
