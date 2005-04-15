@@ -3,51 +3,92 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 70 $
-# $Date: 2005-03-14 15:47:44 -0500 (Mon, 14 Mar 2005) $
+# $Revision: 82 $
+# $Date: 2005-04-15 13:58:45 -0400 (Fri, 15 Apr 2005) $
 # $Author: dmorelli $
 #
 # Script to start XFree86 with a certain layout.
 #--------------------------------------------------------------------------
 
-displayHelp () {
-	echo "`basename $0` - start XFree86 with a specific layout"
-   echo "  Program will attempt to detect docked status"
-	echo ""
-	echo "usage:"
-	echo "  xgo [laptop|docked]"
-	echo "  xgo --help"
+
+vBasename=`basename $0`
+
+displayUsage () {
+	cat <<USAGE
+$vBasename - start XFree86 with a specific layout
+   Program will attempt to detect docked status
+
+usage:
+   xgo [-n] [laptop|docked]
+   xgo --help
+
+switches:
+   -n      No-action mode. Don't actually start X
+   --help  This usage information
+USAGE
+
+	exit
 }
 
-PROFILE=$1
 
-if [ "$PROFILE" = "" ]
+# User requested help
+if [ "$1" = "--help" ]; then displayUsage; fi
+
+echo "`date`  $vBasename started"
+
+# Parse arguments
+while getopts "n" vOpt
+do
+	let opt_$vOpt="1"
+done
+shift $(($OPTIND - 1))
+vProfile=$1
+
+if [ "$vProfile" = "" ]
 then
-	USBDEVS="/proc/bus/usb/devices"
+	echo "Attempting to autodetect docking status..."
+
+	vUsbDevs="/proc/bus/usb/devices"
 
 	# This is the keyboard at home
-	DOCKED=`grep "Microsoft Internet Keyboard Pro" $USBDEVS`
-	if [ "$DOCKED" = "" ]
+	vDocked=`grep "Microsoft Internet Keyboard Pro" $vUsbDevs`
+	if [ "$vDocked" = "" ]
 	then
 		# This is the keyboard at work at SCK
-		DOCKED=`grep "USBPS2" $USBDEVS`
+		vDocked=`grep "USBPS2" $vUsbDevs`
 	fi
 
-	if [ "$DOCKED" = "" ]
+	if [ "$vDocked" = "" ]
 	then
-		echo "Machine detected to be NOT docked"
-		PROFILE="laptop"
+		vProfile="laptop"
+		echo "Machine appears to be NOT docked"
 	else
-		echo "Machine detected to be docked"
-		PROFILE="docked"
+		vProfile="docked"
+		echo "Machine appears to be docked"
+	fi
+else
+	# User requested a profile
+
+	# Compare against the known profiles we allow
+	vProfiles="docked laptop"
+	for vCur in $vProfiles
+	do
+		if [ "$vProfile" = "$vCur" ]; then vValid="1"; fi
+	done
+
+	if [ "$vValid" != "1" ]
+	then
+		echo "Invalid profile: $vProfile"
+		echo ""
+		displayUsage
 	fi
 
-	# For debugging
-	#exit 1
-elif [ "$PROFILE" = "--help" ]
-then
-	displayHelp
-	exit 1
+	echo "Profile requested: $vProfile"
 fi
 
-startx -- -layout $PROFILE
+if [ "$opt_n" == "1" ]
+then
+	echo "No-action mode specified. X not started."
+else
+	startx -- -layout $vProfile
+fi
