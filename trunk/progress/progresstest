@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 36 $
-# $Date: 2004-07-08 12:00:50 -0400 (Thu, 08 Jul 2004) $
+# $Revision: 84 $
+# $Date: 2005-04-17 23:29:12 -0400 (Sun, 17 Apr 2005) $
 # $Author: dmorelli $
 #
 # Test the TextUI::ProgressBar class
@@ -18,12 +18,17 @@ my $delay = 1;
 #my $max = 1332;
 #my $max = 332;
 #my $max = 50;
-my $max = 40;
+#my $max = 40;
+my $max = int(rand 60) + 20;
 
 $bar = new TextUI::ProgressBar($max);
-$bar->setDisplayWidth(50);
-$bar->setPercentFormat("%#5.1f");
-#$bar->setPercentFormat("%#6.2f");
+
+#$bar->setDisplayWidth(50);
+$bar->setDisplayWidth(int(rand 49) + 20);
+
+#$bar->setPercentFormat("%#5.1f");
+$bar->setPercentFormat("%#6.2f");
+
 print "$max items to process...\n";
 for(my $i = 0; $i <= $max; $i++)
 {
