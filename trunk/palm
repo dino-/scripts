@@ -3,14 +3,15 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 81 $
-# $Date: 2005-04-12 22:21:34 -0400 (Tue, 12 Apr 2005) $
+# $Revision: 88 $
+# $Date: 2005-06-22 00:26:09 -0400 (Wed, 22 Jun 2005) $
 # $Author: dmorelli $
 #
 # Script to do some common tasks with Palm PDAs
 #--------------------------------------------------------------------------
 
 
+PORT=net:any
 SYNCFOLDER=~/.palmpda
 USAGE=`cat <<EOF
 Perform Palm PDA operations
@@ -57,13 +58,13 @@ case $action in
 		waitForDevice
 
 		shift
-		pilot-xfer -i "$@"
+		pilot-xfer -p $PORT -i "$@"
 		break;;
 
 	s)
 		waitForDevice
 
-		pilot-xfer -s ${SYNCFOLDER}
+		pilot-xfer -p $PORT -s ${SYNCFOLDER}
 		break;;
 esac
 echo Done
