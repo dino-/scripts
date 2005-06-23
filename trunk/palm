@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 88 $
-# $Date: 2005-06-22 00:26:09 -0400 (Wed, 22 Jun 2005) $
+# $Revision: 89 $
+# $Date: 2005-06-23 12:31:37 -0400 (Thu, 23 Jun 2005) $
 # $Author: dmorelli $
 #
 # Script to do some common tasks with Palm PDAs
@@ -24,7 +24,7 @@ EOF`
 waitForDevice()
 {
 	echo Waiting for PDA...
-	sleep 3s
+	sleep 2s
 
 	echo Connecting now...
 }
