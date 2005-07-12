@@ -43,6 +43,24 @@ cdburn
 
 
 --
+imgname
+
+-Usage from older Java imgname tool:
+$ ./imgname --help
+Error: User requested help
+
+Usage: imgname [-r ] [-o ] [-q ] [-n ] [--version ] [--help ] [<String>]
+
+        -r 'Process files recursively'  Default: false
+        -o 'Overwrite existing files'  Default: false
+        -q 'Quiet, don't display anything while processing.'  Default: false
+        -n 'Process images even if they are missing EXIF info.'  Default: false
+        --version 'Display app version to console'  Default: false
+        --help 'Display this usage information'  Default: false
+        '<dir> or <file> to process'  Default: .
+
+
+--
 newperl
 
 -Update usage notes to explain how to make modules in subdirs with the paths, like this:
@@ -76,7 +94,7 @@ general notes
 ---------------------------------------------------------------------------
 $RCSfile$
 ------------------------------------------------------------------------
-$Revision: 76 $
-$Date: 2005-03-26 10:57:16 -0500 (Sat, 26 Mar 2005) $
+$Revision: 92 $
+$Date: 2005-07-12 15:23:54 -0400 (Tue, 12 Jul 2005) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
