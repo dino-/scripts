@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 92 $
-# $Date: 2005-07-12 15:23:54 -0400 (Tue, 12 Jul 2005) $
+# $Revision: 93 $
+# $Date: 2005-07-13 09:59:02 -0400 (Wed, 13 Jul 2005) $
 # $Author: dmorelli $
 #
 # Rename JPEG image files
@@ -38,18 +38,19 @@ the photo was shot, to construct a hopefully fairly unique filename. This
 is done with a base 36 conversion of a long calculated from the date/time.
 
 usage:  $basename [-n] (file | dir)
-        $basename --help
+        $basename (-h | --help)
 
 options:
   -n      No-action mode. Don't modify anything
+  -h      This usage information
   --help  This usage information
 
-2005-Jul-12  author: Dino Morelli  dmorelli\@reactorweb.net
+2005-Jul-13  author: Dino Morelli  dmorelli\@reactorweb.net
 
 USAGE
 
 
-if(@ARGV && $ARGV[0] eq '--help') {
+if(@ARGV && ($ARGV[0] eq '--help' || $ARGV[0] eq '-h')) {
     print $usage;
     exit;
 }
@@ -59,7 +60,7 @@ $startingPath = shift;
 $startingPath ||= '.';
 
 sub wanted {
-    return unless /\.jpe?g/i;
+    /\.jpe?g/i or return;
 
     my $time;
     my $exif = new Image::EXIF($_);
