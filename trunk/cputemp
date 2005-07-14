@@ -1,0 +1,34 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 94 $
+# $Date: 2005-07-13 23:52:54 -0400 (Wed, 13 Jul 2005) $
+# $Author: dmorelli $
+#
+# Display cpu temperature
+#--------------------------------------------------------------------------
+
+use strict;
+
+
+# File where the current temperature is stored
+my $tempPath = '/proc/acpi/thermal_zone/THM/temperature';
+
+# Load the contents of this file into a string
+open TEMPERATURE, "$tempPath"
+    or die "Can't acquire temperature from $tempPath: $!\n";
+my $raw = <TEMPERATURE>;
+close TEMPERATURE;
+
+# Extract the numeric portion, temperature in Celsius
+my ($celsius) = $raw =~ /\D*(\d+)\D*/;
+
+# Convert to Fahrenheit and format for display
+my $fahrenheit = $celsius * 9 / 5 + 32;
+
+# Format for display
+# This degrees symbol was a bitch to locate
+print "The temperature as reported by $tempPath\n";
+printf "%5.1f\260F (%2d\260C)\n", $fahrenheit, $celsius;
