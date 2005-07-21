@@ -1,16 +1,17 @@
 #! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
-# $RCSfile: 
+# $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 
-# $Date: 
-# $Author: 
+# $Revision: 95 $
+# $Date: 2005-07-21 00:14:09 -0400 (Thu, 21 Jul 2005) $
+# $Author: dmorelli $
 #
 # Script for calculating humidity given temperature and dewpoint
 #--------------------------------------------------------------------------
 
 use strict;
+use File::Basename;
 use Getopt::Std;
 
 
@@ -35,15 +36,18 @@ sub centToKelvin($) {
 
 # Detect if no params given
 if(@ARGV == 0 || $ARGV[0] eq "--help") {
-	print "$0 - Calculate relative humidity\n";
-	print "usage:\n";
-	print "   $0 -f file\n";
-	print "   $0 temp dew\n";
-	print "\n";
-	print "   -f      NOAA weather data file\n";
-	print "   temp    Value in the form ###[fFcC]\n";
-	print "   dew\n";
-	print "   --help  This information\n";
+    my $basename = basename $0;
+    print <<USAGE;
+$basename - Calculate relative humidity
+usage:
+   $basename -f file
+   $basename temp dew
+
+   -f      NOAA weather data file
+   temp    Value in the form ###[fFcC]
+   dew
+   --help  This information
+USAGE
 	exit;
 }
 
