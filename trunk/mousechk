@@ -1,0 +1,49 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 96 $
+# $Date: 2005-07-21 11:23:08 -0400 (Thu, 21 Jul 2005) $
+# $Author: dmorelli $
+#
+# Detect if there is a USB mouse based on a table of hardware-specific
+# strings
+#--------------------------------------------------------------------------
+
+use strict;
+
+
+# Add new device matching expressions here
+my @devInfo = (
+    # This is at home
+    'Kensington',  # XXX Fix this
+
+    # This is at SCK
+    'S:\s+Product=USBPS2',
+);
+my $devicePath = "/proc/bus/usb/devices";
+my ($contents, $found);
+
+open DEVFILE, $devicePath or die "Can't open $devicePath: $!\n";
+
+# Check each line of the file against each item in the array
+# bailing out as soon as anything promising is found
+for my $line (<DEVFILE>) {
+    my $index = 0;
+    while (!$found) {
+        my $info = $devInfo[$index++];
+        $found = $line =~ /$info/;
+
+        # Never found one
+        last if ($index >= @devInfo);
+    }
+    last if ($found);
+}
+
+close DEVFILE;
+
+# Display the results
+print "mouse ";
+print "NOT " unless $found;
+print "detected\n";
