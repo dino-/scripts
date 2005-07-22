@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 96 $
-# $Date: 2005-07-21 11:23:08 -0400 (Thu, 21 Jul 2005) $
+# $Revision: 97 $
+# $Date: 2005-07-21 23:32:06 -0400 (Thu, 21 Jul 2005) $
 # $Author: dmorelli $
 #
 # Detect if there is a USB mouse based on a table of hardware-specific
@@ -17,7 +17,7 @@ use strict;
 # Add new device matching expressions here
 my @devInfo = (
     # This is at home
-    'Kensington',  # XXX Fix this
+    'S:\s+Manufacturer=Kensington',
 
     # This is at SCK
     'S:\s+Product=USBPS2',
