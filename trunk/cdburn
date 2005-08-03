@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 72 $
-# $Date: 2005-03-14 22:08:33 -0500 (Mon, 14 Mar 2005) $
+# $Revision: 98 $
+# $Date: 2005-08-03 00:02:26 -0400 (Wed, 03 Aug 2005) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
@@ -70,8 +70,8 @@ SWITCH:
 		$command .= $file;
 		push(@commands, $command);
 
-		if($opt_k)
-		{
+		if($opt_k) {
+            push(@commands, "sleep 2");
 			push(@commands, "mount /mnt/cdrom");
 			push(@commands, "ls -l /mnt/cdrom/");
 			push(@commands, "umount /mnt/cdrom");
