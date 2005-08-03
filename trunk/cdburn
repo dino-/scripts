@@ -3,17 +3,19 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 101 $
-# $Date: 2005-08-03 00:10:39 -0400 (Wed, 03 Aug 2005) $
+# $Revision: 102 $
+# $Date: 2005-08-03 00:15:22 -0400 (Wed, 03 Aug 2005) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
 #--------------------------------------------------------------------------
 
+use strict;
 use File::Basename;
 use Getopt::Std;
 
 
+my @commands;
 my $basename = basename $0;
 
 #--------------------------------------------------------------------------
@@ -50,24 +52,22 @@ USAGE
 if(@ARGV == 0 || $ARGV[0] eq "--help") { displayUsage(); }
 
 # Parse arguments
-$opt_d = "ATA:1,0,0";
-$opt_e = 0;
-$opt_s = 0;
-$opt_x = 24;
-$opt_k = 0;
-$opt_v = 0;
+our $opt_d = "ATA:1,0,0";
+our $opt_e = 0;
+our $opt_s = 0;
+our $opt_x = 24;
+our $opt_k = 0;
+our $opt_v = 0;
 getopts("d:esx:kv");
-$file = shift;
+my $file = shift;
 
 # No file given
 if(!defined $file) { displayUsage(); }
 
 # Figure out what type of file we have and set up the commands
-SWITCH:
-{
-	$file =~ m|.*\.iso| && do
-	{
-		$command = "cdrecord driveropts=burnfree -tao dev=$opt_d ";
+SWITCH: {
+	$file =~ m|.*\.iso| && do {
+		my $command = "cdrecord driveropts=burnfree -tao dev=$opt_d ";
 		if(!$opt_k)
 		{ $command .= ($opt_e ? "-eject " : ""); }
 		$command .= ($opt_s ? "-dummy " : "");
@@ -85,11 +85,10 @@ SWITCH:
 
 		last SWITCH;
 	};
-	$file =~ m|.*\.toc| && do
-	{
+	$file =~ m|.*\.toc| && do {
 		if($opt_k) { print "** Note: -k switch not possible for CDDA\n"; }
 
-		$command = "cdrdao ";
+		my $command = "cdrdao ";
 		$command .= ($opt_s ? "simulate " : "write ");
 		$command .= "--device $opt_d ";
 		$command .= "--speed $opt_x ";
@@ -103,8 +102,7 @@ SWITCH:
 }
 
 # Perform the commands
-foreach (@commands)
-{
+foreach (@commands) {
 	print "$basename executing command: $_\n";
 	system $_;
 }
