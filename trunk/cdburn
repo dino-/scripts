@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 100 $
-# $Date: 2005-08-03 00:05:49 -0400 (Wed, 03 Aug 2005) $
+# $Revision: 101 $
+# $Date: 2005-08-03 00:10:39 -0400 (Wed, 03 Aug 2005) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
@@ -14,20 +14,20 @@ use File::Basename;
 use Getopt::Std;
 
 
+my $basename = basename $0;
+
 #--------------------------------------------------------------------------
 sub displayUsage {
-    my $basename = basename $0;
-
     print <<USAGE;
 $basename - Burn a data or music CD
 version 1.0.1  Dino Morelli  dmorelli\@reactorweb.net
 
 usage:
-   $basename [-d #,#,#] [-e] [-s] [-x speed] [-k] [-v] file
+   $basename [-d device] [-e] [-s] [-x speed] [-k] [-v] file
    $basename --help
 
 switches:
-   -d #,#,#   SCSI device, default: ATA:1,0,0
+   -d device  SCSI device, default: ATA:1,0,0
               To determine yours, use cdrecord -scanbus
    -e         Eject when finished, default: false
    -s         Simulate, don't really burn, default: false
@@ -35,7 +35,7 @@ switches:
    -k         Check disk after burn, default: false
               This is only valid for ISO and will ignore -e
    -v         Verbose, default: false
-   file       ISO or TOC file to burn
+   file       ISO or TOC file to burn (.iso or .toc)
    --help     This information.
 USAGE
 
@@ -105,6 +105,6 @@ SWITCH:
 # Perform the commands
 foreach (@commands)
 {
-	print "$0 executing command: $_\n";
+	print "$basename executing command: $_\n";
 	system $_;
 }
