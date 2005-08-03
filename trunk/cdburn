@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 98 $
-# $Date: 2005-08-03 00:02:26 -0400 (Wed, 03 Aug 2005) $
+# $Revision: 99 $
+# $Date: 2005-08-03 00:02:43 -0400 (Wed, 03 Aug 2005) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
@@ -17,7 +17,7 @@ use Getopt::Std;
 sub displayUsage()
 {
 	print "$0 - Burn a data or music CD\n";
-	print "version 1.0.0  Dino Morelli  dmorelli\@reactorweb.net\n";
+	print "version 1.0.1  Dino Morelli  dmorelli\@reactorweb.net\n";
 	print "\nusage:\n";
 	print "   $0 [-d #,#,#] [-e] [-s] [-x speed] [-k] [-v] file\n";
 	print "   $0 --help\n";
