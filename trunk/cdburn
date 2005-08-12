@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 102 $
-# $Date: 2005-08-03 00:15:22 -0400 (Wed, 03 Aug 2005) $
+# $Revision: 103 $
+# $Date: 2005-08-12 17:10:42 -0400 (Fri, 12 Aug 2005) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
@@ -17,23 +17,30 @@ use Getopt::Std;
 
 my @commands;
 my $basename = basename $0;
+our $opt_d = "/dev/hdc";
+our $opt_e = 0;
+our $opt_s = 0;
+our $opt_x = 24;
+our $opt_k = 0;
+our $opt_v = 0;
 
 #--------------------------------------------------------------------------
 sub displayUsage {
     print <<USAGE;
 $basename - Burn a data or music CD
-version 1.0.1  Dino Morelli  dmorelli\@reactorweb.net
+version 1.0.2  Dino Morelli  dmorelli\@reactorweb.net
 
 usage:
    $basename [-d device] [-e] [-s] [-x speed] [-k] [-v] file
    $basename --help
 
 switches:
-   -d device  SCSI device, default: ATA:1,0,0
-              To determine yours, use cdrecord -scanbus
+   -d device  SCSI device, default: $opt_d
+              If you need to know more, like SCSI device numbers, drive 
+              model info, etc: `cdrecord dev=$opt_d -scanbus`
    -e         Eject when finished, default: false
    -s         Simulate, don't really burn, default: false
-   -x speed   Burn speed, default: 24
+   -x speed   Burn speed, default: $opt_x
    -k         Check disk after burn, default: false
               This is only valid for ISO and will ignore -e
    -v         Verbose, default: false
@@ -42,7 +49,7 @@ switches:
 USAGE
 
 	exit;
-}  # sub displayUsage
+}
 
 
 #--------------------------------------------------------------------------
@@ -52,12 +59,6 @@ USAGE
 if(@ARGV == 0 || $ARGV[0] eq "--help") { displayUsage(); }
 
 # Parse arguments
-our $opt_d = "ATA:1,0,0";
-our $opt_e = 0;
-our $opt_s = 0;
-our $opt_x = 24;
-our $opt_k = 0;
-our $opt_v = 0;
 getopts("d:esx:kv");
 my $file = shift;
 
