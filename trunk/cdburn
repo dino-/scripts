@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 103 $
-# $Date: 2005-08-12 17:10:42 -0400 (Fri, 12 Aug 2005) $
+# $Revision: 104 $
+# $Date: 2005-08-13 18:08:04 -0400 (Sat, 13 Aug 2005) $
 # $Author: dmorelli $
 #
 # Script to burn iso images to CD
@@ -12,40 +12,39 @@
 
 use strict;
 use File::Basename;
-use Getopt::Std;
+use Getopt::Long;
 
 
 my @commands;
 my $basename = basename $0;
-our $opt_d = "/dev/hdc";
-our $opt_e = 0;
-our $opt_s = 0;
-our $opt_x = 24;
-our $opt_k = 0;
-our $opt_v = 0;
+my %opts = (
+    device => '/dev/hdc',
+    speed => 24,
+);
 
 #--------------------------------------------------------------------------
 sub displayUsage {
     print <<USAGE;
 $basename - Burn a data or music CD
-version 1.0.2  Dino Morelli  dmorelli\@reactorweb.net
+version 1.0.3  Dino Morelli  dmorelli\@reactorweb.net
 
 usage:
-   $basename [-d device] [-e] [-s] [-x speed] [-k] [-v] file
+   $basename [-eksv] [-d device] [-x speed] file
    $basename --help
 
 switches:
-   -d device  SCSI device, default: $opt_d
-              If you need to know more, like SCSI device numbers, drive 
-              model info, etc: `cdrecord dev=$opt_d -scanbus`
-   -e         Eject when finished, default: false
-   -s         Simulate, don't really burn, default: false
-   -x speed   Burn speed, default: $opt_x
-   -k         Check disk after burn, default: false
-              This is only valid for ISO and will ignore -e
-   -v         Verbose, default: false
-   file       ISO or TOC file to burn (.iso or .toc)
-   --help     This information.
+   -e, --eject          Eject when finished, default: false
+   -d, --device=DEVICE  SCSI device, default: $opts{device}
+                        If you need to know more, like SCSI device numbers, 
+                        drive model info, etc:
+                        `cdrecord dev=$opts{device} -scanbus`
+   -h, --help           This information.
+   -k, --check          Check disk after burn, default: false
+                        This is only valid for ISO and will ignore -e
+   -s, --simulate       Simulate, don't really burn, default: false
+   -v, --verbose        Verbose, default: false
+   -x, --speed=SPEED    Burn speed, default: $opts{speed}
+   file                 ISO or TOC file to burn (.iso or .toc)
 USAGE
 
 	exit;
@@ -55,29 +54,41 @@ USAGE
 #--------------------------------------------------------------------------
 # It all starts here
 
-# Detect if no params given or user requested help
-if(@ARGV == 0 || $ARGV[0] eq "--help") { displayUsage(); }
-
 # Parse arguments
-getopts("d:esx:kv");
-my $file = shift;
+Getopt::Long::Configure ("bundling");
+GetOptions(
+    \%opts,
+    'eject|e',
+    'device|d=s',
+    'help|h',
+    'check|k',
+    'simulate|s',
+    'verbose|v',
+    'speed|x=i',
+) or displayUsage;
 
-# No file given
-if(!defined $file) { displayUsage(); }
+displayUsage if $opts{help};
+
+my $file = shift;
+if(!defined $file) {
+    print "No file specified.\n";
+    displayUsage;
+}
 
 # Figure out what type of file we have and set up the commands
 SWITCH: {
 	$file =~ m|.*\.iso| && do {
-		my $command = "cdrecord driveropts=burnfree -tao dev=$opt_d ";
-		if(!$opt_k)
-		{ $command .= ($opt_e ? "-eject " : ""); }
-		$command .= ($opt_s ? "-dummy " : "");
-		$command .= "speed=$opt_x ";
-		$command .= ($opt_v ? "-v " : "");
+		my $command = 
+            "cdrecord driveropts=burnfree -tao dev=$opts{device} ";
+		if(!$opts{check})
+		{ $command .= ($opts{eject} ? "-eject " : ""); }
+		$command .= ($opts{simulate} ? "-dummy " : "");
+		$command .= "speed=$opts{speed} ";
+		$command .= ($opts{verbose} ? "-v " : "");
 		$command .= $file;
 		push(@commands, $command);
 
-		if($opt_k) {
+		if($opts{check}) {
             push(@commands, "sleep 2");
 			push(@commands, "mount /mnt/cdrom");
 			push(@commands, "ls -l /mnt/cdrom/");
@@ -87,14 +98,14 @@ SWITCH: {
 		last SWITCH;
 	};
 	$file =~ m|.*\.toc| && do {
-		if($opt_k) { print "** Note: -k switch not possible for CDDA\n"; }
+		if($opts{check}) { print "** Note: -k switch not possible for CDDA\n"; }
 
 		my $command = "cdrdao ";
-		$command .= ($opt_s ? "simulate " : "write ");
-		$command .= "--device $opt_d ";
-		$command .= "--speed $opt_x ";
-		$command .= ($opt_e ? "--eject " : "");
-		$command .= ($opt_v ? "-v 1 " : "");
+		$command .= ($opts{simulate} ? "simulate " : "write ");
+		$command .= "--device $opts{device} ";
+		$command .= "--speed $opts{speed} ";
+		$command .= ($opts{eject} ? "--eject " : "");
+		$command .= ($opts{verbose} ? "-v 1 " : "");
 		$command .= $file;
 		push(@commands, $command);
 
