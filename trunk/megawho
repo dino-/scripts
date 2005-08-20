@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 106 $
-# $Date: 2005-08-20 14:04:33 -0400 (Sat, 20 Aug 2005) $
+# $Revision: 107 $
+# $Date: 2005-08-20 14:06:00 -0400 (Sat, 20 Aug 2005) $
 # $Author: dmorelli $
 #
 # Check registration of domain names
@@ -43,6 +43,7 @@ $basename - Check registration of domain names
 usage:
     $basename [-a] PREFIX
     $basename -f DOMAIN
+    $basename -l
     $basename -h
 
 options:
