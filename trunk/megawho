@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 105 $
-# $Date: 2005-08-20 08:57:42 -0400 (Sat, 20 Aug 2005) $
+# $Revision: 106 $
+# $Date: 2005-08-20 14:04:33 -0400 (Sat, 20 Aug 2005) $
 # $Author: dmorelli $
 #
 # Check registration of domain names
@@ -15,30 +15,26 @@ use File::Basename;
 use Getopt::Long;
 
 
-my @normalTld = (
-    '.biz',     # business
-    '.com',     # commercial
-    '.info',    # information
-    '.name',    # individuals, by name
-    '.net',     # network
-    '.org',     # organization
-    '.us',      # United States of America
-);
+# Normal TLD that anybody can use
+use constant NORMAL => 'N';
 
-# .edu, .gov and .mil seem to be diffucult to query with whois
-# Those aren't registerable by normal mortals in any case, so whatever
-my @specialTld = (
-    '.aero',    # air-transport industry
-    '.arpa',    # address and routing parameter area
-    '.coop',    # cooperatives
-    #'.edu',     # educational
-    #'.gov',     # United States government
-    '.int',     # international organizations
-    #'.mil',     # United States military
-    '.museum',  # museums
-    '.pro',     # professions
-    '.travel',  # travel and travel agency related
-);
+# Restricted TLD reserved for certain types of organizations
+use constant RESTRICTED => 'R';
+
+# Government TLD that are impossible to acquire, and also seemingly
+# difficult to even whois query
+use constant IMPOSSIBLE => 'I';
+
+
+my @tld;
+while (<DATA>) {
+    my ($status, $tld, $desc) = /(\S*)\s*(\S*)\s*(.*)/;
+    push @tld, { tld => $tld, status => $status, desc => $desc };
+}
+
+my @normalTld = map {$_->{status} eq NORMAL ? $_->{tld} : ()} @tld;
+my @specialTld = map {$_->{status} eq RESTRICTED ? $_->{tld} : ()} @tld;
+
 my ($prefix, @domains, %opts);
 my $basename = basename $0;
 my $usage = <<USAGE;
@@ -50,8 +46,9 @@ usage:
     $basename -h
 
 options:
-    -a, --all   Check the prefix against all TLDs, even restricted ones
+    -a, --all   Check the prefix against all NORMAL and RESTRICTED TLDs
     -f, --full  Treat the argument as a full domain name and check it alone
+    -l, --list  List the TLDs and their descriptions
     -h, --help  This help information
 USAGE
 
@@ -59,10 +56,29 @@ USAGE
 GetOptions(\%opts,
     '--all',
     '--full',
+    '--list',
     '--help',
 ) or die "$usage\n";
 
 die "$usage\n" if $opts{help};
+
+if ($opts{list}) {
+    print <<INFO;
+Partial listing of Top Level Domains
+N (normal) means you can register this. R (restricted) means only certain
+organizations are allowed. I is not only impossible to get, it's apparently
+also not searchable with whois.
+
+INFO
+
+    printf "%-3s%-10s%-s\n", $_->{status}, $_->{tld}, $_->{desc}
+        for (@tld);
+
+    print "\nMore information can be found here: ";
+    print "http://en.wikipedia.org/wiki/TLD\n";
+
+    exit;
+}
 
 $prefix = shift;
 die "Must supply a prefix or domain\n\n$usage\n" unless $prefix;
@@ -81,3 +97,22 @@ for my $domain (@domains) {
         ((`whois "$domain"` =~ /Domain Name:/) ?  "" : "UN"),
         $domain;
 }
+
+__DATA__
+R   .aero   air-transport industry
+R   .arpa   address and routing parameter area
+N   .biz    business
+N   .com    commercial
+R   .coop   cooperatives
+I   .edu    educational
+I   .gov    United States government
+N   .info   information
+R   .int    international organizations
+I   .mil    United States military
+R   .museum museums
+N   .name   individuals, by name
+N   .net    network
+N   .org    organization
+R   .pro    professions
+R   .travel travel and travel agency related
+N   .us     United States of America
