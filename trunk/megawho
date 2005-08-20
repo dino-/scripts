@@ -1,0 +1,83 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 105 $
+# $Date: 2005-08-20 08:57:42 -0400 (Sat, 20 Aug 2005) $
+# $Author: dmorelli $
+#
+# Check registration of domain names
+#--------------------------------------------------------------------------
+
+use strict;
+use File::Basename;
+use Getopt::Long;
+
+
+my @normalTld = (
+    '.biz',     # business
+    '.com',     # commercial
+    '.info',    # information
+    '.name',    # individuals, by name
+    '.net',     # network
+    '.org',     # organization
+    '.us',      # United States of America
+);
+
+# .edu, .gov and .mil seem to be diffucult to query with whois
+# Those aren't registerable by normal mortals in any case, so whatever
+my @specialTld = (
+    '.aero',    # air-transport industry
+    '.arpa',    # address and routing parameter area
+    '.coop',    # cooperatives
+    #'.edu',     # educational
+    #'.gov',     # United States government
+    '.int',     # international organizations
+    #'.mil',     # United States military
+    '.museum',  # museums
+    '.pro',     # professions
+    '.travel',  # travel and travel agency related
+);
+my ($prefix, @domains, %opts);
+my $basename = basename $0;
+my $usage = <<USAGE;
+$basename - Check registration of domain names
+
+usage:
+    $basename [-a] PREFIX
+    $basename -f DOMAIN
+    $basename -h
+
+options:
+    -a, --all   Check the prefix against all TLDs, even restricted ones
+    -f, --full  Treat the argument as a full domain name and check it alone
+    -h, --help  This help information
+USAGE
+
+
+GetOptions(\%opts,
+    '--all',
+    '--full',
+    '--help',
+) or die "$usage\n";
+
+die "$usage\n" if $opts{help};
+
+$prefix = shift;
+die "Must supply a prefix or domain\n\n$usage\n" unless $prefix;
+
+if ($opts{full}) {
+    push @domains, $prefix;
+}
+else {
+    my @tld = @normalTld;
+    push @tld, @specialTld if $opts{all};
+    @domains = map { $prefix . $_ } @tld;
+}
+
+for my $domain (@domains) {
+    printf "%2sregistered: %s\n", 
+        ((`whois "$domain"` =~ /Domain Name:/) ?  "" : "UN"),
+        $domain;
+}
