@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $RCSfile$
 #--------------------------------------------------------------------------
-# $Revision: 107 $
-# $Date: 2005-08-20 14:06:00 -0400 (Sat, 20 Aug 2005) $
+# $Revision: 108 $
+# $Date: 2005-08-22 14:09:49 -0400 (Mon, 22 Aug 2005) $
 # $Author: dmorelli $
 #
 # Check registration of domain names
@@ -47,21 +47,28 @@ usage:
     $basename -h
 
 options:
-    -a, --all   Check the prefix against all NORMAL and RESTRICTED TLDs
-    -f, --full  Treat the argument as a full domain name and check it alone
-    -l, --list  List the TLDs and their descriptions
-    -h, --help  This help information
+    -a, --all      Check the prefix against all NORMAL and RESTRICTED TLDs
+    -f, --full     Treat the arg as a full domain name and check it alone
+    -l, --list     List the TLDs and their descriptions
+    -H, --help     This help information
+    -V, --version  Output version info and exit
 USAGE
+my $version = <<VER;
+$basename 1.0.0
+Written by Dino Morelli  < dmorelli\@reactorweb.net >
+VER
 
 
 GetOptions(\%opts,
     '--all',
     '--full',
     '--list',
-    '--help',
+    '--help|H',
+    '--version|V',
 ) or die "$usage\n";
 
 die "$usage\n" if $opts{help};
+die "$version\n" if $opts{version};
 
 if ($opts{list}) {
     print <<INFO;
