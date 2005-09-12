@@ -1,10 +1,10 @@
 #! /bin/sh
 
 #--------------------------------------------------------------------------
-# $RCSfile$
+# $HeadURL$
 #--------------------------------------------------------------------------
-# $Revision: 35 $
-# $Date: 2004-07-08 11:54:24 -0400 (Thu, 08 Jul 2004) $
+# $Revision: 127 $
+# $Date: 2005-09-12 10:40:20 -0400 (Mon, 12 Sep 2005) $
 # $Author: dmorelli $
 #
 # Search through locally installed Perl POD documentation with grep
