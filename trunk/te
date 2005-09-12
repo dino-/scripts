@@ -1,10 +1,10 @@
 #! /bin/sh
 
 #--------------------------------------------------------------------------
-# $RCSfile$
+# $HeadURL$
 #--------------------------------------------------------------------------
-# $Revision: 73 $
-# $Date: 2005-03-19 18:41:08 -0500 (Sat, 19 Mar 2005) $
+# $Revision: 133 $
+# $Date: 2005-09-12 10:40:26 -0400 (Mon, 12 Sep 2005) $
 # $Author: dmorelli $
 #
 # Script to open a terminal window with a certain geometry and optional
