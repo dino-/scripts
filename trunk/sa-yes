@@ -1,10 +1,10 @@
 # Use from Pine to pipe an uncaught spam to SpamAssassin's learn tool.
 
 #--------------------------------------------------------------------------
-# $RCSfile$
+# $HeadURL$
 #--------------------------------------------------------------------------
-# $Revision: 2 $
-# $Date: 2004-02-25 12:53:24 -0500 (Wed, 25 Feb 2004) $
+# $Revision: 151 $
+# $Date: 2005-09-12 10:40:44 -0400 (Mon, 12 Sep 2005) $
 # $Author: dmorelli $
 #
 # Script to teach SpamAssassin that an email is not spam.
