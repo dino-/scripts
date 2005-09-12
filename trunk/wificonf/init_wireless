@@ -1,0 +1,50 @@
+#!/bin/bash -x
+
+PATH=/sbin/
+
+if [ $# -ne 1 ] ; then
+    echo Please specify your location
+    exit 0
+fi
+
+if [ -f /etc/default/wireless ] ; then
+    . /etc/default/wireless
+else
+    echo Please setup /etc/default/wireless
+    exit 0
+fi
+
+ESSID_VAR=$1_ESSID ; ESSID=${!ESSID_VAR}
+RATE_VAR=$1_RATE ; RATE=${!RATE_VAR}
+NICK_VAR=$1_NICK ; NICK=${!NICK_VAR}
+MODE_VAR=$1_MODE ; MODE=${!MODE_VAR}
+KEY_VAR=$1_KEY; KEY=${!KEY_VAR}
+CHANNEL_VAR=$1_CHANNEL; CHANNEL=${!CHANNEL_VAR}
+
+echo Setting nick $NICK mode $MODE rate $RATE essid $ESSID channel $CHANNEL on $WIRELESS_DEVICE
+
+if [ $NICK ] ; then
+    iwconfig $WIRELESS_DEVICE nick  $NICK
+fi
+
+if [ $MODE ] ; then
+    iwconfig $WIRELESS_DEVICE mode  $MODE
+fi
+
+if [ $RATE ] ; then
+    iwconfig $WIRELESS_DEVICE rate  $RATE
+fi
+
+if [ $ESSID ] ; then
+    iwconfig $WIRELESS_DEVICE essid $ESSID
+fi
+
+if [ $CHANNEL ] ; then
+	iwconfig $WIRELESS_DEVICE channel $CHANNEL
+fi
+
+if [ $KEY ] ; then  
+	iwconfig $WIRELESS_DEVICE key $KEY
+else
+	iwconfig $WIRELESS_DEVICE key off
+fi
