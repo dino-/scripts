@@ -1,0 +1,5 @@
+/^From / {
+	messages++
+}
+messages > 1 { exit 0 }
+{ print }

@@ -1,0 +1,130 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/imgname $
+#--------------------------------------------------------------------------
+# $Revision: 157 $
+# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Author: dmorelli $
+#
+# Rename JPEG image files
+#--------------------------------------------------------------------------
+
+use strict;
+use File::Basename;
+use File::Copy;
+use File::Find;
+use Getopt::Std;
+use Image::EXIF;
+use Math::BaseCalc;
+use Time::Local;
+
+# Dates as long are moved forward in time this far to avoid pre-1970
+# dates being negative numbers. For the curious, this number,
+# 946,080,000,000, is 30 years in milliseconds.
+use constant FUDGE => 946_080_000_000;
+use constant NAME_LENGTH => 9;
+
+
+our $opt_n;
+my $startingPath;
+my $calc36 = new Math::BaseCalc(digits=>[0..9,'a'..'z']);
+my $basename = basename $0;
+my $usage = <<USAGE;
+$basename - Rename JPEG image files
+
+This script uses the EXIF data present in JPEG files, specifically the date 
+the photo was shot, to construct a hopefully fairly unique filename. This 
+is done with a base 36 conversion of a long calculated from the date/time.
+
+usage:  $basename [-n] (file | dir)
+        $basename (-h | --help)
+
+options:
+  -n      No-action mode. Don't modify anything
+  -h      This usage information
+  --help  This usage information
+
+2005-Jul-13  author: Dino Morelli  dmorelli\@reactorweb.net
+
+USAGE
+
+
+if(@ARGV && ($ARGV[0] eq '--help' || $ARGV[0] eq '-h')) {
+    print $usage;
+    exit;
+}
+
+getopts('n');
+$startingPath = shift;
+$startingPath ||= '.';
+
+sub wanted {
+    /\.jpe?g/i or return;
+
+    my $time;
+    my $exif = new Image::EXIF($_);
+    my $extraMsg = '';
+
+    # Extract image info from file
+    my $image_info = $exif->get_image_info(); # hash reference
+
+    if ($exif->error) {
+        warn "File $_: $exif->errstr\n";
+        return;
+    }
+
+    if ($image_info) {
+        # Parse the EXIF shoot date
+        my @parts = $image_info->{'Image Created'} =~ 
+            /(\d+):(\d+):(\d+) (\d+):(\d+):(\d+)/;
+        # Month is zero-based
+        $parts[1]--;
+        # timelocal() takes these in reverse order
+        @parts = reverse @parts;
+
+        $time = timelocal @parts;
+    }
+    else {
+        $time = (stat $_)[9];
+        $extraMsg = '   (No EXIF data)';
+    }
+    $time = ($time * 1000) + FUDGE;
+
+    # Calculate the base-36 string
+    my $newName = sprintf "%0" . NAME_LENGTH . "s.jpg", 
+        $calc36->to_base($time);
+
+    # Old and new filenames are the same, don't do anything except
+    # inform user
+    if($_ eq $newName) {
+        print "$File::Find::name already named correctly\n";
+        return;
+    }
+
+    # File with this new name already exists. Protect against clobbering
+    # data and warn the user
+    if(-e $newName) {
+        warn "$File::Find::name ERROR, DEST NAME EXISTS: " .
+            "$File::Find::dir/$newName   UNCHANGED\n";
+        return;
+    }
+
+    # No-action mode chosen
+    if($opt_n) {
+        print "$File::Find::name would be renamed to " .
+            "$File::Find::dir/$newName$extraMsg\n";
+    }
+    # Do the file rename
+    else {
+        if(move $_, $newName) {
+            print "$File::Find::name renamed to " .
+                "$File::Find::dir/$newName$extraMsg\n";
+        }
+        else {
+            warn "$File::Find::name ERROR RENAMING: $!\n";
+        }
+    }
+}
+
+find \&wanted, $startingPath;

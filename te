@@ -1,0 +1,54 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/te $
+#--------------------------------------------------------------------------
+# $Revision: 157 $
+# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Author: dmorelli $
+#
+# Script to open a terminal window with a certain geometry and optional
+# color choices.
+#--------------------------------------------------------------------------
+
+APP=Eterm
+TITLE=$1
+#FONT='10x20'
+#FONT='9x15'
+FONT='8x13'
+
+#PARAMS="-g 80x43 -F $FONT -O --cmod 96"
+#PARAMS="-g 80x43 -F $FONT -O --cmod 64"
+#PARAMS="-g 80x43 -F $FONT"
+#PARAMS="-g 80x43 -F $FONT --cmod 192"
+# Eterm has its own config, just do geometry
+PARAMS="-g 80x43"
+
+# If no title specified, use a default.
+if [ "$TITLE" = "" ]
+then
+        TITLE="$APP"
+fi
+
+# Evaluate the params that were given.
+NAME="$TITLE"
+# FIXME
+PARAMS="$PARAMS -T $TITLE -n $NAME"
+#PARAMS="$PARAMS -title $TITLE -name $NAME"
+#PARAMS="$PARAMS -title $TITLE -name $NAME -n $NAME"
+
+case $1 in
+        # User requested help.
+        --help)
+                echo "Open a new $APP terminal window with optional color settings."
+                echo "usage: te"
+                echo "       te title [ bgcolor from rgb.txt ] [ fgcolor ]"
+                echo "       te [ --help ]"
+                exit 1;;
+
+        *)
+                break;;
+esac
+
+# Open the shell.
+$APP $PARAMS &

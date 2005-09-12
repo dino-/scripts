@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+if [ -f /etc/default/wireless ] ; then
+    . /etc/default/wireless
+else
+    echo Please setup /etc/default/wireless
+    exit 0
+fi
+
+for profile in $WIRELESS_PROFILES
+do
+  LOCATION_NAME=$profile\_NAME
+  LOCATION_DESCR=$profile\_DESCR
+
+  DIALOG_ARGS="$DIALOG_ARGS \"${!LOCATION_NAME}\" \"${!LOCATION_DESCR}\""
+done
+
+rm -f /tmp/eth1-tmp
+
+LOCATION=`eval dialog --stdout --menu \"Select your wireless location\" 10 50 5 $DIALOG_ARGS`
+
+echo eth1-$LOCATION

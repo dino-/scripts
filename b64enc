@@ -1,0 +1,17 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/b64enc $
+#--------------------------------------------------------------------------
+# $Revision: 157 $
+# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Author: dmorelli $
+#
+# Rename files with a regular expression
+#--------------------------------------------------------------------------
+
+use MIME::Base64;
+
+$plain = shift @ARGV;
+printf ("%s", encode_base64(eval "\"$plain\""));
+

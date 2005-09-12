@@ -1,0 +1,38 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/progress/progresstest $
+#--------------------------------------------------------------------------
+# $Revision: 156 $
+# $Date: 2005-09-12 14:00:39 -0400 (Mon, 12 Sep 2005) $
+# $Author: dmorelli $
+#
+# Test the TextUI::ProgressBar class
+#--------------------------------------------------------------------------
+
+use TextUI::ProgressBar;
+
+
+my $delay = 1;
+
+#my $max = 1332;
+#my $max = 332;
+#my $max = 50;
+#my $max = 40;
+my $max = int(rand 60) + 20;
+
+$bar = new TextUI::ProgressBar($max);
+
+#$bar->setDisplayWidth(50);
+$bar->setDisplayWidth(int(rand 49) + 20);
+
+#$bar->setPercentFormat("%#5.1f");
+$bar->setPercentFormat("%#6.2f");
+
+print "$max items to process...\n";
+for(my $i = 0; $i <= $max; $i++)
+{
+	$bar->update($i);
+	sleep($delay);
+}
+print "\n";

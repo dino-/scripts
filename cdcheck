@@ -1,0 +1,22 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/cdcheck $
+#--------------------------------------------------------------------------
+# $Revision: 157 $
+# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Author: dmorelli $
+#
+# Script to quickly check the contents of the inserted CD and then
+# umount it.
+#--------------------------------------------------------------------------
+
+# Script to quickly display back the root dir of the CD in the 
+# drive and then umount it.
+
+CDDIR=/mnt/cdrom/
+
+mount $CDDIR
+ls -lh $CDDIR
+umount $CDDIR
+

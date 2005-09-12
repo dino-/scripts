@@ -1,0 +1,78 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/humid $
+#--------------------------------------------------------------------------
+# $Revision: 157 $
+# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Author: dmorelli $
+#
+# Script for calculating humidity given temperature and dewpoint
+#--------------------------------------------------------------------------
+
+use strict;
+use File::Basename;
+use Getopt::Std;
+
+
+our $opt_f;
+my ($temp, $dew);
+
+# Convert Fahrenheit temperature to Celsius
+sub fahrToCent($) {
+	my $f = shift;
+	return 5 * ($f - 32) / 9;
+}
+
+# Convert Celsius temperature to Kelvin
+sub centToKelvin($) {
+	my $c = shift;
+	return exp((17.67 * $c) / (243.5 + $c));
+}
+
+
+#-------------------------------------------------------------------------
+# It all starts here
+
+# Detect if no params given
+if(@ARGV == 0 || $ARGV[0] eq "--help") {
+    my $basename = basename $0;
+    print <<USAGE;
+$basename - Calculate relative humidity
+usage:
+   $basename -f file
+   $basename temp dew
+
+   -f      NOAA weather data file
+   temp    Value in the form ###[fFcC]
+   dew
+   --help  This information
+USAGE
+	exit;
+}
+
+# Parse arguments
+getopts("f:");
+if($opt_f) {  # User specified a weather data file from wmfrog
+	open(opt_f) or die "Can't open $opt_f: $!\n";
+	while (<opt_f>) {
+		if (/Temp:(\d{1,3}).*/) { $temp = $1; next; }
+		if (/Dew:(\d{1,3}).*/) { $dew = $1; }
+	}
+	close opt_f;
+
+	printf "temp: %3dC  dew: %3dC\n", $temp, $dew;
+} else {  # User provided specific temperature values
+	lc(shift) =~ /(\d{1,3})([fc])/;
+	if($2 eq "f") { $temp = fahrToCent($1); } else { $temp = $1; }
+
+	lc(shift) =~ /(\d{1,3})([fc])/;
+	if($2 eq "f") { $dew = fahrToCent($1); } else { $dew = $1; }
+}
+
+# These temperatures need to be in Kelvin
+my $tempK = centToKelvin($temp);
+my $dewK = centToKelvin($dew);
+my $humidity = 100 * ($dewK / $tempK);
+
+printf "Humidity: %.1f%%\n", $humidity;

@@ -1,0 +1,100 @@
+--
+Need to put out the binary search code in musicUtil/mkplaylist and put it here somewhere. Also, needs to be prototyped more like sort() and take a coderef for the comparison.
+
+
+--
+Perl script for backup spanning
+
+-Can Perl see the media type/size?
+
++Can Perl eject it? Yes, see below.
+
+-Build path list to all dirs, sorted.
+
+-Then calculate sizes and where divisions will occur.
+
+-cli tool called eject
+
+-Will growisofs work on a CD-R? No, use mkisofs redirected to cdrecord?
+
+
+--
+*new backup script* for getting CD ISOs ready:
+
+-On yakuza, and as root:
+
+-Archive latest in $CVSROOT and cp to /archive/backup/wasabi/home/dmorelli/temp
+
+-tar, split, rm tar
+
+-mkisofs each split, rm as you go
+
+-scp to wasabi
+
+-burn
+
+
+--
+cdburn
+
+-I'd like it to do both data CDs and CD-DA with cdrdao. Based on the file extension? .iso or .toc
+
+-Change this to use strict and also make the docs use the $opt_* vars.
+
+
+--
+imgname
+
+-Usage from older Java imgname tool:
+$ ./imgname --help
+Error: User requested help
+
+Usage: imgname [-r ] [-o ] [-q ] [-n ] [--version ] [--help ] [<String>]
+
+        -r 'Process files recursively'  Default: false
+        -o 'Overwrite existing files'  Default: false
+        -q 'Quiet, don't display anything while processing.'  Default: false
+        -n 'Process images even if they are missing EXIF info.'  Default: false
+        --version 'Display app version to console'  Default: false
+        --help 'Display this usage information'  Default: false
+        '<dir> or <file> to process'  Default: .
+
+
+--
+newperl
+
+-Update usage notes to explain how to make modules in subdirs with the paths, like this:
+	newperl Foo/Bar.pm
+
+	Will create a file Foo/Bar.pm with package Foo::Bar; in it
+
++Make new modules have 'use strict;'
+
+
+--
+relpath
+
+-Switch to not preserve comment lines
+
+
+--
+routerReset
+
+-Possibly add logging of when this is called.
+
+
+--
+general notes
+
+-All apps should check for binary dependencies like cdlabelgen, vorbiscomment, etc
+
+-Change all scripts to use here document for usage notes
+
+
+---------------------------------------------------------------------------
+$HeadURL: file:///var/lib/svn/scripts/notes.txt $
+------------------------------------------------------------------------
+$Revision: 157 $
+$Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+$Author: dmorelli $
+---------------------------------------------------------------------------

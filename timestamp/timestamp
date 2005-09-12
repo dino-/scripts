@@ -1,0 +1,58 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/timestamp/timestamp $
+#--------------------------------------------------------------------------
+# $Revision: 156 $
+# $Date: 2005-09-12 14:00:39 -0400 (Mon, 12 Sep 2005) $
+# $Author: dmorelli $
+#
+# Get or set the modification timestamp on a file.
+#--------------------------------------------------------------------------
+
+use Getopt::Std;
+use Time::localtime;
+
+
+sub displayUsage()
+{
+	print "$0 v1.0.0 - get or set a file modification timestamp\n";
+	print "  Including the -t switch means set the timestamp\n";
+	print "  Otherwise the timestamp is retrieved\n";
+	print "\nusage:\n";
+	print "  $0 [-t timestamp] file\n";
+	print "  $0 --help\n";
+	exit;
+}
+
+# Show the arguments passed in.
+sub showArgs()
+{
+	print "opt_t: ", (defined $opt_t ? $opt_t : "[undefined]"), "\n";
+	print "filePath: ", (defined $filePath ? $filePath : "[undefined]",
+		"\n");
+}
+
+# No args at all or user requested help.
+if(@ARGV == 0 || $ARGV[0] eq "--help") { displayUsage(); }
+
+# Parse the args
+getopts("-t:");
+$filePath = shift;
+
+# Uncomment this to see what happened with arg parsing.
+#showArgs();
+
+# No file given, this is bad.
+if(!defined $filePath) { displayUsage() }
+
+if(defined $opt_t)
+{
+	qx|touch -t $opt_t $filePath|;
+}
+else
+{
+	$tm = localtime((stat $filePath)[9]);
+	printf("%04d%02d%02d%02d%02d.%02d", $tm->year + 1900, $tm->mon + 1,
+		$tm->mday, $tm->hour, $tm->min, $tm->sec);
+}
