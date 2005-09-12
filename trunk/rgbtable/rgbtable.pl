@@ -1,10 +1,10 @@
 #! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
-# $RCSfile$
+# $HeadURL$
 #--------------------------------------------------------------------------
-# $Revision: 12 $
-# $Date: 2004-04-10 11:59:02 -0400 (Sat, 10 Apr 2004) $
+# $Revision: 115 $
+# $Date: 2005-09-12 10:40:08 -0400 (Mon, 12 Sep 2005) $
 # $Author: dmorelli $
 #
 # Script to turn an rgb.txt file (from *nix) into an html table showing
