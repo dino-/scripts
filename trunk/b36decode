@@ -1,0 +1,28 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 110 $
+# $Date: 2005-09-11 22:16:00 -0400 (Sun, 11 Sep 2005) $
+# $Author: dmorelli $
+#
+# Decode a base-36 date string
+#--------------------------------------------------------------------------
+
+use strict;
+use Math::BaseCalc;
+
+# Dates as long are moved forward in time this far to avoid pre-1970
+# dates being negative numbers. For the curious, this number,
+# 946,080,000,000, is 30 years in milliseconds.
+use constant FUDGE => 946_080_000_000;
+
+
+my $calc10 = new Math::BaseCalc(digits=>[0..9]);
+my $calc36 = new Math::BaseCalc(digits=>[0..9,'a'..'z']);
+
+
+my $time = $calc10->to_base($calc36->from_base(shift));
+$time = ($time - FUDGE) / 1000;
+print localtime($time) . "\n";
