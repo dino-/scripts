@@ -1,0 +1,4 @@
+screen -t ~/var/log/fetchmail.log sh -c 'tail -f ~/var/log/fetchmail.log'
+split
+focus
+screen -t ~/var/log/procmail.log sh -c 'tail -f ~/var/log/procmail.log'

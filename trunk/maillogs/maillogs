@@ -1,0 +1,20 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $RCSfile$
+#--------------------------------------------------------------------------
+# $Revision: 109 $
+# $Date: 2005-09-11 22:15:29 -0400 (Sun, 11 Sep 2005) $
+# $Author: dmorelli $
+#
+# Set up email log viewer for fetchmail and procmail
+#--------------------------------------------------------------------------
+
+use strict;
+use FindBin qw($RealBin);
+
+
+my $title = 'maillogs';
+my $confFile = $RealBin . '/maillogs.screen';
+
+exec "Eterm -g80x43 -T $title -n $title -e screen -S $title -c $confFile &";
