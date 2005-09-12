@@ -1,10 +1,10 @@
 #! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
-# $HeadURL$
+# $HeadURL: file:///var/lib/svn/scripts/trunk/rgbtable/rgbtable.pl $
 #--------------------------------------------------------------------------
-# $Revision: 115 $
-# $Date: 2005-09-12 10:40:08 -0400 (Mon, 12 Sep 2005) $
+# $Revision: 156 $
+# $Date: 2005-09-12 14:00:39 -0400 (Mon, 12 Sep 2005) $
 # $Author: dmorelli $
 #
 # Script to turn an rgb.txt file (from *nix) into an html table showing

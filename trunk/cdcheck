@@ -1,10 +1,10 @@
 #! /bin/sh
 
 #--------------------------------------------------------------------------
-# $HeadURL$
+# $HeadURL: file:///var/lib/svn/scripts/trunk/cdcheck $
 #--------------------------------------------------------------------------
-# $Revision: 143 $
-# $Date: 2005-09-12 10:40:37 -0400 (Mon, 12 Sep 2005) $
+# $Revision: 156 $
+# $Date: 2005-09-12 14:00:39 -0400 (Mon, 12 Sep 2005) $
 # $Author: dmorelli $
 #
 # Script to quickly check the contents of the inserted CD and then

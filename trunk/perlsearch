@@ -1,10 +1,10 @@
 #! /bin/sh
 
 #--------------------------------------------------------------------------
-# $HeadURL$
+# $HeadURL: file:///var/lib/svn/scripts/trunk/perlsearch $
 #--------------------------------------------------------------------------
-# $Revision: 127 $
-# $Date: 2005-09-12 10:40:20 -0400 (Mon, 12 Sep 2005) $
+# $Revision: 156 $
+# $Date: 2005-09-12 14:00:39 -0400 (Mon, 12 Sep 2005) $
 # $Author: dmorelli $
 #
 # Search through locally installed Perl POD documentation with grep
