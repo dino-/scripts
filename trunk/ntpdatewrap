@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#--------------------------------------------------------------------------
+# $HeadURL$
+#--------------------------------------------------------------------------
+# $Revision: 19 $
+# $Date: 2004-06-07 13:44:15 -0400 (Mon, 07 Jun 2004) $
+# $Author: dmorelli $
+#
+# ntpdate cron nightly, this is from:
+# http://www.debian.org/doc/manuals/system-administrator/ch-sysadmin-time.html
+#--------------------------------------------------------------------------
+
+
+NTPDATE=/usr/sbin/ntpdate
+LOGFILE=/var/log/ntpdatewrap
+NTPCONFFILE=/etc/ntp.conf
+NTPSERVERS=
+GREP=/usr/bin/grep
+CUT=/usr/bin/cut
+
+if [ -f $NTPCONFFILE ] ; then
+    echo "===========================" >> $LOGFILE
+    echo "<<< `date` " >> $LOGFILE
+    for i in `grep ^server $NTPCONFFILE | $CUT --fields 2 --delimiter \ `
+    do
+        NTPSERVERS="$NTPSERVERS $i"
+    done
+    $NTPDATE $NTPSERVERS  >>  $LOGFILE
+    ###echo $NTPDATE $NTPSERVERS $LOGFILE
+    echo ">>> `date` " >> $LOGFILE
+fi
+
+exit 0
