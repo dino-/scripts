@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/megawho $
 #--------------------------------------------------------------------------
-# $Revision: 157 $
-# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Revision: 161 $
+# $Date: 2005-09-23 09:11:24 -0400 (Fri, 23 Sep 2005) $
 # $Author: dmorelli $
 #
 # Check registration of domain names
@@ -42,6 +42,7 @@ $basename - Check registration of domain names
 
 usage:
     $basename [-a] PREFIX
+    $basename -t TLD1,TLD2,... PREFIX
     $basename -f DOMAIN
     $basename -l
     $basename -h
@@ -51,7 +52,11 @@ options:
     -f, --full     Treat the arg as a full domain name and check it alone
     -l, --list     List the TLDs and their descriptions
     -H, --help     This help information
+    -t, --tlds     Check this explicit list of TLDs
     -V, --version  Output version info and exit
+
+Default is to check through all NORMAL TLDs, which are:
+.biz, .com, .info, .name, .net, .org, .us
 USAGE
 my $version = <<VER;
 $basename 1.0.0
@@ -63,6 +68,7 @@ GetOptions(\%opts,
     '--all',
     '--full',
     '--list',
+    '--tlds=s',
     '--help|H',
     '--version|V',
 ) or die "$usage\n";
@@ -93,6 +99,10 @@ die "Must supply a prefix or domain\n\n$usage\n" unless $prefix;
 
 if ($opts{full}) {
     push @domains, $prefix;
+}
+elsif ($opts{tlds}) {
+    my @tld = split /,/, $opts{tlds};
+    @domains = map { $prefix . "." . $_ } @tld;
 }
 else {
     my @tld = @normalTld;
