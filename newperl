@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/newperl $
 #--------------------------------------------------------------------------
-# $Revision: 163 $
-# $Date: 2005-11-05 11:50:40 -0500 (Sat, 05 Nov 2005) $
+# $Revision: 164 $
+# $Date: 2005-11-05 15:16:02 -0500 (Sat, 05 Nov 2005) $
 # $Author: dmorelli $
 #
 # Create a new Perl script or module file
@@ -27,7 +27,7 @@ my ($fullPath, $path, $suffix);
 if(@ARGV == 0 || $ARGV[0] eq "--help") {
 	print <<USAGE;
 $0 - Create a new Perl script or module file
-version 1.2.0  Dino Morelli  dino\@ui3.info
+version 1.2.1  Dino Morelli  dino\@ui3.info
 
 usage:
    $0 [-f] file

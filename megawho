@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/megawho $
 #--------------------------------------------------------------------------
-# $Revision: 163 $
-# $Date: 2005-11-05 11:50:40 -0500 (Sat, 05 Nov 2005) $
+# $Revision: 164 $
+# $Date: 2005-11-05 15:16:02 -0500 (Sat, 05 Nov 2005) $
 # $Author: dmorelli $
 #
 # Check registration of domain names
@@ -59,7 +59,7 @@ Default is to check through all NORMAL TLDs, which are:
 .biz, .com, .info, .name, .net, .org, .us
 USAGE
 my $version = <<VER;
-$basename 1.0.1
+$basename 1.0.2
 Written by Dino Morelli  < dino\@ui3.info >
 VER
 
