@@ -1,14 +1,74 @@
-#! /bin/sh
+#! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/xslt $
 #--------------------------------------------------------------------------
-# $Revision: 157 $
-# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Revision: 166 $
+# $Date: 2005-11-28 10:55:05 -0500 (Mon, 28 Nov 2005) $
 # $Author: dmorelli $
 #
-# Script to perform an XSL transformation with xalan.
+# Transform an XML document with an XSLT stylesheet
 #--------------------------------------------------------------------------
 
-java -jar ~/lib/java/xalan.jar $1 $2 $3 $4 $5 $6 $7 $8 $9
+use strict;
+use File::Basename;
+use FileHandle;
+use Getopt::Long;
+use XML::LibXML;
+use XML::LibXSLT;
 
+
+my $basename = basename $0;
+my $usage = <<USAGE;
+$0 - Transform an XML document with an XSLT stylesheet
+
+usage:
+    $0 --xml XMLPATH --xsl XSLTPATH [--output OUTPATH]
+    $0 --help
+
+options:
+    -o, --output=OUTPATH   Path of file in which to save output
+                           Default: STDOUT
+    -s, --xsl=XSLTPATH     Path to XSLT stylesheet
+    -x, --xml=XMLPATH      Path to XML document to be transformed
+    -h, --help             This help information
+USAGE
+
+
+# Parse the args
+my %opts;
+Getopt::Long::Configure("bundling");
+GetOptions (\%opts,
+    'xml|x=s',
+    'xsl|s=s',
+    'output|o=s',
+    'help|h',
+) or die "$usage\n";
+
+die "$usage\n" if ($opts{help});
+
+die "Missing args\n$usage\n" if (!$opts{xml} || !$opts{xsl});
+
+if ($opts{output}) {
+    $opts{output} = ">$opts{output}";
+} else {
+    $opts{output} = '>-';
+}
+
+
+my $parser = XML::LibXML->new();
+my $xslt = XML::LibXSLT->new();
+
+# source is the XML document to be transformed
+my $source = $parser->parse_file($opts{xml});
+
+# style_doc is the XSLT stylesheet
+my $style_doc = $parser->parse_file($opts{xsl});
+my $stylesheet = $xslt->parse_stylesheet($style_doc);
+
+# results is the resulting XML::LibXML::Document object
+my $results = $stylesheet->transform($source);
+
+# Output the result somewhere
+my $fh = FileHandle->new($opts{output});
+$stylesheet->output_fh($results, $fh);
