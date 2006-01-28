@@ -41,6 +41,11 @@ cdburn
 
 -Change this to use strict and also make the docs use the $opt_* vars.
 
+-Need to add overburn support. Here are the switches:
+    $ cdrecord driveropts=burnfree -sao -overburn dev=/dev/hdc foo.iso
+
+-Maybe take out the default 24x and make it not specify at all? This would handle future faster drives without adjustment.
+
 
 --
 imgname
@@ -70,6 +75,12 @@ newperl
 
 +Make new modules have 'use strict;'
 
+-Add switch to specify whether you want this:
+    #! /usr/bin/perl -w
+
+ or this:
+    use warnings;
+
 
 --
 relpath
@@ -94,7 +105,7 @@ general notes
 ---------------------------------------------------------------------------
 $HeadURL: file:///var/lib/svn/scripts/notes.txt $
 ------------------------------------------------------------------------
-$Revision: 157 $
-$Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+$Revision: 170 $
+$Date: 2006-01-28 12:01:31 -0500 (Sat, 28 Jan 2006) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
