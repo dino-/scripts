@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/aeonrepair $
 #--------------------------------------------------------------------------
-# $Revision: 172 $
-# $Date: 2006-02-18 21:35:41 -0500 (Sat, 18 Feb 2006) $
+# $Revision: 173 $
+# $Date: 2006-02-18 22:55:16 -0500 (Sat, 18 Feb 2006) $
 # $Author: dmorelli $
 #
 # Remove weird shit from Aeon science fiction magazine PDB files
@@ -53,20 +53,32 @@ print "Converting...\n";
 open OLD, "$oldText" or die "Cannot open $oldText: $?\n";
 open NEW, ">$newText" or die "Cannot open $newText: $?\n";
 
-my $divBefore = 0;
-while (<OLD>) {
-   if (/NOTE:\sImage\somitted\./) {
-      if($divBefore) { $_ = ''; }
-      else { $_ = $divider; }
+# Precompiled patterns
+my $imgPat = qr/NOTE:\s+Image\s+omitted\./;
+my $barPat = qr/-{8}/;
+
+my ($line1, $line2);
+$line1 = <OLD>;
+while ($line2 = <OLD>) {
+   if (($line1 =~ /$imgPat/) && ($line2 =~ /$barPat/)) {
+      $line1 = '';
+   } elsif (($line1 =~ /$barPat/) && ($line2 =~ /$imgPat/)) {
+      $line2 = '';
+   } elsif (($line1 =~ /$barPat/) && ($line2 =~ /$barPat/)) {
+      $line1 = '';
+   } elsif ($line1 =~ /$imgPat/) {
+      $line1 = $divider;
    }
 
-   if (/-{8}/) { $divBefore = 1; }
-   else { $divBefore = 0; }
+   $line1 =~ s|(www.)|http://$1|g;
 
-   s|(www.)|http://$1|g;
+   # Print top (oldest) line
+   print NEW "$line1";
 
-   print NEW "$_";
+   # Move everybody up one
+   $line1 = $line2;
 }
+print NEW $line2 if $line2;
 
 close NEW;
 close OLD;
@@ -78,4 +90,4 @@ print "Done.\n";
 
 # Remove the temp file(s)
 unlink $oldText;
-unlink $newText;
+#unlink $newText;
