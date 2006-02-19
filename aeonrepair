@@ -1,11 +1,11 @@
 #! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
-# $HeadURL: $
+# $HeadURL: file:///var/lib/svn/scripts/aeonrepair $
 #--------------------------------------------------------------------------
-# $Revision: $
-# $Date: $
-# $Author: $
+# $Revision: 172 $
+# $Date: 2006-02-18 21:35:41 -0500 (Sat, 18 Feb 2006) $
+# $Author: dmorelli $
 #
 # Remove weird shit from Aeon science fiction magazine PDB files
 #--------------------------------------------------------------------------
