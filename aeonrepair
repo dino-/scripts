@@ -1,0 +1,81 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL: $
+#--------------------------------------------------------------------------
+# $Revision: $
+# $Date: $
+# $Author: $
+#
+# Remove weird shit from Aeon science fiction magazine PDB files
+#--------------------------------------------------------------------------
+
+use strict;
+use File::Basename;  # &basename
+use File::Copy;  # &move
+
+
+my $newPdb = shift;
+
+# Check that the txt2pdbdoc utility is present
+`which txt2pdbdoc`;
+if (($? >> 8) == 1) {
+   die "This script requires the txt2pdbdoc utility!\n";
+}
+
+# Check that the user provided a file to repair
+unless ($newPdb) { die "Must specify a .pdb file to repair!\n"; }
+
+my $divider = "\n----\n\n";
+my $oldPdb = "$newPdb.bak";
+my $docName;
+my $basename = basename($newPdb, ".pdb");
+my $oldText = "$basename-old.txt";
+my $newText = "$basename-new.txt";
+
+# Rename the PDB
+move $newPdb, $oldPdb;
+
+# Convert the PDB to text...
+($docName) = `txt2pdbdoc -dv $oldPdb $oldText 2>&1` 
+# ...at the same time extracting the Palm document name from the verbose
+# output going to STDERR
+   =~ /decoding\s+"([^"]*)"/;
+
+# Show the values of our variables
+print "Backup file: $oldPdb\n";
+print "New PDB: $newPdb\n";
+print qq[Document name: "$docName"\n];
+
+print "Converting...\n";
+
+# Fix the text
+open OLD, "$oldText" or die "Cannot open $oldText: $?\n";
+open NEW, ">$newText" or die "Cannot open $newText: $?\n";
+
+my $divBefore = 0;
+while (<OLD>) {
+   if (/NOTE:\sImage\somitted\./) {
+      if($divBefore) { $_ = ''; }
+      else { $_ = $divider; }
+   }
+
+   if (/-{8}/) { $divBefore = 1; }
+   else { $divBefore = 0; }
+
+   s|(www.)|http://$1|g;
+
+   print NEW "$_";
+}
+
+close NEW;
+close OLD;
+
+# Convert the text back to PDB
+system qq[txt2pdbdoc "$docName" $newText $newPdb];
+
+print "Done.\n";
+
+# Remove the temp file(s)
+unlink $oldText;
+unlink $newText;
