@@ -1,0 +1,20 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/nassh $
+#--------------------------------------------------------------------------
+# $Revision: 176 $
+# $Date: 2006-02-28 13:44:07 -0500 (Tue, 28 Feb 2006) $
+# $Author: dmorelli $
+#
+# Connect to Network Appliance via ssh
+#--------------------------------------------------------------------------
+
+
+COCONUT_IP=10.61.25.28
+NETAPP_GATEWAY_IP=198.95.225.6
+
+echo "On the other side, coconut's IP is: $COCONUT_IP"
+echo "Connecting to NetApp now..."
+
+ssh -l morelli -p 48558 -i .ssh/identity-na $NETAPP_GATEWAY_IP

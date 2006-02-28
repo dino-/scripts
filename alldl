@@ -1,0 +1,33 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/alldl $
+#--------------------------------------------------------------------------
+# $Revision: 176 $
+# $Date: 2006-02-28 13:44:07 -0500 (Tue, 28 Feb 2006) $
+# $Author: dmorelli $
+#
+# Download an entire album of music from allofmp3 by parsing the download
+# HTML page containing them.
+#--------------------------------------------------------------------------
+
+use strict;
+
+
+# Path to HTML document from allofmp3 with URLs
+my $htmlPath = shift;
+my %urlHash;
+
+# Extract the URLs from the file, there will be dupes, get rid of them
+open HTML, "$htmlPath" or die "Can't open $htmlPath: $!\n";
+while (<HTML>) {
+   if  (m|(http.*://.*\.ogg)|) {
+      $urlHash{$1}++;
+   }
+}
+close HTML;
+
+# Use wget to download the files from above
+for (keys %urlHash) {
+   system qq[wget "$_"];
+}
