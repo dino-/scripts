@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/alldl $
 #--------------------------------------------------------------------------
-# $Revision: 176 $
-# $Date: 2006-02-28 13:44:07 -0500 (Tue, 28 Feb 2006) $
+# $Revision: 178 $
+# $Date: 2006-03-06 11:10:48 -0500 (Mon, 06 Mar 2006) $
 # $Author: dmorelli $
 #
 # Download an entire album of music from allofmp3 by parsing the download
@@ -21,7 +21,7 @@ my %urlHash;
 # Extract the URLs from the file, there will be dupes, get rid of them
 open HTML, "$htmlPath" or die "Can't open $htmlPath: $!\n";
 while (<HTML>) {
-   if  (m|(http.*://.*\.ogg)|) {
+   if (m[(http.*://.*\.(?:ogg|mp3))]) {
       $urlHash{$1}++;
    }
 }
