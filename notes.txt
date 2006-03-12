@@ -66,6 +66,12 @@ Usage: imgname [-r ] [-o ] [-q ] [-n ] [--version ] [--help ] [<String>]
 
 
 --
+megawho
+
+- Add info in usage: Please don't be a jerk with mega hits to whois services.
+
+
+--
 newperl
 
 -Update usage notes to explain how to make modules in subdirs with the paths, like this:
@@ -133,7 +139,7 @@ Info on how to write man pages in `man pod2man`
 ---------------------------------------------------------------------------
 $HeadURL: file:///var/lib/svn/scripts/notes.txt $
 ------------------------------------------------------------------------
-$Revision: 180 $
-$Date: 2006-03-12 11:39:01 -0500 (Sun, 12 Mar 2006) $
+$Revision: 181 $
+$Date: 2006-03-12 15:49:54 -0500 (Sun, 12 Mar 2006) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
