@@ -1,5 +1,5 @@
 --
-Need to put out the binary search code in musicUtil/mkplaylist and put it here somewhere. Also, needs to be prototyped more like sort() and take a coderef for the comparison.
+Need to pull out the binary search code in musicUtil/mkplaylist and put it here somewhere. Also, needs to be prototyped more like sort() and take a coderef for the comparison.
 
 
 --
@@ -102,10 +102,38 @@ general notes
 -Change all scripts to use here document for usage notes
 
 
+--
+scripts going public
+
+Candidates for this:
+- megawho
+- newperl
+- pwgen
+- relpath
+- rren
+- te
+- timestamp
+- uptrunk
+- xmlformat
+
+- Do something with parseArgs.sh. Why isn't it in working/perl ?
+
+These scripts slated for public release need some things:
+   - Author email address
+   - Version number
+   - Uniform and comprehensive help
+   - More idiot-proofing with args
+   - GPL licensing
+
+Perhaps a Makefile will be necessary for the whole scripts rep to package public scripts. Targets for individual scripts.
+
+Info on how to write man pages in `man pod2man`
+
+
 ---------------------------------------------------------------------------
 $HeadURL: file:///var/lib/svn/scripts/notes.txt $
 ------------------------------------------------------------------------
-$Revision: 170 $
-$Date: 2006-01-28 12:01:31 -0500 (Sat, 28 Jan 2006) $
+$Revision: 180 $
+$Date: 2006-03-12 11:39:01 -0500 (Sun, 12 Mar 2006) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
