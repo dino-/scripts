@@ -112,6 +112,8 @@ general notes
 scripts going public
 
 Candidates for this:
+- alldl
+- killblanks
 - megawho
 - newperl
 - pwgen
@@ -121,8 +123,6 @@ Candidates for this:
 - timestamp
 - uptrunk
 - xmlformat
-
-- Do something with parseArgs.sh. Why isn't it in working/perl ?
 
 These scripts slated for public release need some things:
    - Author email address
@@ -139,7 +139,7 @@ Info on how to write man pages in `man pod2man`
 ---------------------------------------------------------------------------
 $HeadURL: file:///var/lib/svn/scripts/notes.txt $
 ------------------------------------------------------------------------
-$Revision: 181 $
-$Date: 2006-03-12 15:49:54 -0500 (Sun, 12 Mar 2006) $
+$Revision: 183 $
+$Date: 2006-03-12 22:40:12 -0500 (Sun, 12 Mar 2006) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
