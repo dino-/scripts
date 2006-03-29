@@ -1,11 +1,11 @@
 #! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
-# $HeadURL$
+# $HeadURL: file:///var/lib/svn/scripts/xferPhPics $
 #--------------------------------------------------------------------------
-# $Revision$
-# $Date$
-# $Author$
+# $Revision: 185 $
+# $Date: 2006-03-29 14:52:24 -0500 (Wed, 29 Mar 2006) $
+# $Author: dmorelli $
 #
 # Transfer photos from a Bluetooth Motorola mobile phone.
 #--------------------------------------------------------------------------
