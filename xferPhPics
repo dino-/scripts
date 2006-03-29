@@ -1,0 +1,65 @@
+#! /usr/bin/perl -w
+
+#--------------------------------------------------------------------------
+# $HeadURL$
+#--------------------------------------------------------------------------
+# $Revision$
+# $Date$
+# $Author$
+#
+# Transfer photos from a Bluetooth Motorola mobile phone.
+#--------------------------------------------------------------------------
+
+use strict;
+use XML::XPath;
+use XML::XPath::XMLParser;
+
+
+my $output;
+
+
+# XXX How about this stuff for if the .mobilebt file is missing?
+# Offer to make one using hcitool
+#$output = `hcitool scan`;
+
+#my ($id) = $output =~ /\s+(\S+)\s+Dino RAZR/;
+
+
+my $file = $ENV{HOME} . "/.mobilebt";
+open (DATA, $file) or die "Unable to read $file$!";
+my $id = do { local $/, <DATA> };
+close DATA;
+chomp $id;
+
+$output = `obexftp -b $id -c picture -l`;
+
+# Blow away DOCTYPE declaration, it pisses off the parser, 
+# can't find the DTD
+$output =~ s/<!DOCTYPE .*\.dtd">//;
+
+
+my $xp = XML::XPath->new(xml => $output);
+    
+my $nodeset = $xp->find('/folder-listing/file/@name');
+    
+my @fileNames;
+foreach my $node ($nodeset->get_nodelist) {
+   my $name = XML::XPath->getNodeText($node);
+   next unless $name =~ /\d{2}-\d{2}-\d{2}_\d{4}\.jpg/;
+   push @fileNames, $name;
+}
+
+$output = `obexftp -b $id -c picture -g @fileNames`;
+
+
+# Prompt for removal
+if(($? >> 8) == 0) {
+   print "Remove these images from the phone? [y/N]? ";
+   chomp (my $input = <STDIN>);
+
+   # Remove the files
+   if($input eq 'y') {
+      `obexftp -b $id -c picture -k @fileNames`;
+   }
+}
+else { print "Error during transfer!"; }
