@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/cputemp $
 #--------------------------------------------------------------------------
-# $Revision: 157 $
-# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Revision: 187 $
+# $Date: 2006-04-19 17:25:41 -0400 (Wed, 19 Apr 2006) $
 # $Author: dmorelli $
 #
 # Display cpu temperature
@@ -32,3 +32,4 @@ my $fahrenheit = $celsius * 9 / 5 + 32;
 # This degrees symbol was a bitch to locate
 print "The temperature as reported by $tempPath\n";
 printf "%5.1f\260F (%2d\260C)\n", $fahrenheit, $celsius;
+print scalar(localtime) . "\n";
