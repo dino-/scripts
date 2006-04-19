@@ -48,6 +48,12 @@ cdburn
 
 
 --
+cputemp
+
++ Add timestamp output when called
+
+
+--
 imgname
 
 -Usage from older Java imgname tool:
@@ -139,7 +145,7 @@ Info on how to write man pages in `man pod2man`
 ---------------------------------------------------------------------------
 $HeadURL: file:///var/lib/svn/scripts/notes.txt $
 ------------------------------------------------------------------------
-$Revision: 183 $
-$Date: 2006-03-12 22:40:12 -0500 (Sun, 12 Mar 2006) $
+$Revision: 188 $
+$Date: 2006-04-19 17:25:56 -0400 (Wed, 19 Apr 2006) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
