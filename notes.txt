@@ -107,6 +107,12 @@ routerReset
 
 
 --
+xslt
+
++Change the usage to use Basename
+
+
+--
 general notes
 
 -All apps should check for binary dependencies like cdlabelgen, vorbiscomment, etc
@@ -145,7 +151,7 @@ Info on how to write man pages in `man pod2man`
 ---------------------------------------------------------------------------
 $HeadURL: file:///var/lib/svn/scripts/notes.txt $
 ------------------------------------------------------------------------
-$Revision: 188 $
-$Date: 2006-04-19 17:25:56 -0400 (Wed, 19 Apr 2006) $
+$Revision: 190 $
+$Date: 2006-05-02 08:25:51 -0400 (Tue, 02 May 2006) $
 $Author: dmorelli $
 ---------------------------------------------------------------------------
