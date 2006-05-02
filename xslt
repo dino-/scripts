@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/xslt $
 #--------------------------------------------------------------------------
-# $Revision: 166 $
-# $Date: 2005-11-28 10:55:05 -0500 (Mon, 28 Nov 2005) $
+# $Revision: 189 $
+# $Date: 2006-05-02 08:25:03 -0400 (Tue, 02 May 2006) $
 # $Author: dmorelli $
 #
 # Transform an XML document with an XSLT stylesheet
@@ -20,11 +20,11 @@ use XML::LibXSLT;
 
 my $basename = basename $0;
 my $usage = <<USAGE;
-$0 - Transform an XML document with an XSLT stylesheet
+$basename - Transform an XML document with an XSLT stylesheet
 
 usage:
-    $0 --xml XMLPATH --xsl XSLTPATH [--output OUTPATH]
-    $0 --help
+    $basename --xml XMLPATH --xsl XSLTPATH [--output OUTPATH]
+    $basename --help
 
 options:
     -o, --output=OUTPATH   Path of file in which to save output
@@ -49,13 +49,16 @@ die "$usage\n" if ($opts{help});
 
 die "Missing args\n$usage\n" if (!$opts{xml} || !$opts{xsl});
 
+# Set the destination for output
 if ($opts{output}) {
     $opts{output} = ">$opts{output}";
-} else {
+}
+else {  # No dest given, use STDOUT
     $opts{output} = '>-';
 }
 
 
+# Construct parser and XSLT objects
 my $parser = XML::LibXML->new();
 my $xslt = XML::LibXSLT->new();
 
