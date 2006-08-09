@@ -1,0 +1,18 @@
+#! /bin/sh
+
+#--------------------------------------------------------------------------
+# $HeadURL$
+#--------------------------------------------------------------------------
+# $Revision$
+# $Date$
+# $Author$
+#
+# Restart fetchmail daemon (when run for an individual user)
+#--------------------------------------------------------------------------
+
+
+fetchmail -q
+sleep 1
+fetchmail
+echo -n "Newly started fetchmail pid: "
+head -n 1 ~/.fetchmail.pid
