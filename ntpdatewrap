@@ -1,5 +1,17 @@
 #!/bin/sh
 
+#--------------------------------------------------------------------------
+# $HeadURL: file:///var/lib/svn/scripts/ntpdatewrap $
+#--------------------------------------------------------------------------
+# $Revision: 194 $
+# $Date: 2006-08-11 01:18:20 -0400 (Fri, 11 Aug 2006) $
+# $Author: dmorelli $
+#
+# ntpdate cron nightly, this is from:
+# http://www.debian.org/doc/manuals/system-administrator/ch-sysadmin-time.html
+#--------------------------------------------------------------------------
+
+
 PATH=/sbin:/bin
 
 test -f /usr/sbin/ntpdate || exit 0
