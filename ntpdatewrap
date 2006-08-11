@@ -1,34 +1,19 @@
 #!/bin/sh
 
-#--------------------------------------------------------------------------
-# $HeadURL: file:///var/lib/svn/scripts/ntpdatewrap $
-#--------------------------------------------------------------------------
-# $Revision: 157 $
-# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
-# $Author: dmorelli $
-#
-# ntpdate cron nightly, this is from:
-# http://www.debian.org/doc/manuals/system-administrator/ch-sysadmin-time.html
-#--------------------------------------------------------------------------
+PATH=/sbin:/bin
 
+test -f /usr/sbin/ntpdate || exit 0
 
-NTPDATE=/usr/sbin/ntpdate
-LOGFILE=/var/log/ntpdatewrap
-NTPCONFFILE=/etc/ntp.conf
-NTPSERVERS=
-GREP=/usr/bin/grep
-CUT=/usr/bin/cut
-
-if [ -f $NTPCONFFILE ] ; then
-    echo "===========================" >> $LOGFILE
-    echo "<<< `date` " >> $LOGFILE
-    for i in `grep ^server $NTPCONFFILE | $CUT --fields 2 --delimiter \ `
-    do
-        NTPSERVERS="$NTPSERVERS $i"
-    done
-    $NTPDATE $NTPSERVERS  >>  $LOGFILE
-    ###echo $NTPDATE $NTPSERVERS $LOGFILE
-    echo ">>> `date` " >> $LOGFILE
+if test -f /etc/default/ntpdate ; then
+. /etc/default/ntpdate
+else
+NTPSERVERS="pool.ntp.org"
 fi
+
+test -n "$NTPSERVERS" || exit 0
+
+# Not using -b which would step clock rather than slew. -b is for
+# calling at system boot
+/usr/sbin/ntpdate -s $NTPOPTIONS $NTPSERVERS
 
 exit 0
