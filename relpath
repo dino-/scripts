@@ -3,8 +3,8 @@
 #--------------------------------------------------------------------------
 # $HeadURL: file:///var/lib/svn/scripts/relpath $
 #--------------------------------------------------------------------------
-# $Revision: 157 $
-# $Date: 2005-09-12 15:41:03 -0400 (Mon, 12 Sep 2005) $
+# $Revision: 195 $
+# $Date: 2007-05-10 20:57:54 -0400 (Thu, 10 May 2007) $
 # $Author: dmorelli $
 #
 # Make paths in a file relative to the file's path
@@ -38,7 +38,7 @@ while(<SRC>) {
 	chomp;
 
 	# Comments and blank lines, pass them straight through
-	if (/^\#/ || /^$/) {
+) {
 		print DEST "$_\n";
 		next;
 	};
@@ -46,8 +46,8 @@ while(<SRC>) {
 	my ($itemName, $itemPath) = fileparse($_, "");
 	my $itemAbsPath = abs_path($itemPath);
 
-	$itemAbsPath =~ m|$listAbsPath/(.*)|;
-	my $itemNewPath = ($1 ? "$1/" : "") . $itemName;
+(.*)|;
+" : "") . $itemName;
 
 	print DEST "$itemNewPath\n";
 }
