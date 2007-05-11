@@ -1,0 +1,10 @@
+#! /bin/sh
+
+# copy locCheck into /etc/init.d
+
+# Use update-rc.d to install it into rc2.d like this:
+#   update-rc.d locCheck start 95 2 .
+
+# Install xgo into /usr somewhere
+
+# Maybe have a blank .xsession ?
