@@ -1,2 +1,0 @@
-<?xml version="1.0"?>
-<one xmlns:someNamespace="blah"><two></two>able baker<three attr2="value2" att1="value1">&lt;some stuff here&gt;</three><!-- First comment --><![CDATA[<charlie & company>]]><someNamespace:foo>doggy</someNamespace:foo><?foo bar baz?></one>
