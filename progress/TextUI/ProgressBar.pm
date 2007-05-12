@@ -1,12 +1,6 @@
 package TextUI::ProgressBar;
 
 #--------------------------------------------------------------------------
-# $HeadURL: file:///var/lib/svn/scripts/progress/TextUI/ProgressBar.pm $
-#--------------------------------------------------------------------------
-# $Revision: 156 $
-# $Date: 2005-09-12 14:00:39 -0400 (Mon, 12 Sep 2005) $
-# $Author: dmorelli $
-#
 # Class to draw a text progress bar.
 #--------------------------------------------------------------------------
 

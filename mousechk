@@ -1,12 +1,6 @@
 #! /usr/bin/perl -w
 
 #--------------------------------------------------------------------------
-# $HeadURL: file:///var/lib/svn/scripts/mousechk $
-#--------------------------------------------------------------------------
-# $Revision: 169 $
-# $Date: 2006-01-28 11:59:15 -0500 (Sat, 28 Jan 2006) $
-# $Author: dmorelli $
-#
 # Detect if there is a USB mouse based on a table of hardware-specific
 # strings
 #--------------------------------------------------------------------------

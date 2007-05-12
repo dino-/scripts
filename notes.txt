@@ -154,12 +154,3 @@ These scripts slated for public release need some things:
 Perhaps a Makefile will be necessary for the whole scripts rep to package public scripts. Targets for individual scripts.
 
 Info on how to write man pages in `man pod2man`
-
-
----------------------------------------------------------------------------
-$HeadURL: file:///var/lib/svn/scripts/notes.txt $
-------------------------------------------------------------------------
-$Revision: 190 $
-$Date: 2006-05-02 08:25:51 -0400 (Tue, 02 May 2006) $
-$Author: dmorelli $
----------------------------------------------------------------------------
