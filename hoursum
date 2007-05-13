@@ -1,0 +1,104 @@
+#! /usr/bin/perl
+
+#--------------------------------------------------------------------------
+# Create reports of hours worked for consulting jobs.
+#--------------------------------------------------------------------------
+
+use strict;
+use warnings;
+use Date::Manip;
+use File::Basename;
+use Getopt::Long;
+
+
+my %opts = (
+    weeks => 1,
+);
+my $decimalPlaces = 2;
+my $basename = basename $0;
+
+my $usage = <<USAGE;
+$basename - Add up hours
+
+usage:
+    $basename [-w weeks] hoursFile
+    $basename [-a] hoursFile
+    $basename -h
+
+options:
+    -a, --all        Calculate totals for everything in the file
+    -h, --help       This usage information
+    -w, --weeks=int  Calculate totals for the specified number of weeks,
+                     counting backwards from the top. Default: 1
+USAGE
+
+GetOptions (\%opts,
+    'all|a',
+    'help|h',
+    'weeks|w=i',
+) or die "$usage\n";
+
+if ($opts{help}) { die "$usage\n"; }
+
+(my $path = shift) or die "Must specify an hours file\n\n$usage\n";
+
+open (HOURSFILE, "<", $path) or die "Can't open $path: $?\n";
+
+my $sum = 0;
+my $block = 0;
+while (<HOURSFILE>) {
+    chomp;
+
+    if(/^$/) {
+        printf "total: %0.2f\n\n", $sum;
+        $sum = 0;
+        $block++;
+        next;
+    }
+
+    last if ((!$opts{all}) && ($block >= $opts{weeks}));
+
+    my ($date, $in, $lunchb, $lunche, $out) =
+        /(\S+\s\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)/;
+
+    if ($date) {
+        my $morn = DateCalc($in, $lunchb);
+        my $afternoon = DateCalc($lunche, $out);
+        my $total = Delta_Format(DateCalc($morn, $afternoon), 
+            $decimalPlaces, ('%ht'));
+
+        printf "%s   %5.2f\n", $_, $total;
+        $sum += $total;
+    }
+    else {
+        print "$_\n";
+    }
+}
+
+close HOURSFILE;
+
+
+__END__
+
+Example data. Make a file looking like below. Days in each week in order,
+but the weeks themselves in reverse order. The blank line following EACH
+WEEK is important.
+
+Days can be skipped (like weekends)
+
+-----
+2007-05-12 Sa  00:00  00:00  18:00  20:00
+2007-05-13 Su  10:00  11:45  00:00  00:00
+2007-05-14 Mo  08:30  12:15  12:30  17:30
+2007-05-15 Tu  09:30  13:30  14:00  17:45
+2007-05-16 We  08:00  11:15  14:15  18:15
+2007-05-17 Th  08:45  12:15  14:30  17:15
+2007-05-18 Fr  09:00  12:00  13:00  16:00
+
+2007-05-07 Mo  09:00  12:00  12:30  17:45
+2007-05-08 Tu  09:00  12:30  13:30  17:45
+2007-05-09 We  09:00  12:00  13:00  18:00
+2007-05-10 Th  09:00  12:15  13:15  18:00
+2007-05-11 Fr  09:00  12:00  13:00  18:00
+
+-----
