@@ -9,15 +9,18 @@ import Text.Printf
 -- Display usage info for this script.
 displayUsage :: IO ()
 displayUsage = do
-   putStrLn "\
-\Usage: dpi.hs [OPTIONS] WIDTH HEIGHT DIAG\n\
-\Calculate DPI (dots per inch) from screen resolution and screen size.\n\
-\\n\
-\  WIDTH and HEIGHT: in pixels\n\
-\  DIAG: measurement of screen in inches\n\
-\\n\
-\Options:\n\
-\  -h, --help  This usage information"
+   putStrLn $ unlines
+      [ "Usage: dpi.hs [OPTIONS] WIDTH HEIGHT DIAG"
+      , "Calculate DPI (dots per inch) from screen resolution and screen size."
+      , ""
+      , "  WIDTH and HEIGHT: in pixels"
+      , "  DIAG: measurement of screen in inches"
+      , ""
+      , "Options:"
+      , "  -h, --help  This usage information"
+      , ""
+      , "by Dino Morelli <dino@ui3.info>  2007-06-10"
+      ]
 
 
 main :: IO ()
