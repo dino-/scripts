@@ -1,8 +1,0 @@
-#! /bin/sh
-
-#--------------------------------------------------------------------------
-# Do some meaningless work to keep a connection alive
-#--------------------------------------------------------------------------
-
-
-while echo `hostname;date`; do sleep 120; done
