@@ -1,6 +1,7 @@
 #! /usr/bin/perl -w
 
 use strict;
+use Cwd;
 use English;
 use File::Basename;
 
@@ -12,6 +13,7 @@ my $simlinkName = "SecondLife";
 # Initial variable setup.
 $newClientArchive = shift;
 $newClientArchive or die "Please supply the path to a SecondLife client .tar.bz2 file.\n";
+$newClientArchive = Cwd::abs_path $newClientArchive;
 
 $instDirParent = '/usr/local/share/';
 ($user) = getpwuid $REAL_USER_ID;
