@@ -12,7 +12,7 @@ use Getopt::Long;
 my @commands;
 my $basename = basename $0;
 my %opts = (
-    device => '/dev/hdc',
+    device => '/dev/cdrom',
     speed => 24,
 );
 
