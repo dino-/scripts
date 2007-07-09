@@ -16,7 +16,7 @@ FONT='8x13'
 #PARAMS="-g 80x43 -F $FONT"
 #PARAMS="-g 80x43 -F $FONT --cmod 192"
 # Eterm has its own config, just do geometry
-PARAMS="-g 80x43"
+PARAMS="-g 80x50"
 
 # If no title specified, use a default.
 if [ "$TITLE" = "" ]
