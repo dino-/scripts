@@ -115,6 +115,103 @@ routerReset
 
 
 --
+xgo.hs
+
+   - Decouple the data about what hardware to look for (identifiers) from the script. New file in /etc perhaps
+
+
+   -----
+   2007-07-08 rewrite
+
+   What happens now:
+
+   - locchk (actually was named locCheck) is supposed to be installed in /etc/init.d/. Runs at boot to detect our location.
+
+      - Determines laptop location based on looking for the USB keyboard (or KVM)
+
+      - Checks to see if it can find the mouse, which has been a known problem in the past.
+
+      - Writes these things to a file: /var/tmp/locCheck
+
+   - xgo script is used to call startx for us
+
+      - Processes args
+
+      - If suppress start-up was specified, export that as XGOSUPPRESS=1
+
+         - This is for .xsession
+
+      - Was a profile requested?
+
+         - No: check the file from locchk, set the profile from that
+
+         - Yes: Validate it's a known profile
+
+      - Was no-action specified?
+
+         - Yes: Show what would have been done.
+
+         - No: exec startx with proper layout
+
+   -----
+   todo
+
+   - Check for running X server, do not run again. How do we do this?
+
+      $ pgrep X
+
+      And check for 0 exit code (success)
+
+   - Need to add the location searching stuff, but make it store results in the environment like suppress stuff.
+
+
+   -----
+   pass environment around like this:
+
+      #! /usr/bin/runhaskell
+
+      module Main where
+
+      import System.Posix.Env ( putEnv )
+      import System.Process ( runCommand )
+
+
+      main = do
+         putEnv "FOO=1"
+         runCommand "echo $FOO"
+
+   New script will need to symlink the image in ~/artwork/desktop-art/
+
+   -----
+   Stuff for figuring out docked status, not used at this time:
+
+
+   keyboards :: [String]
+   keyboards =
+      [ "Justcom Technology"  -- Raritan KVM switch
+      , "CHESEN"              -- USB to PS/2 adapter
+      ]
+   keyboards2 =
+      [ "CHESEN"
+      , "Justcom Technology"
+      ]
+   keyboards3 =
+      [ "CHESEN"
+      , "fuck"
+      ]
+
+
+   searchKeyboard :: String -> Bool
+   searchKeyboard devs = any match keyboards
+      where
+         match :: String -> Bool
+         match keyboard =
+            case (matchRegex (mkRegex keyboard) devs) of
+                  Nothing -> False
+                  _       -> True
+
+
+--
 xslt
 
 +Change the usage to use Basename
