@@ -46,10 +46,12 @@ usageText = (usageInfo header options) ++ "\n" ++ footer
          ]
       footer = init $ unlines
          [ "Valid layouts are:"
-         , "  default  Use only external monitor if present, otherwise fall back on"
-         , "           laptop LCD"
-         , "  laptop   Force use of only laptop LCD"
-         , "  both     Use both external and laptop LCD as a large Twinview desktop"
+         , "  default      Use only external monitor if present, otherwise fall back on"
+         , "               laptop LCD. Specifying no layout will use this one."
+         , "  laptop       Force use of only laptop LCD."
+         , "  both         Use both external and laptop LCD as a large Twinview desktop."
+         , "  open-driver  Use open-source nv driver. This will use both video heads if"
+         , "               present."
          , ""
          , "Version 001  2007-Jul-08  Dino Morelli <dino@ui3.info>"
          ]
