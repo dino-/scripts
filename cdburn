@@ -31,7 +31,8 @@ switches:
    -d, --device=DEVICE  SCSI device, default: $opts{device}
                         If you need to know more, like SCSI device numbers, 
                         drive model info, etc:
-                        `cdrecord dev=$opts{device} -scanbus`
+                        `wodim -scanbus`
+                        `wodim dev=$opts{device} -scanbus`
    -h, --help           This information.
    -k, --check          Check disk after burn, default: false
                         This is only valid for ISO and will ignore -e
@@ -73,7 +74,7 @@ if(!defined $file) {
 SWITCH: {
 	$file =~ m|.*\.iso| && do {
 		my $command = 
-            "cdrecord driveropts=burnfree -tao dev=$opts{device} ";
+            "wodim driveropts=burnfree -tao dev=$opts{device} ";
 		if(!$opts{check})
 		{ $command .= ($opts{eject} ? "-eject " : ""); }
 		$command .= ($opts{simulate} ? "-dummy " : "");
