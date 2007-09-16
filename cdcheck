@@ -8,7 +8,7 @@
 # Script to quickly display back the root dir of the CD in the 
 # drive and then umount it.
 
-CDDIR=/mnt/cdrom/
+CDDIR=/media/cdrom/
 
 mount $CDDIR
 ls -lh $CDDIR

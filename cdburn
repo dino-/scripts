@@ -84,10 +84,11 @@ SWITCH: {
 		push(@commands, $command);
 
 		if($opts{check}) {
-            push(@commands, "sleep 2");
-			push(@commands, "mount /mnt/cdrom");
-			push(@commands, "ls -l /mnt/cdrom/");
-			push(@commands, "umount /mnt/cdrom");
+         my $cdMountPoint = "/media/cdrom/";
+         push(@commands, "sleep 2");
+			push(@commands, "mount $cdMountPoint");
+			push(@commands, "ls -l $cdMountPoint");
+			push(@commands, "umount $cdMountPoint");
 		}
 
 		last SWITCH;
