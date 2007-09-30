@@ -29,4 +29,3 @@ else
    msg "Re-enabling dpms now"
    $CMD_STRING
 fi
-
