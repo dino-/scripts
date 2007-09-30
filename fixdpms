@@ -6,4 +6,4 @@ then
    sleep 1
 fi
 
-xset dpms 0 0 1200
+xset +dpms
