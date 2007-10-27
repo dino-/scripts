@@ -3,10 +3,10 @@
 # If X isn't running, get out of here now.
 # We can't merely check the DISPLAY env variable because this script
 # runs on a cron job, not below where X was started.
-if ! ps -U $USER | grep -q Xorg
-then
-   exit
-fi
+#if ps -U $USER | grep -q Xorg
+#then
+#   exit
+#fi
 
 
 DEFAULT_DISPLAY=":0.0"
