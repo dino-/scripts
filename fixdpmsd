@@ -16,6 +16,8 @@ msg () {
 # Use default delay time if none supplied.
 delay=${1:-$defaultDelay}
 
+msg "Started"
+
 while [ 1 ]  # Run forever
 do
    if xset q | grep -q "DPMS is Disabled"
