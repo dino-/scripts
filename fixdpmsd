@@ -14,10 +14,6 @@ msg () {
 # It all starts here
 
 # Use default delay time if none supplied.
-#if [ -z "$1" ]
-#then delay=$defaultDelay
-#else delay=$1
-#fi
 delay=${1:-$defaultDelay}
 
 while [ 1 ]  # Run forever
