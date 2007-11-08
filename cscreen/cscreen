@@ -1,0 +1,8 @@
+#! /bin/sh
+
+
+defaultConf="main"
+
+conf=${1:-$defaultConf}
+
+screen -S $conf -c $HOME/.cscreen/$conf.conf
