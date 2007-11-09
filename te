@@ -1,26 +1,60 @@
 #! /bin/sh
 
 
+basename=`basename $0`
 termBin=Eterm
 
 
-if [ "$1" = "--help" ]
-then
+function usage {
    cat <<USAGE
-`basename $0` - Open new, named $termBin terminal window(s)
-usage: te [title1] [title2] [...]
-       te --help
+$basename - Open new, named $termBin terminal window(s)
+
+usage:
+   te [OPTIONS] [title1] [title2] [...]
+
+options:
+   -e  Exit parent xterm window after opening child terms
+   -h  This help information
 
 Dino Morelli <dino@ui3.info>  2007-11-08
 
 USAGE
 
    exit 1
-fi
+}
 
+
+# arg parsing
+
+while getopts "eh" OPT
+do
+   # If it's an unwanted switch, skip rest of loop
+   if [ "$OPT" == "?" ]
+      then
+         usage
+         continue
+   fi
+
+   # Assign the value of the switch to a variable: opt_<switch>
+   # Binary switches will be 1 for true and null for false
+   if [ -z "$OPTARG" ]
+      then eval opt_${OPT}=1
+      else eval opt_${OPT}="$OPTARG"
+   fi
+done
+
+# Shift past the args that were handled above, leaving the rest
+shift $(($OPTIND - 1))
+
+
+# User asked for help
+
+if [ "$opt_h" = 1 ]; then usage ; fi
+
+
+# Create the xterm windows now
 
 baseParams="-g 80x50"
-
 
 if [ $# -lt "1" ]
 then
@@ -31,4 +65,13 @@ else
       params="$baseParams -T $title -n $title"
       $termBin $params &
    done
+fi
+
+
+# Close parent term if user asked us to
+
+if [ "$opt_e" = 1 ]
+then
+   ppid=`ps -C te -o ppid=`
+   kill -9 $ppid
 fi
