@@ -62,24 +62,6 @@ cputemp
 
 
 --
-imgname
-
--Usage from older Java imgname tool:
-$ ./imgname --help
-Error: User requested help
-
-Usage: imgname [-r ] [-o ] [-q ] [-n ] [--version ] [--help ] [<String>]
-
-        -r 'Process files recursively'  Default: false
-        -o 'Overwrite existing files'  Default: false
-        -q 'Quiet, don't display anything while processing.'  Default: false
-        -n 'Process images even if they are missing EXIF info.'  Default: false
-        --version 'Display app version to console'  Default: false
-        --help 'Display this usage information'  Default: false
-        '<dir> or <file> to process'  Default: .
-
-
---
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.
@@ -101,11 +83,15 @@ newperl
  or this:
     use warnings;
 
+- Change file printing code to use here-documents
+
 
 --
 relpath
 
 -Switch to not preserve comment lines
+
+- Something very bad happened to this source code. It won't compile any longer.
 
 
 --
