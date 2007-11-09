@@ -24,8 +24,8 @@ usage:  $basename [-l length] [-t types] [count]
         $basename --help
 
 options:
-  -l      Individual password length. Default: 8
-  -t      Char types to include in the passwords. Default: aAd
+  -l      Individual password length. Default: 5
+  -t      Char types to include in the passwords. Default: ad
           a - a..z (lowercase alpha)
           A - A..Z (uppercase alpha)
           d - 0..9 (digits)
@@ -41,8 +41,8 @@ srand(time ^ $$ ^ unpack "%L*", `ps auxww | gzip`);
 
 # Process the args
 getopts('l:t:');
-$opt_l ||= 8;
-$opt_t ||= 'aAd';
+$opt_l ||= 5;
+$opt_t ||= 'ad';
 $count = shift || 10;
 
 # Construct the array of chars to be used
