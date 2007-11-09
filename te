@@ -1,48 +1,34 @@
 #! /bin/sh
 
-#--------------------------------------------------------------------------
-# Script to open a terminal window with a certain geometry and optional
-# color choices.
-#--------------------------------------------------------------------------
 
-APP=Eterm
-TITLE=$1
-#FONT='10x20'
-#FONT='9x15'
-FONT='8x13'
+termBin=Eterm
 
-#PARAMS="-g 80x43 -F $FONT -O --cmod 96"
-#PARAMS="-g 80x43 -F $FONT -O --cmod 64"
-#PARAMS="-g 80x43 -F $FONT"
-#PARAMS="-g 80x43 -F $FONT --cmod 192"
-# Eterm has its own config, just do geometry
-PARAMS="-g 80x50"
 
-# If no title specified, use a default.
-if [ "$TITLE" = "" ]
+if [ "$1" = "--help" ]
 then
-        TITLE="$APP"
+   cat <<USAGE
+`basename $0` - Open new, named $termBin terminal window(s)
+usage: te [title1] [title2] [...]
+       te --help
+
+Dino Morelli <dino@ui3.info>  2007-11-08
+
+USAGE
+
+   exit 1
 fi
 
-# Evaluate the params that were given.
-NAME="$TITLE"
-# FIXME
-PARAMS="$PARAMS -T $TITLE -n $NAME"
-#PARAMS="$PARAMS -title $TITLE -name $NAME"
-#PARAMS="$PARAMS -title $TITLE -name $NAME -n $NAME"
 
-case $1 in
-        # User requested help.
-        --help)
-                echo "Open a new $APP terminal window with optional color settings."
-                echo "usage: te"
-                echo "       te title [ bgcolor from rgb.txt ] [ fgcolor ]"
-                echo "       te [ --help ]"
-                exit 1;;
+baseParams="-g 80x50"
 
-        *)
-                break;;
-esac
 
-# Open the shell.
-$APP $PARAMS &
+if [ $# -lt "1" ]
+then
+   $termBin $baseParams &
+else
+   for title in $*
+   do
+      params="$baseParams -T $title -n $title"
+      $termBin $params &
+   done
+fi
