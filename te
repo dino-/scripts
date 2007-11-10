@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 
 basename=`basename $0`
@@ -13,8 +13,10 @@ usage:
    te [OPTIONS] [title1] [title2] [...]
 
 options:
-   -e  Exit parent xterm window after opening child terms
-   -h  This help information
+   -e, --exit  Exit parent xterm window after opening child terms
+   -h, --help  This help information
+
+Not specifying a term title will use the $termBin default
 
 Dino Morelli <dino@ui3.info>  2007-11-09
 
@@ -26,30 +28,26 @@ USAGE
 
 # arg parsing
 
-while getopts "eh" OPT
-do
-   # If it's an unwanted switch, skip rest of loop
-   if [ "$OPT" == "?" ]
-      then
-         usage
-         continue
-   fi
+getoptResults=`getopt -o eh --long exit,help -n $basename -- "$@"`
 
-   # Assign the value of the switch to a variable: opt_<switch>
-   # Binary switches will be 1 for true and null for false
-   if [ -z "$OPTARG" ]
-      then eval opt_${OPT}=1
-      else eval opt_${OPT}="$OPTARG"
-   fi
+if [ $? != 0 ] ; then usage ; fi
+
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$getoptResults"
+
+while true ; do
+	case "$1" in
+      -e|--exit) optExit=1 ; shift ;;
+      -h|--help) optHelp=1 ; shift ;;
+		--) shift ; break ;;
+		*) echo "Internal error!" ; exit 1 ;;
+	esac
 done
-
-# Shift past the args that were handled above, leaving the rest
-shift $(($OPTIND - 1))
 
 
 # User asked for help
 
-if [ "$opt_h" = 1 ]; then usage ; fi
+if [ "$optHelp" = 1 ]; then usage ; fi
 
 
 # Create the xterm windows now
@@ -70,7 +68,7 @@ fi
 
 # Close parent term if user asked us to
 
-if [ "$opt_e" = 1 ]
+if [ "$optExit" = 1 ]
 then
    ppid=`ps -C te -o ppid=`
    kill -9 $ppid
