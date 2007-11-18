@@ -26,13 +26,13 @@ echo
 echo "Repairing rotation information where necessary"
 jhead -autorot *.jpg
 
-echo
-echo "Linking photos properly with the rest"
-photoname ~/pictures/photos *.jpg
+#echo
+#echo "Linking photos properly with the rest"
+#photoname ~/pictures/photos *.jpg
 
-echo
-echo "If all went well, you may now wish to remove the hard links that"
-echo "remain in this directory."
+#echo
+#echo "If all went well, you may now wish to remove the hard links that"
+#echo "remain in this directory."
 
 echo
 popd
