@@ -4,5 +4,5 @@
 # Script to teach SpamAssassin that an email is NOT spam.
 #--------------------------------------------------------------------------
 
-sa-learn --ham --no-rebuild $1
+sa-learn --ham --no-sync $1
 
