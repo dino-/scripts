@@ -3,6 +3,7 @@
 
 basename=`basename $0`
 termBin=Eterm
+defGeometry="80x50"
 
 
 function usage {
@@ -13,8 +14,10 @@ usage:
    te [OPTIONS] [title1] [title2] [...]
 
 options:
-   -e, --exit  Exit parent xterm window after opening child terms
-   -h, --help  This help information
+   -g, --geometry WxH  Width and height of the term windows
+                       Default: $defGeometry
+   -e, --exit          Exit parent xterm window after opening child terms
+   -h, --help          This help information
 
 Not specifying a term title will use the $termBin default
 
@@ -28,7 +31,7 @@ USAGE
 
 # arg parsing
 
-getoptResults=`getopt -o eh --long exit,help -n $basename -- "$@"`
+getoptResults=`getopt -o g:eh --long geometry,exit,help -n $basename -- "$@"`
 
 if [ $? != 0 ] ; then usage ; fi
 
@@ -37,13 +40,13 @@ eval set -- "$getoptResults"
 
 while true ; do
 	case "$1" in
+      -g|--geometry) optGeometry="$2" ; shift 2 ;;
       -e|--exit) optExit=1 ; shift ;;
       -h|--help) optHelp=1 ; shift ;;
 		--) shift ; break ;;
 		*) echo "Internal error!" ; exit 1 ;;
 	esac
 done
-
 
 # User asked for help
 
@@ -52,7 +55,7 @@ if [ "$optHelp" = 1 ]; then usage ; fi
 
 # Create the xterm windows now
 
-baseParams="-g 80x50"
+optGeometry="-g ${optGeometry:-$defGeometry}"
 
 if [ $# -lt "1" ]
 then
@@ -60,7 +63,7 @@ then
 else
    for title in $*
    do
-      params="$baseParams -T $title -n $title"
+      params="$optGeometry -T $title -n $title"
       $termBin $params &
    done
 fi
