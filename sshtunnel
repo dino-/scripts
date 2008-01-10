@@ -33,7 +33,7 @@ USAGE
 
 # arg parsing
 
-getoptResults=`getopt -o u:H:r:l:h --long user,host,remote-port,local-port,help -n $basename -- "$@"`
+getoptResults=`getopt -o u:H:r:l:h --long user:,host:,remote-port:,local-port:,help -n $basename -- "$@"`
 
 if [ $? != 0 ] ; then usage ; fi
 
