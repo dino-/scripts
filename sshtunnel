@@ -1,0 +1,105 @@
+#!/bin/sh
+
+
+basename=`basename $0`
+
+
+function usage {
+   cat <<USAGE
+$basename - Create and keep open an ssh tunnel
+
+usage:
+   $basename [OPTIONS]
+
+options:
+   -u, --user USER         User on remote system. Defaults: \$USER
+   -H, --host HOST         Remote system IP or hostname
+   -r, --remote-port PORT  Port for using tunnel on remote system
+   -l, --local-port PORT   Port for using tunnel on this (the local) 
+                           system
+   -h, --help              This help information
+
+For this to really be useful you need passwordless ssh between the users 
+on these two systems. You need to set that up yourself and of course be 
+mindful of the security issues involved.
+
+2007-12-21  Dino Morelli <dino@ui3.info>
+
+USAGE
+
+   exit 1
+}
+
+
+# arg parsing
+
+getoptResults=`getopt -o u:H:r:l:h --long user,host,remote-port,local-port,help -n $basename -- "$@"`
+
+if [ $? != 0 ] ; then usage ; fi
+
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$getoptResults"
+
+while true ; do
+	case "$1" in
+      -u|--user) optUser="$2" ; shift 2 ;;
+      -H|--host) optHost="$2" ; shift 2 ;;
+      -r|--remote-port) optRemotePort="$2" ; shift 2 ;;
+      -l|--local-port) optLocalPort="$2" ; shift 2 ;;
+      -h|--help) optHelp=1 ; shift ;;
+		--) shift ; break ;;
+		*) echo "Internal error!" ; exit 1 ;;
+	esac
+done
+
+echo "[$optHost]"
+
+# User asked for help
+
+if [ "$optHelp" = 1 ]; then usage ; fi
+if [ -z "$optHost" ]
+then
+   echo "Remote host required!"
+   echo
+   usage
+fi
+if [ "$optRemotePort" = "" ]
+then
+   echo "Remote port required!"
+   echo
+   usage
+fi
+if [ "$optLocalPort" = "" ]
+then
+   echo "Local port required!"
+   echo
+   usage
+fi
+
+
+optUser=${optUser:-$USER}
+
+
+#remoteUser=dinoatt
+#remoteHost=ui3.info
+
+# $remotePort is the remote port number that will be used to tunnel
+# back to this system
+#remotePort=10022
+
+# $command is the command used to create the reverse ssh tunnel
+#command="ssh -N -R $remotePort:localhost:22 $remoteUser@$remoteHost"
+command="ssh -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
+
+# This will keep trying to restore the tunnel any time it's down
+while true
+do
+   echo -n `date`
+   echo "  Starting tunnel with this command:"
+   echo "  $command"
+   echo "Press ctrl-c twice to REALLY stop"
+   $command
+   echo "Stopped."
+   sleep 2
+   echo "Restarting.."
+done
