@@ -54,21 +54,25 @@ done
 
 echo "[$optHost]"
 
-# User asked for help
+
+# validate the args
 
 if [ "$optHelp" = 1 ]; then usage ; fi
+
 if [ -z "$optHost" ]
 then
    echo "Remote host required!"
    echo
    usage
 fi
+
 if [ "$optRemotePort" = "" ]
 then
    echo "Remote port required!"
    echo
    usage
 fi
+
 if [ "$optLocalPort" = "" ]
 then
    echo "Local port required!"
