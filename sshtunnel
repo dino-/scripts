@@ -83,16 +83,6 @@ fi
 
 optUser=${optUser:-$USER}
 
-
-#remoteUser=dinoatt
-#remoteHost=ui3.info
-
-# $remotePort is the remote port number that will be used to tunnel
-# back to this system
-#remotePort=10022
-
-# $command is the command used to create the reverse ssh tunnel
-#command="ssh -N -R $remotePort:localhost:22 $remoteUser@$remoteHost"
 command="ssh -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
 
 # This will keep trying to restore the tunnel any time it's down
