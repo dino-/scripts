@@ -13,7 +13,6 @@ srcs =
    , ("/home", "--exclude .mozilla/firefox/*/Cache --delete-excluded")
    , ("/root", "")
    , ("/var/lib/dpkg", "")
-   , ("/var/local/archive", "")
    , ("/var/log", "")
    , ("/var/mail", "")
    , ("/var/spool/cron", "")
