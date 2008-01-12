@@ -1,6 +1,5 @@
 #! /usr/bin/runhaskell
 
-
 import Data.List ( intersperse )
 import System.Process ( runCommand, waitForProcess )
 import System.Time
