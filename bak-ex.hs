@@ -37,7 +37,7 @@ output = "2>&1"
 --output = "2>&1 > /var/log/bak-foo.log"
 
 
--- This is Haskell equivilent of the *nix date command
+-- This is the Haskell equivilent of the *nix date command
 date :: IO String
 date =
    getClockTime >>= toCalendarTime >>= return . calendarTimeToString
