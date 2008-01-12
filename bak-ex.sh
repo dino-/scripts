@@ -1,6 +1,7 @@
 #! /bin/sh
 
-prefix="rsync -av -R --delete"
+commonSwitches="-av -R --delete"
+prefix="rsync $commonSwitches"
 dest="user@host.blah:/top/level/remote/backup/dir"
 postfix="2>&1"
 
