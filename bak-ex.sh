@@ -2,18 +2,18 @@
 
 commonSwitches="-av -R --delete"
 prefix="rsync $commonSwitches"
-dest="user@host.blah:/top/level/remote/backup/dir"
+destPath="user@host.blah:/top/level/remote/backup/dir"
 output="2>&1"
 
 date
 
 # Trailing / on src dir means DON'T include the last dir from src
-$prefix /var/spool/cron $dest $output
-$prefix /var/mail $dest $output
-$prefix /var/log $dest $output
-$prefix /root $dest $output
-$prefix --exclude .mozilla/firefox/*/Cache --delete-excluded /home $dest $output
-$prefix /etc $dest $output
-$prefix /boot $dest $output
+$prefix /var/spool/cron $destPath $output
+$prefix /var/mail $destPath $output
+$prefix /var/log $destPath $output
+$prefix /root $destPath $output
+$prefix --exclude .mozilla/firefox/*/Cache --delete-excluded /home $destPath $output
+$prefix /etc $destPath $output
+$prefix /boot $destPath $output
 
 date
