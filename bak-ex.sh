@@ -1,9 +1,22 @@
 #! /bin/sh
 
+# Switches used by all rsync invocations
+# Another useful one may be -n, --dry-run
 commonSwitches="-av -R --delete"
-prefix="rsync $commonSwitches"
+
 destPath="user@host.blah:/top/level/remote/backup/dir"
-output="2>&1"
+
+# This one redirects all errors to stdout, but otherwise lets the
+# invoker deal with logging it or not
+output = "2>&1"
+
+# Some other possible output postfixes:
+#output = "2>&1 | tee -a /var/tmp/bak-foo.log"
+#output = "2>&1 > /var/log/bak-foo.log"
+
+
+prefix="rsync $commonSwitches"
+
 
 date
 
