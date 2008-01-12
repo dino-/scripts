@@ -6,16 +6,16 @@ import System.Process ( runCommand, waitForProcess )
 
 
 srcs =
-    [ ("/boot", "")
-    , ("/etc", "")
-    , ("/home", "--exclude .mozilla/firefox/*/Cache --delete-excluded")
-    , ("/root", "")
-    , ("/var/lib/dpkg", "")
-    , ("/var/local/archive", "")
-    , ("/var/log", "")
-    , ("/var/mail", "")
-    , ("/var/spool/cron", "")
-    ]
+   [ ("/boot", "")
+   , ("/etc", "")
+   , ("/home", "--exclude .mozilla/firefox/*/Cache --delete-excluded")
+   , ("/root", "")
+   , ("/var/lib/dpkg", "")
+   , ("/var/local/archive", "")
+   , ("/var/log", "")
+   , ("/var/mail", "")
+   , ("/var/spool/cron", "")
+   ]
 
 commonSwitches = "-av -R --delete"
 
@@ -35,11 +35,14 @@ delimWithSpace = concat . intersperse " "
 
 
 main = do
-    let commands =
-            map (\(srcPath, extraSwitches) -> delimWithSpace
-                    [ "rsync", commonSwitches, extraSwitches
-                    , srcPath, destPath, output
-                    ]
-                ) srcs
-    mapM_ (\cmd -> putStrLn cmd >> runCommand cmd >>= waitForProcess)
-        commands
+   let commands =
+         map (\(srcPath, extraSwitches) -> delimWithSpace
+            [ "rsync", commonSwitches, extraSwitches
+            , srcPath, destPath, output
+            ]
+         ) srcs
+
+   -- Use this for a dry run
+   mapM_ (\cmd -> putStrLn cmd)
+   --mapM_ (\cmd -> putStrLn cmd >> runCommand cmd >>= waitForProcess)
+      commands
