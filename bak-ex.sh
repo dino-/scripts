@@ -33,3 +33,29 @@ $prefix /var/mail $destPath $output
 $prefix /var/spool/cron $destPath $output
 
 date
+
+
+# Installation:
+#
+#- Place a copy of this script somewhere important like
+#  /etc/bak/bak-nightly.sh
+#
+#- Modify the sources and switch info in the backup commands, destPath,
+#  etc data to reflect your backup needs
+#  DON'T FORGET to turn off the --dry-run switch above once you think
+#  it's ready!
+#
+#- Put something like this in your root user's crontab:
+#   30 02 * * * /etc/bak/bak-nightly.sh > /var/log/bak-nightly.log
+#
+#- Perhaps get logrotate involved to keep the log from getting out of
+#  control. A file like /etc/logrotate.d/bak containing:
+#
+#   /var/log/bak-nightly.log {
+#      rotate 7
+#      daily
+#      compress
+#      delaycompress
+#      missingok
+#      notifempty
+#   }
