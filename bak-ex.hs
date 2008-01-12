@@ -1,6 +1,6 @@
 #! /usr/bin/runhaskell
 
-{- Multiple rsync backup script
+{- Script for multiple rsync backups to one dest
    Dino Morelli <dino@ui3.info>
 
    http://ui3.info/d/proj/bak.html
