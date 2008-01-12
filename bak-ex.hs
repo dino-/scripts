@@ -17,11 +17,13 @@ srcs =
    , ("/var/spool/cron", "")
    ]
 
+
 -- Switches used by all rsync invocations.
 -- Another useful one may be -n, --dry-run
 --commonSwitches = "-av -R --delete"
 --commonSwitches = "--archive --verbose --relative --delete"
 commonSwitches = "--archive --verbose --relative --delete --dry-run"
+
 
 destPath = "user@host.blah:/top/level/remote/backup/dir"
 
