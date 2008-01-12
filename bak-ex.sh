@@ -1,5 +1,12 @@
 #! /bin/sh
 
+# Multiple rsync backup script
+# Dino Morelli <dino@ui3.info>
+#
+# http://ui3.info/d/proj/bak.html
+# Installation instructions at end of this script
+
+
 # Switches used by all rsync invocations
 # Another useful one may be -n, --dry-run
 #commonSwitches="-av -R --delete"

@@ -1,5 +1,12 @@
 #! /usr/bin/runhaskell
 
+{- Multiple rsync backup script
+   Dino Morelli <dino@ui3.info>
+
+   http://ui3.info/d/proj/bak.html
+   Installation instructions at end of this script
+-}
+
 import Data.List ( intersperse )
 import System.Process ( runCommand, waitForProcess )
 import System.Time
