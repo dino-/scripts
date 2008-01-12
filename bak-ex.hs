@@ -61,3 +61,30 @@ main = do
       commands
 
    date >>= putStrLn
+
+
+{- Installation:
+
+- Place a copy of this script somewhere important like
+  /etc/bak/bak-nightly.hs
+
+- Modify the src, destPath, etc data to reflect your backup needs
+  DON'T FORGET to turn off the --dry-run switch above once you think
+  it's ready!
+
+- Put something like this in your root user's crontab:
+   30 02 * * * /etc/bak/bak-nightly.hs > /var/log/bak-nightly.log
+
+- Perhaps get logrotate involved to keep the log from getting out of
+  control. A file like /etc/logrotate.d/bak containing:
+
+   /var/log/bak-nightly.log {
+      rotate 7
+      daily
+      compress
+      delaycompress
+      missingok
+      notifempty
+   }
+
+-}
