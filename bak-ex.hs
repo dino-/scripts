@@ -20,7 +20,7 @@ srcs =
 
 commonSwitches = "-av -R --delete"
 
-destPath = "dinoatt@ui3.info:/var/local/backup/agave"
+destPath = "user@host.blah:/top/level/remote/backup/dir"
 
 
 -- This one redirects all errors to stdout, but otherwise lets the
