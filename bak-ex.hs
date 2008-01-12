@@ -17,7 +17,11 @@ srcs =
    , ("/var/spool/cron", "")
    ]
 
-commonSwitches = "-av -R --delete"
+-- Switches used by all rsync invocations.
+-- Another useful one may be -n, --dry-run
+--commonSwitches = "-av -R --delete"
+--commonSwitches = "--archive --verbose --relative --delete"
+commonSwitches = "--archive --verbose --relative --delete --dry-run"
 
 destPath = "user@host.blah:/top/level/remote/backup/dir"
 
@@ -51,9 +55,7 @@ main = do
 
    date >>= putStrLn
 
-   -- Use this for a dry run
-   mapM_ (\cmd -> putStrLn cmd)
-   --mapM_ (\cmd -> putStrLn cmd >> runCommand cmd >>= waitForProcess)
+   mapM_ (\cmd -> putStrLn cmd >> runCommand cmd >>= waitForProcess)
       commands
 
    date >>= putStrLn
