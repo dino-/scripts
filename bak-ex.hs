@@ -3,6 +3,7 @@
 
 import Data.List ( intersperse )
 import System.Process ( runCommand, waitForProcess )
+import System.Time
 
 
 -- Trailing / on src dir means DON'T include the last dir from src
@@ -32,6 +33,12 @@ output = "2>&1"
 --output = "2>&1 > /var/log/bak-foo.log"
 
 
+-- This is Haskell equivilent of the *nix date command
+date :: IO String
+date =
+   getClockTime >>= toCalendarTime >>= return . calendarTimeToString
+
+
 delimWithSpace :: [String] -> String
 delimWithSpace = concat . intersperse " "
 
@@ -44,7 +51,11 @@ main = do
             ]
          ) srcs
 
+   date >>= putStrLn
+
    -- Use this for a dry run
    mapM_ (\cmd -> putStrLn cmd)
    --mapM_ (\cmd -> putStrLn cmd >> runCommand cmd >>= waitForProcess)
       commands
+
+   date >>= putStrLn
