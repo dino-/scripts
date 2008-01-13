@@ -201,7 +201,6 @@ general notes
 scripts going public
 
 Candidates for this:
-- killblanks
 - megawho
 - newperl
 - pwgen
