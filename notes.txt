@@ -1,12 +1,4 @@
 --
-Migration from svn to darcs
-
-- Need to do a general clean-up here, remove scripts that are useless.
-
-- Remove the header comments. darcs has no use for this
-
-
---
 Need to pull out the binary search code in musicUtil/mkplaylist and put it here somewhere. Also, needs to be prototyped more like sort() and take a coderef for the comparison.
 
 
