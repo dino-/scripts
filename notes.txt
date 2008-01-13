@@ -27,22 +27,6 @@ Perl script for backup spanning
 
 
 --
-*new backup script* for getting CD ISOs ready:
-
--On yakuza, and as root:
-
--Archive latest in $CVSROOT and cp to /archive/backup/wasabi/home/dmorelli/temp
-
--tar, split, rm tar
-
--mkisofs each split, rm as you go
-
--scp to wasabi
-
--burn
-
-
---
 cdburn
 
 -I'd like it to do both data CDs and CD-DA with cdrdao. Based on the file extension? .iso or .toc
@@ -217,17 +201,13 @@ general notes
 scripts going public
 
 Candidates for this:
-- alldl
 - killblanks
 - megawho
 - newperl
 - pwgen
 - relpath
-- rren
 - te
 - timestamp
-- uptrunk
-- xmlformat
 
 These scripts slated for public release need some things:
    - Author email address
