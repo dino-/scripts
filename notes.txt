@@ -32,12 +32,6 @@ cdburn
 
 
 --
-cputemp
-
-+ Add timestamp output when called
-
-
---
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.
