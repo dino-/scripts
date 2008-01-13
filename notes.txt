@@ -207,7 +207,6 @@ Candidates for this:
 - pwgen
 - relpath
 - te
-- timestamp
 
 These scripts slated for public release need some things:
    - Author email address
