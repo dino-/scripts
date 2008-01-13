@@ -71,14 +71,6 @@ newperl
 
 
 --
-relpath
-
--Switch to not preserve comment lines
-
-- Something very bad happened to this source code. It won't compile any longer.
-
-
---
 routerReset
 
 -Possibly add logging of when this is called.
@@ -204,7 +196,6 @@ Candidates for this:
 - megawho
 - newperl
 - pwgen
-- relpath
 - te
 
 These scripts slated for public release need some things:
