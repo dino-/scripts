@@ -63,7 +63,7 @@ newperl
 
 
 --
-routerReset
+router-reset
 
 -Possibly add logging of when this is called.
 
@@ -190,13 +190,9 @@ Candidates for this:
 - pwgen
 - te
 
-These scripts slated for public release need some things:
-   - Author email address
-   - Version number
-   - Uniform and comprehensive help
-   - More idiot-proofing with args
-   - GPL licensing
-
-Perhaps a Makefile will be necessary for the whole scripts rep to package public scripts. Targets for individual scripts.
-
-Info on how to write man pages in `man pod2man`
+Scripts slated for public release need some things:
+- Author email address
+- Version number
+- Uniform and comprehensive help
+- More idiot-proofing with args
+- GPL licensing
