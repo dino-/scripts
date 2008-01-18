@@ -27,17 +27,21 @@ output="2>&1"
 prefix="rsync $commonSwitches"
 
 
+# Function to show a command and then execute it
+showex () { echo "$1" ; $1 ; }
+
+
 date
 
 # Trailing / on src dir means DON'T include the last dir from src
-$prefix /boot $destPath $output
-$prefix /etc $destPath $output
-$prefix --exclude .mozilla/firefox/*/Cache --delete-excluded /home $destPath $output
-$prefix /root $destPath $output
-$prefix /var/lib/dpkg $destPath $output
-$prefix /var/log $destPath $output
-$prefix /var/mail $destPath $output
-$prefix /var/spool/cron $destPath $output
+showex "$prefix /boot $destPath $output"
+showex "$prefix /etc $destPath $output"
+showex "$prefix --exclude .mozilla/firefox/*/Cache --delete-excluded /home $destPath $output"
+showex "$prefix /root $destPath $output"
+showex "$prefix /var/lib/dpkg $destPath $output"
+showex "$prefix /var/log $destPath $output"
+showex "$prefix /var/mail $destPath $output"
+showex "$prefix /var/spool/cron $destPath $output"
 
 date
 
