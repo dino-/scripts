@@ -19,12 +19,18 @@ $0 - Create a new Perl script or module file
 version 1.2.1  Dino Morelli  dino\@ui3.info
 
 usage:
-   $0 [-f] file
+   $0 [-f] FILE
    $0 --help
 
 switches:
    -f      Force overwrite existing file
    --help  This information.
+
+FILE is a string describing the new Perl script or module. Examples:
+   Foo/Bar.pm
+      Makes a file ./Foo/Bar.pm with package Foo::Bar in it
+   foo.plx, foo
+      Makes an executable script ./foo.plx or ./foo
 USAGE
 	exit;
 }
