@@ -40,21 +40,6 @@ megawho
 --
 newperl
 
--Update usage notes to explain how to make modules in subdirs with the paths, like this:
-	newperl Foo/Bar.pm
-
-	Will create a file Foo/Bar.pm with package Foo::Bar; in it
-
-+Make new modules have 'use strict;'
-
--Add switch to specify whether you want this:
-    #! /usr/bin/perl -w
-
- or this:
-    use warnings;
-
-- Change file printing code to use here-documents
-
 
 --
 router-reset
