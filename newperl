@@ -45,7 +45,14 @@ mkpath($path, 1) if(! -e $path);
 # Existing file?
 die "File $fullPath exists!\n" if(!$opt_f && -e $fullPath);
 
-if ($suffix && ($suffix =~ m|.p[lm]|)) {  # Set up new Perl library/module
+
+my $standardUses = <<USES;
+use strict;
+use warnings;
+USES
+
+
+if ($suffix && ($suffix =~ m|.p[lm]$|)) {  # Set up new Perl library/module
 	# Make the package from the path
 	my $package = $fullPath;
 	$package =~ s|/|::|g;
@@ -53,9 +60,13 @@ if ($suffix && ($suffix =~ m|.p[lm]|)) {  # Set up new Perl library/module
 
 	# Create the file
 	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath: $!\n";
-	print OUTFILE "package $package;\n";
-	print OUTFILE "\nuse strict;\n\n";
-	print OUTFILE "1;\n";
+	print OUTFILE <<MODULE;
+package $package;
+
+$standardUses
+
+1;
+MODULE
 	close (OUTFILE);
 } else {  # Set up new Perl binary
 	# Locate where perl is on this system
@@ -63,8 +74,13 @@ if ($suffix && ($suffix =~ m|.p[lm]|)) {  # Set up new Perl library/module
 
 	# Create the file
 	open (OUTFILE, ">$fullPath") or die "Can't open $fullPath: $!\n";
-	print OUTFILE "#! $perlPath -w\n";
-	print OUTFILE "\nuse strict;\n\n";
+	print OUTFILE <<SCRIPT;
+#! $perlPath
+
+$standardUses
+
+
+SCRIPT
 	close (OUTFILE);
 
 	# Make the file executable
