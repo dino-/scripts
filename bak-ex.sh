@@ -50,6 +50,7 @@ date
 #
 #- Place a copy of this script somewhere important like
 #  /etc/bak/bak-nightly.sh
+#  You may want to make sure it's executable.
 #
 #- Modify the sources and switch info in the backup commands, destPath,
 #  etc data to reflect your backup needs

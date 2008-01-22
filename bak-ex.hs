@@ -74,6 +74,7 @@ main = do
 
 - Place a copy of this script somewhere important like
   /etc/bak/bak-nightly.hs
+  You may want to make sure it's executable.
 
 - Modify the src, destPath, etc data to reflect your backup needs
   DON'T FORGET to turn off the --dry-run switch above once you think
