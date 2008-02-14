@@ -2,6 +2,7 @@
 
 
 basename=`basename $0`
+sleepTime=300
 
 
 function usage {
@@ -93,7 +94,7 @@ do
    echo "  $command"
    echo "Press ctrl-c twice to REALLY stop"
    $command
-   echo "Stopped."
-   sleep 2
+   echo "Stopped at $(date)  Restarting in $sleepTime secs"
+   sleep $sleepTime
    echo "Restarting.."
 done
