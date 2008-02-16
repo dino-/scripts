@@ -1,8 +1,8 @@
 #! /usr/bin/perl
 
-# This script will take the URL to an episode of Warren Ellis'
-# FreakAngels weekly online comic and bundle the pages into a
-# Comic Book Archive file on your local system.
+# This script will take the URL to an episode of Warren Ellis
+# and Paul Duffield's FreakAngels weekly online comic and bundle 
+# the pages into a Comic Book Archive file on your local system.
 
 # Written by adoring fan Dino Morelli <dino@ui3.info>
 # 2008-02-15
