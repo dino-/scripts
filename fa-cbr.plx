@@ -1,11 +1,11 @@
 #! /usr/bin/perl
 
-# This script will take the URL to an episode of Warren Ellis
+# This script will take the number of an episode of Warren Ellis
 # and Paul Duffield's FreakAngels weekly online comic and bundle 
 # the pages into a Comic Book Archive file on your local system.
 
 # Written by adoring fan Dino Morelli <dino@ui3.info>
-# 2008-02-15
+# 2008-02-22
 
 # This is, of course, free software. Give it to your friends. Enjoy
 
@@ -16,29 +16,30 @@ use warnings;
 use Cwd;
 
 
-# Check the incoming URL argument
-my $origUrl = shift;
+# Check the incoming episode number argument
 
-$origUrl or die <<MSG;
+my $episode = shift;
+
+# Make sure the episode number is padded with zeroes
+
+$episode = sprintf "%04d", $episode;
+
+$episode eq "0000" and die <<MSG;
 FAILED!
 
-Please supply a URL to an episode similar to this:
-http://www.freakangels.com/2008/02/15/episode-0001/
+Please supply an episode number like '0001' or '2'
+Whatever floats your boat as long as it's a real episode
+
+Really testing the input for all manner of totally whack 
+non-numeric values is kind of a pain in the ass. Please just
+pass a number, eh?
 
 MSG
 
 
 # Build some strings we'll need
 
-# The URL to the episode as a whole looks like this:
-#   http://www.freakangels.com/2008/02/15/episode-0001/
-#
-# But we need the paths to the images to look like this:
-#   http://www.freakangels.com/comics/FA0001-1.jpg
-#
-# So some string surgery:
-
-my ($baseUrl, $episode) = $origUrl =~ m|(http://[^/]+).*episode-(\d+).*|;
+my $baseUrl = 'http://www.freakangels.com';
 my $imgPrefix = "$baseUrl/comics/FA$episode-";
 my $imgSuffix = ".jpg";
 
@@ -52,11 +53,9 @@ chdir $dirPath;
 
 # Download the images
 
-my $imgNumber = 1;
-$? = 0;
-while ($? == 0) {
+# Let's hope the assumption of 6 pages per episode holds true
+for my $imgNumber (1 .. 6) {
    system "wget $imgPrefix$imgNumber$imgSuffix";
-   $imgNumber++;
 }
 
 # cd ..
