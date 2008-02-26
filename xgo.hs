@@ -1,4 +1,4 @@
-#! /usr/bin/runhaskell
+#! /usr/bin/env runhaskell
 
 module Main where
 
@@ -53,7 +53,7 @@ usageText = (usageInfo header options) ++ "\n" ++ footer
          , "  open-driver  Use open-source nv driver. This will use both video heads if"
          , "               present."
          , ""
-         , "Version 002  2007-Jul-22  Dino Morelli <dino@ui3.info>"
+         , "Version 003  2008-Feb-26  Dino Morelli <dino@ui3.info>"
          ]
 
 

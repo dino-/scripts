@@ -103,7 +103,7 @@ xgo.hs
    -----
    pass environment around like this:
 
-      #! /usr/bin/runhaskell
+      #! /usr/bin/env runhaskell
 
       module Main where
 

@@ -1,4 +1,4 @@
-#! /usr/bin/runhaskell
+#! /usr/bin/env runhaskell
 
 module Main where
 
@@ -19,7 +19,7 @@ displayUsage = do
       , "Options:"
       , "  -h, --help  This usage information"
       , ""
-      , "by Dino Morelli <dino@ui3.info>  2007-06-10"
+      , "by Dino Morelli <dino@ui3.info>  2008-02-26"
       ]
 
 
