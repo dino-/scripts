@@ -21,6 +21,7 @@ makeScript [] = do
 makeScript (scriptName:_) = do
    writeFile scriptName contents
    setFileMode scriptName modes
+   putStrLn $ "file " ++ scriptName ++ " created"
    where
       contents = unlines
          [ "#! /usr/bin/env runhaskell"
