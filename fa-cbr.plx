@@ -19,6 +19,10 @@ use warnings;
 use Cwd;
 
 
+# Identify yourself
+print "$0  v1.2  2008-02-09  Dino Morelli <dino\@ui3.info>\n";
+print "http://ui3.info/darcs/scripts/fa-cbr.plx\n\n";
+
 # Check the incoming episode number argument
 
 my $episode = shift;
