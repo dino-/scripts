@@ -4,6 +4,9 @@
 # and Paul Duffield's FreakAngels weekly online comic and bundle 
 # the pages into a Comic Book Archive file on your local system.
 
+# At the time of last editing of this script, the Freakangels page:
+#   http://www.freakangels.com/
+
 # Written by adoring fan Dino Morelli <dino@ui3.info>
 # 2008-02-22
 
