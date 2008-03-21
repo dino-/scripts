@@ -2,7 +2,10 @@
 
 
 basename=`basename $0`
+
 sleepTime=300
+
+defSshTunPort=22
 
 
 function usage {
@@ -13,7 +16,9 @@ usage:
    $basename [OPTIONS]
 
 options:
-   -u, --user USER         User on remote system. Defaults: \$USER
+   -p, --ssh-port PORT     SSH Port from this system to the other for 
+                           setting up this tunnel. Default: $defSshTunPort
+   -u, --user USER         User on remote system. Default: \$USER
    -H, --host HOST         Remote system IP or hostname
    -r, --remote-port PORT  Port for using tunnel on remote system
    -l, --local-port PORT   Port for using tunnel on this (the local) 
@@ -34,7 +39,7 @@ USAGE
 
 # arg parsing
 
-getoptResults=`getopt -o u:H:r:l:h --long user:,host:,remote-port:,local-port:,help -n $basename -- "$@"`
+getoptResults=`getopt -o p:u:H:r:l:h --long user:,host:,remote-port:,local-port:,help -n $basename -- "$@"`
 
 if [ $? != 0 ] ; then usage ; fi
 
@@ -43,6 +48,7 @@ eval set -- "$getoptResults"
 
 while true ; do
 	case "$1" in
+      -p|--ssh-port) optSshPort="$2" ; shift 2 ;;
       -u|--user) optUser="$2" ; shift 2 ;;
       -H|--host) optHost="$2" ; shift 2 ;;
       -r|--remote-port) optRemotePort="$2" ; shift 2 ;;
@@ -83,8 +89,9 @@ fi
 
 
 optUser=${optUser:-$USER}
+optSshPort=${optSshPort:-$defSshTunPort}
 
-command="ssh -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
+command="ssh -p $optSshPort -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
 
 # This will keep trying to restore the tunnel any time it's down
 while true
