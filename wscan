@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# The wireless interface
+interface="wlan0"
+
+# Check the network link, up?
+ip link show $interface | grep -q UP
+
+if [ $? != 0 ]
+then
+   echo "$interface: link is down, bringing it up now"
+   ip link set $interface up
+fi
+
+iwlist $interface scan
