@@ -46,6 +46,18 @@ router-reset
 
 -Possibly add logging of when this is called.
 
+--
+sshtun
+
+- Write a document explaining:
+   - what this is all for
+   - the issues
+   - things you need to do
+   - things you need to install
+   - and how to use the script.
+
+- This project needs its own subdirectory
+
 
 --
 xgo.hs
