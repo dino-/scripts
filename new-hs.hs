@@ -26,6 +26,8 @@ makeScript (scriptName:_) = do
       contents = unlines
          [ "#! /usr/bin/env runhaskell"
          , ""
+         , ""
+         , "main :: IO ()"
          , "main = do"
          , "   putStrLn \"Your new script!\""
          ]
