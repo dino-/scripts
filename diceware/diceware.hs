@@ -65,7 +65,7 @@ pickWords (numWords : numLines : []) = do
       -- Format a display string with interspersed spaces
       let displayString = intercalate " " wordsLine
 
-      printf "%-54s | words: %d  chars: %d\n"
+      printf "%-55s |words: %d  chars: %d\n"
          displayString nospaceLength (length displayString)
 
 
