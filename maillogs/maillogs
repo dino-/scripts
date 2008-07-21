@@ -1,14 +1,28 @@
-#! /usr/bin/perl -w
+#! /bin/bash
 
-#--------------------------------------------------------------------------
-# Set up email log viewer for fetchmail and procmail
-#--------------------------------------------------------------------------
-
-use strict;
-use FindBin qw($RealBin);
+# Set up a log viewer for fetchmail and procmail's logs
 
 
-my $title = 'maillogs';
-my $confFile = $RealBin . '/maillogs.screen';
+# Absolute path to this script
+absProgPath() {
+   LSOF=$(lsof -p $$ | grep -E "/"$(basename $1)"$")
 
-exec "Eterm -g80x43 -T $title -n $title -e screen -S $title -c $confFile &";
+   ABS_PATH=$(echo $LSOF | sed -r s/'^([^\/]+)\/'/'\/'/1 2>/dev/null)
+
+   if [ $? -ne 0 ]
+   then  # We may be dealing with OSX, try another way
+      ABS_PATH=$(echo $LSOF | sed -E s/'^([^\/]+)\/'/'\/'/1 2>/dev/null)
+   fi
+
+   echo $ABS_PATH
+}
+
+# Absolute path to directory containing the script
+absBinDir() {
+   ABS_PATH=$(absProgPath "$1")
+   echo $(dirname "$ABS_PATH")
+}
+
+
+CONF_FILE="$(absBinDir $0)/maillogs.screen"
+screen -S maillogs -c $CONF_FILE
