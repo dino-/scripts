@@ -1,3 +1,5 @@
 #!/bin/sh
 
-xscreensaver-command -lock && s2ram -f
+xscreensaver-command -lock
+sleep 3
+s2ram -f
