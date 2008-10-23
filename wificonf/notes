@@ -1,3 +1,0 @@
-These scripts need to go in /usr/local/bin and be made executable. They go with the changes to /etc/network/interfaces and the documentation on this page:
-
-http://www.wienand.org/files/wireless-config/wireless-config.html
