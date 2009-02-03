@@ -2,15 +2,16 @@
 
 import Control.Monad (replicateM, replicateM_)
 import Data.List (intercalate)
-import qualified Data.Map as Map
-import Data.Maybe
-import System.Environment
+import Data.Map hiding ( map )
+import Data.Maybe ( catMaybes, fromJust )
+import Prelude hiding ( lookup )
+import System.Environment ( getArgs )
 import System.Random
 import Text.Printf
 import Text.Regex (mkRegex, matchRegex)
 
 
-type Dicemap = Map.Map String String
+type Dicemap = Map String String
 
 
 dicewareWordlistPath = "diceware.wordlist.asc"
@@ -29,7 +30,7 @@ loadWordlist = do
          map (\(k:v:[]) -> (k, v))
          $ catMaybes
          $ map (matchRegex $ mkRegex "([0-9]{5})\t(.*)") wordlistLines
-   return $ Map.fromList parsed
+   return $ fromList parsed
 
 
 {- Randomly generate dice rolls and return the corresponding diceware
@@ -40,7 +41,7 @@ getWord dm = do
    g <- newStdGen
    let rNums = take 5 $ randomRs (1, 6 :: Int) g
    let key = concat $ map show rNums
-   return $ fromJust $ Map.lookup key dm
+   return $ fromJust $ lookup key dm
 
 
 {- Pick lists of lists of diceware words given a number of words per line
