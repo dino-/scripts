@@ -40,7 +40,7 @@ getWord dm = do
    g <- newStdGen
    let rNums = take 5 $ randomRs (1, 6 :: Int) g
    let key = concat $ map show rNums
-   Map.lookup key dm
+   return $ fromJust $ Map.lookup key dm
 
 
 {- Pick lists of lists of diceware words given a number of words per line
