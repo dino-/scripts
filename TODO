@@ -3,22 +3,6 @@ Need to pull out the binary search code in musicUtil/mkplaylist and put it here 
 
 
 --
-Perl script for backup spanning
-
--Can Perl see the media type/size?
-
-+Can Perl eject it? Yes, see below.
-
--Build path list to all dirs, sorted.
-
--Then calculate sizes and where divisions will occur.
-
--cli tool called eject
-
--Will growisofs work on a CD-R? No, use mkisofs redirected to cdrecord?
-
-
---
 cdburn
 
 -I'd like it to do both data CDs and CD-DA with cdrdao. Based on the file extension? .iso or .toc
@@ -35,10 +19,6 @@ cdburn
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.
-
-
---
-newperl
 
 
 --
@@ -159,12 +139,6 @@ xgo.hs
 
 
 --
-xslt
-
-+Change the usage to use Basename
-
-
---
 general notes
 
 -All apps should check for binary dependencies like cdlabelgen, vorbiscomment, etc
@@ -178,7 +152,6 @@ scripts going public
 Candidates for this:
 - megawho
 - newperl
-- pwgen
 - te
 
 Scripts slated for public release need some things:
@@ -186,4 +159,4 @@ Scripts slated for public release need some things:
 - Version number
 - Uniform and comprehensive help
 - More idiot-proofing with args
-- GPL licensing
+- Licensing
