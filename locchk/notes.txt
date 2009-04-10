@@ -1,1 +1,0 @@
-- Decouple the data about what hardware to look for (identifiers) from the script. New file in /etc perhaps
