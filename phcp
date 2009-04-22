@@ -1,22 +1,24 @@
 #! /bin/bash
 
-sdCardPath=/media/sdreader
+#photoSrcPath=/media/sdreader
+photoSrcPath=/media/panasonic_DMC-FX07
+
 incomingPath=~/pictures/incoming
 
 echo
 pushd $incomingPath
 
 echo
-echo "Mounting SD card on $sdCardPath"
-mount $sdCardPath
+echo "Mounting $photoSrcPath"
+mount $photoSrcPath
 
 echo
-echo "Copying files from SD media..."
-find $sdCardPath -regex ".*\.jpg" -exec cp -v {} "$incomingPath/" \;
+echo "Copying files..."
+find $photoSrcPath -regex ".*\.jpg" -exec cp -v {} "$incomingPath/" \;
 
 echo
-echo "Unmounting SD card on $sdCardPath"
-umount $sdCardPath
+echo "Unmounting $photoSrcPath"
+umount $photoSrcPath
 
 echo
 echo "Changing permissions to NOT executable"
