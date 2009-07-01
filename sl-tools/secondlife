@@ -11,7 +11,7 @@
 
 
 cd /usr/local/share/SecondLife
-BROWSER=/usr/bin/iceweasel ./secondlife
+BROWSER=/usr/bin/firefox ./secondlife
 
 # Undo what happens to the screen power-off setting.
 sleep 1
