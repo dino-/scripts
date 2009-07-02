@@ -11,6 +11,12 @@ salearnBin=/usr/bin/perlbin/vendor/sa-learn
 
 mailFolder=$1
 
+
+# Date stamp the output
+
+echo -n "$(date +"%F %T")> "
+
+
 # Train SpamAssassin with the mail in the supplied folder
 
 #$salearnBin --spam --mbox --no-rebuild $mailFolder
