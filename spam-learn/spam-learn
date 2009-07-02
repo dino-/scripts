@@ -5,11 +5,16 @@
 # delete the messages.
 #--------------------------------------------------------------------------
 
+# 2009-07-01 This was added to compensate for the way Arch Linux 
+# installs Perl scripts. The PATH in cron is missing this.
+salearnBin=/usr/bin/perlbin/vendor/sa-learn
+
 mailFolder=$1
 
 # Train SpamAssassin with the mail in the supplied folder
-#sa-learn --spam --mbox --no-rebuild $mailFolder
-sa-learn --spam --mbox $mailFolder
+
+#$salearnBin --spam --mbox --no-rebuild $mailFolder
+$salearnBin --spam --mbox $mailFolder
 
 
 # Remove the spam from the folder
