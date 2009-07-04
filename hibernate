@@ -2,4 +2,4 @@
 
 # An appropriate place for this script is /usr/local/sbin/
 
-s2disk
+hibernate -F /etc/hibernate/ususpend-disk.conf
