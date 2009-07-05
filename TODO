@@ -1,8 +1,8 @@
---
+%%
 Need to pull out the binary search code in musicUtil/mkplaylist and put it here somewhere. Also, needs to be prototyped more like sort() and take a coderef for the comparison.
 
 
---
+%%
 cdburn
 
 -I'd like it to do both data CDs and CD-DA with cdrdao. Based on the file extension? .iso or .toc
@@ -15,18 +15,18 @@ cdburn
 -Maybe take out the default 24x and make it not specify at all? This would handle future faster drives without adjustment.
 
 
---
+%%
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.
 
 
---
+%%
 router-reset
 
 -Possibly add logging of when this is called.
 
---
+%%
 sshtun
 
 - Write a document explaining:
@@ -39,7 +39,7 @@ sshtun
 - This project needs its own subdirectory
 
 
---
+%%
 xgo.hs
 
    - Decouple the data about what hardware to look for (identifiers) from the script. New file in /etc perhaps
@@ -138,7 +138,7 @@ xgo.hs
                   _       -> True
 
 
---
+%%
 general notes
 
 -All apps should check for binary dependencies like cdlabelgen, vorbiscomment, etc
@@ -146,7 +146,7 @@ general notes
 -Change all scripts to use here document for usage notes
 
 
---
+%%
 scripts going public
 
 Candidates for this:
