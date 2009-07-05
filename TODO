@@ -16,6 +16,14 @@ cdburn
 
 
 %%
+hibernate
+
+- This script's name conflicts with hibernate in the hibernate-script package. Not sure what to do about it yet, probably need better names for both suspend and hibernate.
+
+- Also, may be a good idea to group suspend and hibernate into a subdir
+
+
+%%
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.
