@@ -1,0 +1,29 @@
+#! /usr/bin/perl
+
+use strict;
+use warnings;
+
+
+# Args that are always needed
+
+my $disperArgs = '--scaling native ';
+
+
+# Use nvidia-settings to get the TwinView status
+
+my ($twinViewStatus) = `nvidia-settings --query TwinView` =~
+      /Attribute 'TwinView' \(.*\): (\d)\./;
+
+
+# Configure args for disper
+
+$disperArgs .= $twinViewStatus
+   # TwinView is on (1), we need to switch to single
+   ? '--single'
+   # TwinView is off (0), we need to extend
+   : '--extend';
+
+
+# Perform the switch
+
+system "disper $disperArgs";
