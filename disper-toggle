@@ -27,3 +27,13 @@ $disperArgs .= $twinViewStatus
 # Perform the switch
 
 system "disper $disperArgs";
+
+
+# Extra fun stuff
+
+# Screen metrics have possibly (probably?) changed, root window 
+# background probably borken now.
+
+# Reinstate my beloved root window image. I use feh for this, so:
+my $rootImgSetter = "$ENV{HOME}/.fehbg";
+system "eval `cat $rootImgSetter`" if -e $rootImgSetter;
