@@ -1,5 +1,9 @@
 #! /usr/bin/perl
 
+# This is a quick and dirty script to hack --toggle behavior into the 
+# disper monitor switching utility. It's my hope that this will be 
+# shortly obsoleted by new disper features.
+
 use strict;
 use warnings;
 
