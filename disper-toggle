@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 
-# Args that are always needed
+# Args that are always needed for disper
 
 my $disperArgs = '--scaling native ';
 
