@@ -1,0 +1,10 @@
+#! /usr/bin/env cargs
+
+ies4linux
+
+--install-corefonts
+--no-flash
+--no-desktop-icon
+--no-menu-icon
+--no-gui
+--beta-install-ie7
