@@ -14,11 +14,15 @@ mount $photoSrcPath
 
 echo
 echo "Copying files..."
-find $photoSrcPath -regex ".*\.jpg" -exec cp -v {} "$incomingPath/" \;
+find $photoSrcPath -iregex ".*\.jpg" -exec cp -v {} "$incomingPath/" \;
 
 echo
 echo "Unmounting $photoSrcPath"
 umount $photoSrcPath
+
+echo
+echo "Renaming icky caps .JPG extensions to .jpg"
+prename -v 's/\.JPG$/.jpg/' *.JPG
 
 echo
 echo "Changing permissions to NOT executable"
