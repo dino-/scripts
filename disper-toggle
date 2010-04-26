@@ -1,8 +1,15 @@
 #! /usr/bin/perl
 
-# This is a quick and dirty script to hack --toggle behavior into the 
-# disper monitor switching utility. It's my hope that this will be 
-# shortly obsoleted by new disper features.
+=for comment
+This is a script to add rotational behavior to the disper nvidia 
+display changing utility.
+
+Repeated invocations of this script will do this:
+   laptop display only -> external only
+   external only -> both displays
+   both displays -> laptop display only
+   etc..
+=cut
 
 use strict;
 use warnings;
