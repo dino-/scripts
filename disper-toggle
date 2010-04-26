@@ -13,19 +13,32 @@ use warnings;
 my $disperArgs = '--scaling native ';
 
 
-# Use nvidia-settings to get the TwinView status
+# Use nvidia-settings to get the AssociatedDisplays and TwinView status
 
-my ($twinViewStatus) = `nvidia-settings --query TwinView` =~
+my $nvsetQueryOutput = `nvidia-settings --query=AssociatedDisplays --query=TwinView`;
+
+my ($nvsetTwinView) = $nvsetQueryOutput =~
       /Attribute 'TwinView' \(.*\): (\d)\./;
+
+my ($nvsetAssociatedDisplays) = $nvsetQueryOutput =~
+      /Attribute 'AssociatedDisplays' \(.*\): 0x\d{7}(\d)\./;
 
 
 # Configure args for disper
 
-$disperArgs .= $twinViewStatus
-   # TwinView is on (1), we need to switch to single
-   ? '--single'
-   # TwinView is off (0), we need to extend
-   : '--extend';
+SWITCH: {
+   # Laptop display only now, switch to external only
+   if ($nvsetTwinView == 0 && $nvsetAssociatedDisplays == 0)
+      { $disperArgs .= '--secondary'; last SWITCH; }
+
+   # External monitor only now, switch to both
+   if ($nvsetTwinView == 0 && $nvsetAssociatedDisplays == 1)
+      { $disperArgs .= '--extend'; last SWITCH; }
+
+   # Both monitors now, switch to laptop only
+   if ($nvsetTwinView == 1 && $nvsetAssociatedDisplays == 1)
+      { $disperArgs .= '--single'; last SWITCH; }
+}
 
 
 # Perform the switch
