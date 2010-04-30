@@ -1,9 +1,10 @@
 #! /bin/bash
 
 
-# These will be specific to where you have your phone mount and what
-# reader software is used on the phone
+# This is where you mount your device, make sure it's right
 mountPoint=/media/mytouch
+
+# This directory on the device is specific to the Aldiko book reader
 dest=$mountPoint/eBooks/import
 
 
