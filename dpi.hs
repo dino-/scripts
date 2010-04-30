@@ -43,4 +43,4 @@ main = do
          printf "diagonal screen size (inches): %.1f\n" (diag::Float)
          printf "          dots per inch (DPI): %.2f\n" (dpi::Float)
 
-      otherwise -> displayUsage
+      _ -> displayUsage
