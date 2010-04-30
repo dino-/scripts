@@ -9,9 +9,9 @@ dest=$mountPoint/eBooks/import
 
 case "$1" in
    -h|--help)
-      echo "usage: bookinstall-mytouch EPUB_FILES"
-      echo "       bookinstall-mytouch -h"
-      echo "       bookinstall-mytouch --help"
+      echo "usage: bookinstall.sh EPUB_FILES"
+      echo "       bookinstall.sh -h"
+      echo "       bookinstall.sh --help"
       exit 1
       ;;
 esac
