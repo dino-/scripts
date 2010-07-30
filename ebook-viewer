@@ -1,0 +1,14 @@
+#! /bin/bash
+
+# The ebook-viewer utility of the Calibre project MODIFIES ANY EPUB 
+# DOCUMENT THAT'S OPENED WITH IT. A bookmarks file is inserted into 
+# the book. I know of no way at this time to prevent it from doing so 
+# short of turning off all write bits on the files.
+
+# This script is a crude solution, let ebook-viewer touch a junk copy 
+# of the book in /tmp
+
+tmpFile="/tmp/$(basename $1)"
+cp $1 $tmpFile
+/usr/bin/ebook-viewer $tmpFile
+rm $tmpFile
