@@ -37,7 +37,7 @@ function launch {
    binary=$1
 
    killall xscreensaver
-   cd /usr/local/games/Amnesia
+   cd $gamedir
    $binary
    xscreensaver -no-splash &
    exit 0
