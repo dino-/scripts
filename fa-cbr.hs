@@ -69,7 +69,8 @@ main = do
          (e:[]) -> return e
          _      -> exitBadInput
    let episode = printf "%04d" $ (read eraw :: Int)
-   putStrLn episode
+
+   printf "Attempting to get issue %s\n" episode
 
    -- Build some strings we'll need
    let baseUrl = "http://www.freakangels.com"
