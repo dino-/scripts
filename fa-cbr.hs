@@ -59,7 +59,7 @@ main = do
    -- Identify yourself
    progName <- getProgName
    putStrLn $ progName ++
-      "  v2.3.0  2010-10-24  Dino Morelli <dino@ui3.info>"
+      "  v2.3.1  Dino Morelli <dino@ui3.info>"
    putStrLn "http://ui3.info/darcs/scripts/fa-cbr.hs\n"
 
    -- Check the incoming episode number argument
