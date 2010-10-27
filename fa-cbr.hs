@@ -8,13 +8,13 @@
      http://www.freakangels.com/
 
    Written by adoring fan Dino Morelli <dino@ui3.info>
-   2008-02-22, 2010-10-24
+   2010-10-24
 
    This is, of course, free software. Give it to your friends. Enjoy
 -}
 
 import Control.Monad
-import Data.List
+import Control.Monad.Error
 import Data.Maybe
 import System.Cmd
 import System.Directory
@@ -25,86 +25,115 @@ import Text.Printf
 import Text.Regex
 
 
-exitBadInput = do
-   putStrLn $ unlines $
-      [ "FAILED!"
-      , ""
-      , "Please supply an episode number like '0001' or '2'"
-      , "Whatever floats your boat as long as it's a real episode"
-      , ""
-      , "Really testing the input for all manner of totally whack"
-      , "non-numeric values is kind of a pain in the ass. Please just"
-      , "pass a number, eh?"
-      , ""
-      ]
-   exitWith $ ExitFailure 1
-
-
-dlFailMessage = do
-   putStrLn $ unlines $
-      [ "FAILED!"
-      , ""
-      , "One or more images for this episode were not found!"
-      , ""
-      ]
-
-
-cleanUp dirPath = do
-   putStrLn "Cleaning up.."
-   removeDirectoryRecursive dirPath
-
-
-main :: IO ()
-main = do
-   -- Identify yourself
+outputProgInfo :: IO ()
+outputProgInfo = do
    progName <- getProgName
    putStrLn $ progName ++
       "  v2.3.1  Dino Morelli <dino@ui3.info>"
    putStrLn "http://ui3.info/darcs/scripts/fa-cbr.hs\n"
 
-   -- Check the incoming episode number argument
-   eraw <- do
-      as <- getArgs
-      case as of
-         (e:[]) -> return e
-         _      -> exitBadInput
-   let episode = printf "%04d" $ (read eraw :: Int)
 
-   printf "Attempting to get issue %s\n" episode
+data EP = EP String (IO ExitCode)
 
+instance Error EP where
+   strMsg msg = EP msg $ return ExitSuccess
+
+
+getEpisode :: [String] -> ErrorT EP IO String
+
+getEpisode (e:_) = do
+   return $ printf "%04d" $ (read e :: Int)
+
+getEpisode _     = do
+   files <- liftIO $ getDirectoryContents "."
+   let re = mkRegex "([0-9]+)"
+   let nss = map head . catMaybes .
+         map (matchRegex re) $ files
+   let m = foldl max (-1) . map read $ nss :: Int
+
+   when (m < 0) $ throwError $
+      EP "Unable to determine next issue number"
+         (return $ ExitFailure 1)
+
+   return $ printf "%04d" (m + 1)
+
+
+checkFileExists :: FilePath -> ErrorT EP IO ()
+checkFileExists cbtFile = do
+   exists <- liftIO $ doesFileExist cbtFile
+   when exists $ throwError $ EP (printf "CBR file %s already exists. Aborting!" cbtFile)
+      (return $ ExitFailure 2)
+
+
+cleanUp :: MonadIO m => FilePath -> m ()
+cleanUp dirPath = liftIO $ do
+   putStrLn "Cleaning up.."
+   removeDirectoryRecursive dirPath
+
+
+downloadFiles :: String -> FilePath -> ErrorT EP IO ()
+downloadFiles episode dirPath = do
    -- Build some strings we'll need
    let baseUrl = "http://www.freakangels.com"
    let imgPrefix = printf "%s/comics/FA%s-" baseUrl episode :: String
    let imgSuffix = ".jpg"
-   let dirPath = printf "FreakAngels_%s" episode
 
-   putStrLn "Creating dir for downloaded images.."
-   createDirectory dirPath
-   cwd <- getCurrentDirectory  -- Save this path for later
-   setCurrentDirectory dirPath
+   cwd <- liftIO $ do
+      putStrLn "Creating dir for downloaded images.."
+      createDirectory dirPath
+      getCurrentDirectory  -- Save this path for later
 
-   putStrLn "Downloading images.."
-   -- Let's hope the assumption of 6 pages per episode holds true
-   forM_ [1..6] $ \n ->
-      system $ printf "wget %s%d%s" imgPrefix (n :: Int) imgSuffix
+   -- Try first image to check if this is a valid issue
+   dlSucceeded <- liftIO $ do
+      setCurrentDirectory dirPath
+      putStrLn "Downloading images.."
+      system $ printf "wget %s%d%s" imgPrefix (1 :: Int) imgSuffix
+      ds <- fmap not $ doesFileExist "index.html"
+      setCurrentDirectory cwd
+      return ds
 
-   dlSucceeded <- fmap not $ doesFileExist "index.html"
+   -- It's not a valid issue, stop now
+   unless dlSucceeded $ throwError $ EP (printf "Pages for episode %s were not found. Is this a valid episode number?" episode)
+      (cleanUp dirPath >> (return $ ExitFailure 3))
 
-   setCurrentDirectory cwd
+   -- We're good, get the rest of the pages
+   liftIO $ do
+      setCurrentDirectory dirPath
+      forM_ [2..6] $ \n ->
+         system $ printf "wget %s%d%s" imgPrefix (n :: Int) imgSuffix
+      setCurrentDirectory cwd
 
-   let cbtFile = dirPath ++ ".cbt"
-   case dlSucceeded of
-      True  -> do
-         putStrLn "Constructing CBR file.."
-         system $ printf "tar cvf %s %s" cbtFile dirPath
 
-         cleanUp dirPath
+constructCbr :: FilePath -> FilePath -> ErrorT EP IO ()
+constructCbr cbtFile dirPath = do
+   liftIO $ putStrLn "Constructing CBR file.."
+   liftIO $ system $ printf "tar cvf %s %s" cbtFile dirPath
 
-         putStrLn $ printf "Complete. Your new file: %s" cbtFile
+   cleanUp dirPath
 
-      False -> do
-         dlFailMessage
+   liftIO $ putStrLn $ printf "Complete. Your new file: %s" cbtFile
 
-         cleanUp dirPath
 
-         exitWith $ ExitFailure 2
+main :: IO ()
+main = do
+   outputProgInfo
+
+   result <- runErrorT $ do
+      episode <- liftIO getArgs >>= getEpisode
+
+      let dirPath = printf "FreakAngels_%s" episode
+      let cbtFile = dirPath ++ ".cbt"
+
+      checkFileExists cbtFile
+
+      downloadFiles episode dirPath
+
+      constructCbr cbtFile dirPath
+
+      return ExitSuccess
+
+   either (\(EP msg a) -> do
+      putStrLn $ "ERROR: " ++ msg
+      a >>= exitWith
+      )
+      exitWith result
