@@ -1,6 +1,6 @@
 #! /bin/bash
 
-#photoSrcPath=/media/sdreader
+#photoSrcPath=/media/sd-reader
 photoSrcPath=/media/panasonic_DMC-FX07
 
 incomingPath=~/pictures/incoming
