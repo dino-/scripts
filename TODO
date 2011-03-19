@@ -1,11 +1,5 @@
 %%
-Need to pull out the binary search code in musicUtil/mkplaylist and put it here somewhere. Also, needs to be prototyped more like sort() and take a coderef for the comparison.
-
-
-%%
 cdburn
-
--I'd like it to do both data CDs and CD-DA with cdrdao. Based on the file extension? .iso or .toc
 
 -Change this to use strict and also make the docs use the $opt_* vars.
 
@@ -24,15 +18,16 @@ hibernate
 
 
 %%
+hoursum
+
+- This has been replaced by the Haskell timesheet project. Remove hoursum soon.
+
+
+%%
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.
 
-
-%%
-router-reset
-
--Possibly add logging of when this is called.
 
 %%
 sshtun
@@ -50,7 +45,7 @@ sshtun
 %%
 general notes
 
--All apps should check for binary dependencies like cdlabelgen, vorbiscomment, etc
+-In a perfect world, all scripts would check for existence of binaries they call
 
 -Change all scripts to use here document for usage notes
 
