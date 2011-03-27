@@ -5,7 +5,7 @@ case "$1" in
    -h|--help)
       echo "usage: epub-repair.sh ZIPFILE"
       echo "       epub-repair.sh -h"
-      echo "       epub-repair. --help"
+      echo "       epub-repair.sh --help"
       exit 1
       ;;
 esac
