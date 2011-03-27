@@ -1,4 +1,0 @@
-#! /bin/bash
-
-rm -v $1
-zip -Xr9D $1 mimetype *
