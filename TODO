@@ -18,12 +18,6 @@ hibernate
 
 
 %%
-hoursum
-
-- This has been replaced by the Haskell timesheet project. Remove hoursum soon.
-
-
-%%
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.
