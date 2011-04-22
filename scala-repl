@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# Convenience script to run the Scala REPL in the top-level dir
+# of a project and have access to the source files and classes
+# that are part of it.
+
+scala -cp dist/build -sourcepath src
