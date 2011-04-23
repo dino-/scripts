@@ -11,4 +11,4 @@
 
 
 cd /usr/local/share/SecondLife
-BROWSER=/usr/bin/firefox ./secondlife
+BROWSER=/usr/bin/chromium ./secondlife
