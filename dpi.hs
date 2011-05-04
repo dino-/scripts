@@ -19,7 +19,7 @@ displayUsage = do
       , "Options:"
       , "  -h, --help  This usage information"
       , ""
-      , "by Dino Morelli <dino@ui3.info>  2010-04-29"
+      , "Dino Morelli <dino@ui3.info>"
       ]
 
 
