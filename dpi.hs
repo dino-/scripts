@@ -32,15 +32,15 @@ main = do
    case (length argStrings) of
       3 -> do
          -- Convert to numeric type and bind them
-         let (width : height : diag : []) = map read argStrings
+         let (wp : hp : di : []) = map read argStrings
 
          -- Calculate dpi from the input
-         let dpi = (sqrt ((width ^ 2) + (height ^ 2))) / diag
+         let dpi = (sqrt ((wp ^ 2) + (hp ^ 2))) / di
 
          -- Display results
          printf "   resolution (pixels, W x H): %.0f x %.0f\n"
-            (width::Float) (height::Float)
-         printf "diagonal screen size (inches): %.1f\n" (diag::Float)
+            (wp::Float) (hp::Float)
+         printf "diagonal screen size (inches): %.1f\n" (di::Float)
          printf "          dots per inch (DPI): %.2f\n" (dpi::Float)
 
       _ -> displayUsage
