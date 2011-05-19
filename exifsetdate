@@ -1,0 +1,3 @@
+#! /bin/bash
+
+exiv2 -M"del Exif.Photo.DateTimeOriginal" -M"del Exif.Photo.DateTimeDigitized" -M"set Exif.Image.DateTime Ascii $1" -M"set Exif.Photo.UserComment Comment DateTime is a guess" $2
