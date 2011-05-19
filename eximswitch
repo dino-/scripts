@@ -1,0 +1,27 @@
+#! /bin/bash
+
+
+function usage {
+   echo "usage: eximswitch FILE"
+   echo "Switch which config we're using with exim"
+   exit 1
+}
+
+
+# No args at all
+if [ "$1" = "" ] ; then usage ; fi
+
+eximConf=exim.conf
+
+cd /etc/mail
+
+if [ ! -L $eximConf ]
+then
+   echo "$eximConf is not a symlink, aborting"
+   exit 1
+fi
+
+rm $eximConf
+ln -s $(basename $1) $eximConf
+ls -l
+/etc/rc.d/exim restart
