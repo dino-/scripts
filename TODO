@@ -1,12 +1,17 @@
 %%
 cdburn
 
--Change this to use strict and also make the docs use the $opt_* vars.
+- Change this to use strict and also make the docs use the $opt_* vars.
 
--Need to add overburn support. Here are the switches:
+- Need to add overburn support. Here are the switches:
     $ cdrecord driveropts=burnfree -sao -overburn dev=/dev/hdc foo.iso
 
--Maybe take out the default 24x and make it not specify at all? This would handle future faster drives without adjustment.
+- Maybe take out the default 24x and make it not specify at all? This would handle future faster drives without adjustment.
+
+%%
+exifsetdate
+
+- Document this thing so it's clear how to use it
 
 
 %%
@@ -39,9 +44,9 @@ sshtun
 %%
 general notes
 
--In a perfect world, all scripts would check for existence of binaries they call
+- In a perfect world, all scripts would check for existence of binaries they call
 
--Change all scripts to use here document for usage notes
+- Change all scripts to use here document for usage notes
 
 
 %%
