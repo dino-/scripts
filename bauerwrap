@@ -1,3 +1,0 @@
-#! /bin/bash
-
-bauerbill --powerpill-conf ~/.config/powerpill --aur $*
