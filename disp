@@ -1,0 +1,50 @@
+#!/bin/bash
+
+
+laptopDisplay="LVDS"
+homeDisplay="DisplayPort-1"
+
+
+basename=`basename $0`
+
+
+function usage {
+   cat <<USAGE
+$basename - Change active outputs
+
+usage:
+   $basename [OPTIONS] PROFILE
+
+options:
+   -h, --help  This help info
+
+profiles:
+   laptop   Laptop display only
+   home     External monitor at home only
+   both     Both of the above outputs
+
+USAGE
+
+   exit 1
+}
+
+
+if [ "$1" == "" ]
+   then
+      echo "ERROR: No profile specified"
+      usage
+fi
+
+
+case "$1" in
+   -h|--help) usage ;;
+   laptop) switches="--output $laptopDisplay --auto --output $homeDisplay --off" ;;
+   home) switches="--output $laptopDisplay --off --output $homeDisplay --auto" ;;
+   both) switches="--output $laptopDisplay --auto --output $homeDisplay --auto --right-of $laptopDisplay" ;;
+esac
+
+
+command="xrandr $switches"
+set -x
+xrandr $switches
+eval `cat $HOME/.fehbg`
