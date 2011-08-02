@@ -1,8 +1,9 @@
 #!/bin/bash
 
 
-laptopDisplay="LVDS"
-homeDisplay="DisplayPort-1"
+# Find these for your system in xrandr output
+laptopDisplay="LVDS1"
+extDisplay="DisplayPort-1"
 
 
 basename=`basename $0`
@@ -20,8 +21,8 @@ options:
 
 profiles:
    laptop   Laptop display only
-   home     External monitor at home only
-   both     Both of the above outputs
+   ext      External monitor only
+   both     Both of the above outputs, laptop on the left
 
 USAGE
 
@@ -29,22 +30,14 @@ USAGE
 }
 
 
-if [ "$1" == "" ]
-   then
-      echo "ERROR: No profile specified"
-      usage
-fi
-
-
 case "$1" in
-   -h|--help) usage ;;
-   laptop) switches="--output $laptopDisplay --auto --output $homeDisplay --off" ;;
-   home) switches="--output $laptopDisplay --off --output $homeDisplay --auto" ;;
-   both) switches="--output $laptopDisplay --auto --output $homeDisplay --auto --right-of $laptopDisplay" ;;
+   laptop)  switches="--output $laptopDisplay --auto --output $extDisplay --off" ;;
+   ext)     switches="--output $laptopDisplay --off --output $extDisplay --auto" ;;
+   both)    switches="--output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay" ;;
+   *) usage ;;
 esac
 
 
-command="xrandr $switches"
 set -x
 xrandr $switches
 eval `cat $HOME/.fehbg`
