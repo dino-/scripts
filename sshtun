@@ -3,9 +3,9 @@
 
 basename=`basename $0`
 
-defSleepTime=300
-
-defSshTunPort=22
+# Things with default values
+optSleepTime=300
+optSshPort=22
 
 
 function usage {
@@ -17,14 +17,14 @@ usage:
 
 options:
    -p, --ssh-port PORT     SSH Port from this system to the other for 
-                           setting up this tunnel. Default: $defSshTunPort
+                           setting up this tunnel. Default: $optSshPort
    -u, --user USER         User on remote system. Default: \$USER
    -H, --host HOST         Remote system IP or hostname
    -r, --remote-port PORT  Port for using tunnel on remote system
    -l, --local-port PORT   Port for using tunnel on this (the local) 
                            system
    -S, --sleep-time SECS   Seconds to sleep before trying to reestablish
-                           a dropped connection. Default: $defSleepTime
+                           a dropped connection. Default: $optSleepTime
    -h, --help              This help information
 
 For this to really be useful you need passwordless ssh between the users 
@@ -92,8 +92,6 @@ fi
 
 
 optUser=${optUser:-$USER}
-optSshPort=${optSshPort:-$defSshTunPort}
-optSleepTime=${optSleepTime:-$defSleepTime}
 
 command="ssh -p $optSshPort -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
 
