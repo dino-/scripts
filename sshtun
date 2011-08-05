@@ -91,6 +91,7 @@ then
 fi
 
 
+# If no user set explicitly, use current user
 optUser=${optUser:-$USER}
 
 command="ssh -p $optSshPort -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
