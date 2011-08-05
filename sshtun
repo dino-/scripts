@@ -34,7 +34,12 @@ on these two systems. You need to set that up yourself and of course be
 mindful of the security issues involved.
 
 example:
-   $ sshtun -u remoteuser -H remotehost -r 2022
+   On the system you want to get back to, this establishes the tunnel 
+   and stays running:
+      $ sshtun -u remoteuser -h remotehost -r 2022
+
+   On the remotehost, to connect through the tunnel:
+      $ ssh -p 2022 localhost
 
 
 Dino Morelli <dino@ui3.info>
