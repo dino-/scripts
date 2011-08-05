@@ -6,6 +6,7 @@ basename=`basename $0`
 # Things with default values
 optSleepTime=300
 optSshPort=22
+optLocalPort=22
 
 
 function usage {
@@ -21,8 +22,9 @@ options:
    -u, --user USER         User on remote system. Default: \$USER
    -H, --host HOST         Remote system IP or hostname
    -r, --remote-port PORT  Port for using tunnel on remote system
-   -l, --local-port PORT   Port for using tunnel on this (the local) 
-                           system
+                           Note: Must be root to use ports < 1024
+   -l, --local-port PORT   Port for using tunnel to get back to this (the
+                           local) system. Default: $optLocalPort
    -S, --sleep-time SECS   Seconds to sleep before trying to reestablish
                            a dropped connection. Default: $optSleepTime
    -h, --help              This help information
@@ -79,13 +81,6 @@ fi
 if [ "$optRemotePort" = "" ]
 then
    echo "Remote port required!"
-   echo
-   usage
-fi
-
-if [ "$optLocalPort" = "" ]
-then
-   echo "Local port required!"
    echo
    usage
 fi
