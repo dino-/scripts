@@ -33,7 +33,7 @@ For this to really be useful you need passwordless ssh between the users
 on these two systems. You need to set that up yourself and of course be 
 mindful of the security issues involved.
 
-2008-03-21  Dino Morelli <dino@ui3.info>
+Dino Morelli <dino@ui3.info>
 
 USAGE
 
