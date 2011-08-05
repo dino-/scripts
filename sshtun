@@ -3,7 +3,7 @@
 
 basename=`basename $0`
 
-sleepTime=300
+defSleepTime=300
 
 defSshTunPort=22
 
@@ -23,6 +23,8 @@ options:
    -r, --remote-port PORT  Port for using tunnel on remote system
    -l, --local-port PORT   Port for using tunnel on this (the local) 
                            system
+   -S, --sleep-time SECS   Seconds to sleep before trying to reestablish
+                           a dropped connection. Default: $defSleepTime
    -h, --help              This help information
 
 For this to really be useful you need passwordless ssh between the users 
@@ -39,7 +41,7 @@ USAGE
 
 # arg parsing
 
-getoptResults=`getopt -o p:u:H:r:l:h --long user:,host:,remote-port:,local-port:,help -n $basename -- "$@"`
+getoptResults=`getopt -o p:u:H:r:l:S:h --long user:,host:,remote-port:,local-port:,sleep-time:,help -n $basename -- "$@"`
 
 if [ $? != 0 ] ; then usage ; fi
 
@@ -53,6 +55,7 @@ while true ; do
       -H|--host) optHost="$2" ; shift 2 ;;
       -r|--remote-port) optRemotePort="$2" ; shift 2 ;;
       -l|--local-port) optLocalPort="$2" ; shift 2 ;;
+      -S|--sleep-time) optSleepTime="$2" ; shift 2 ;;
       -h|--help) optHelp=1 ; shift ;;
       --) shift ; break ;;
       *) echo "Internal error!" ; exit 1 ;;
@@ -90,6 +93,7 @@ fi
 
 optUser=${optUser:-$USER}
 optSshPort=${optSshPort:-$defSshTunPort}
+optSleepTime=${optSleepTime:-$defSleepTime}
 
 command="ssh -p $optSshPort -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
 
@@ -101,7 +105,7 @@ do
    echo "  $command"
    echo "Press ctrl-c twice to REALLY stop"
    $command
-   echo "Stopped at $(date)  Restarting in $sleepTime secs"
-   sleep $sleepTime
+   echo "Stopped at $(date)  Restarting in $optSleepTime secs"
+   sleep $optSleepTime
    echo "Restarting.."
 done
