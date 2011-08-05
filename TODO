@@ -40,6 +40,8 @@ sshtun
 
 - This project needs its own subdirectory
 
+- Try to make this a service that can start a boot time. Can be done without a controlling terminal?
+
 
 %%
 general notes
