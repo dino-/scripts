@@ -47,16 +47,16 @@ if [ $? != 0 ] ; then usage ; fi
 eval set -- "$getoptResults"
 
 while true ; do
-	case "$1" in
+   case "$1" in
       -p|--ssh-port) optSshPort="$2" ; shift 2 ;;
       -u|--user) optUser="$2" ; shift 2 ;;
       -H|--host) optHost="$2" ; shift 2 ;;
       -r|--remote-port) optRemotePort="$2" ; shift 2 ;;
       -l|--local-port) optLocalPort="$2" ; shift 2 ;;
       -h|--help) optHelp=1 ; shift ;;
-		--) shift ; break ;;
-		*) echo "Internal error!" ; exit 1 ;;
-	esac
+      --) shift ; break ;;
+      *) echo "Internal error!" ; exit 1 ;;
+   esac
 done
 
 echo "[$optHost]"
