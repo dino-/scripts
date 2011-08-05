@@ -68,8 +68,6 @@ while true ; do
    esac
 done
 
-echo "[$optHost]"
-
 
 # validate the args
 
