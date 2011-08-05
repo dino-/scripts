@@ -33,6 +33,10 @@ For this to really be useful you need passwordless ssh between the users
 on these two systems. You need to set that up yourself and of course be 
 mindful of the security issues involved.
 
+example:
+   $ sshtun -u remoteuser -H remotehost -r 2022
+
+
 Dino Morelli <dino@ui3.info>
 
 USAGE
