@@ -45,6 +45,11 @@ USAGE
 }
 
 
+function log {
+   echo "$(date +"%F %T")> $1"
+}
+
+
 # arg parsing
 
 getoptResults=`getopt -o p:u:H:r:l:S:h --long user:,host:,remote-port:,local-port:,sleep-time:,help -n $basename -- "$@"`
@@ -96,12 +101,11 @@ command="ssh -p $optSshPort -N -R $optRemotePort:localhost:$optLocalPort $optUse
 # This will keep trying to restore the tunnel any time it's down
 while true
 do
-   echo -n `date`
-   echo "  Starting tunnel with this command:"
-   echo "  $command"
-   echo "Press ctrl-c twice to REALLY stop"
+   log "Starting tunnel with this command:"
+   echo "   $command"
+   echo "   Press ctrl-c twice to REALLY stop"
    $command
-   echo "Stopped at $(date)  Restarting in $optSleepTime secs"
+   log "Stopped. Restarting in $optSleepTime secs"
    sleep $optSleepTime
-   echo "Restarting.."
+   log "Restarting now"
 done
