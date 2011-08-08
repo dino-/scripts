@@ -18,6 +18,11 @@ remoteHost=remotehost
 #   remoteHost$ ssh -p 2022 localUser@localhost
 remotePort=2022
 
+# Note: If the remoteHost is a "middleman" system, you can connect
+# straight back through it in one shot by adding to
+# remoteHost:/etc/ssh/sshd_config
+#   GatewayPorts yes
+
 # Time in seconds to wait before attempting to reestablish the tunnel
 sleepTime=300
 
