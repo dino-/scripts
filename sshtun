@@ -1,107 +1,35 @@
 #!/bin/bash
 
+# This script wraps the behavior of establishing a tunnel on a remote
+# host that comes back here to this system.
 
-basename=`basename $0`
+# Edit these variables as necessary
 
-# Things with default values
-optSleepTime=300
-optSshPort=22
-optLocalPort=22
+# Port we are using to establish this tunnel
+sshPort=22
+# Port that will be used to tunnel back to this system
+localPort=22
 
+# User and host of remote system
+remoteUser=$USER
+remoteHost=remotehost
 
-function usage {
-   cat <<USAGE
-$basename - Create and keep open an ssh tunnel
+# Port to use the tunnel, like this:
+#   remoteHost$ ssh -p 2022 localUser@localhost
+remotePort=2022
 
-usage:
-   $basename [OPTIONS]
+# Time in seconds to wait before attempting to reestablish the tunnel
+sleepTime=300
 
-options:
-   -p, --ssh-port PORT     SSH Port from this system to the other for 
-                           setting up this tunnel. Default: $optSshPort
-   -u, --user USER         User on remote system. Default: \$USER
-   -h, --host HOST         Remote system IP or hostname
-   -r, --remote-port PORT  Port for using tunnel on remote system
-                           Note: Must be root to use ports < 1024
-   -l, --local-port PORT   Port for using tunnel to get back to this (the
-                           local) system. Default: $optLocalPort
-   -S, --sleep-time SECS   Seconds to sleep before trying to reestablish
-                           a dropped connection. Default: $optSleepTime
-   --help                  This help information
-
-For this to really be useful you need passwordless ssh between the users 
-on these two systems. You need to set that up yourself and of course be 
-mindful of the security issues involved.
-
-example:
-   On the system you want to get back to, this establishes the tunnel 
-   and stays running:
-      $ sshtun -u remoteuser -h remotehost -r 2022
-
-   On the remotehost, to connect through the tunnel:
-      $ ssh -p 2022 localhost
-
-
-Dino Morelli <dino@ui3.info>
-
-USAGE
-
-   exit 1
-}
+# The command for establishing the tunnel
+# May want to add -X or -Y for X11 forwarding, if desired
+command="ssh -p $sshPort -N -R $remotePort:localhost:$localPort $remoteUser@$remoteHost"
 
 
 function log {
    echo "$(date +"%F %T")> $1"
 }
 
-
-# arg parsing
-
-getoptResults=`getopt -o p:u:h:r:l:S: --long user:,host:,remote-port:,local-port:,sleep-time:,help -n $basename -- "$@"`
-
-if [ $? != 0 ] ; then usage ; fi
-
-# Note the quotes around `$TEMP': they are essential!
-eval set -- "$getoptResults"
-
-while true ; do
-   case "$1" in
-      -p|--ssh-port) optSshPort="$2" ; shift 2 ;;
-      -u|--user) optUser="$2" ; shift 2 ;;
-      -h|--host) optHost="$2" ; shift 2 ;;
-      -r|--remote-port) optRemotePort="$2" ; shift 2 ;;
-      -l|--local-port) optLocalPort="$2" ; shift 2 ;;
-      -S|--sleep-time) optSleepTime="$2" ; shift 2 ;;
-      --help) optHelp=1 ; shift ;;
-      --) shift ; break ;;
-      *) echo "Internal error!" ; exit 1 ;;
-   esac
-done
-
-
-# validate the args
-
-if [ "$optHelp" = 1 ]; then usage ; fi
-
-if [ -z "$optHost" ]
-then
-   echo "Remote host required!"
-   echo
-   usage
-fi
-
-if [ "$optRemotePort" = "" ]
-then
-   echo "Remote port required!"
-   echo
-   usage
-fi
-
-
-# If no user set explicitly, use current user
-optUser=${optUser:-$USER}
-
-command="ssh -p $optSshPort -N -R $optRemotePort:localhost:$optLocalPort $optUser@$optHost"
 
 # This will keep trying to restore the tunnel any time it's down
 while true
@@ -110,7 +38,7 @@ do
    echo "   $command"
    echo "   Press ctrl-c twice to REALLY stop"
    $command
-   log "Stopped. Restarting in $optSleepTime secs"
-   sleep $optSleepTime
+   log "Stopped. Restarting in $sleepTime secs"
+   sleep $sleepTime
    log "Restarting now"
 done
