@@ -12,34 +12,35 @@ use Getopt::Long;
 my @commands;
 my $basename = basename $0;
 my %opts = (
-    device => '/dev/cdrom',
-    speed => 24,
+    device => '/dev/scd0',
 );
 
 #--------------------------------------------------------------------------
 sub displayUsage {
     print <<USAGE;
 $basename - Burn a data or music CD
-version 1.0.4  Dino Morelli  dino\@ui3.info
 
 usage:
-   $basename [-eksv] [-d device] [-x speed] file
+   $basename [OPTIONS] FILE
    $basename --help
 
-switches:
-   -e, --eject          Eject when finished, default: false
+options:
+   -e, --eject          Eject when finished
    -d, --device=DEVICE  SCSI device, default: $opts{device}
                         If you need to know more, like SCSI device numbers, 
                         drive model info, etc:
                         `wodim -scanbus`
                         `wodim dev=$opts{device} -scanbus`
-   -h, --help           This information.
-   -k, --check          Check disk after burn, default: false
+   -h, --help           This information
+   -k, --check          Check disk after burn
                         This is only valid for ISO and will ignore -e
-   -s, --simulate       Simulate, don't really burn, default: false
-   -v, --verbose        Verbose, default: false
-   -x, --speed=SPEED    Burn speed, default: $opts{speed}
-   file                 ISO or TOC file to burn (.iso or .toc)
+   -s, --simulate       Simulate, don't really burn
+   -v, --verbose        Verbose
+   -x, --speed=SPEED    Burn speed, default: not specified
+
+FILE is an ISO or TOC file to burn (.iso or .toc)
+
+version 1.0.5  Dino Morelli  dino\@ui3.info
 USAGE
 
 	exit;
@@ -78,7 +79,7 @@ SWITCH: {
 		if(!$opts{check})
 		{ $command .= ($opts{eject} ? "-eject " : ""); }
 		$command .= ($opts{simulate} ? "-dummy " : "");
-		$command .= "speed=$opts{speed} ";
+		$command .= ($opts{speed} ? "speed=$opts{speed} " : "");
 		$command .= ($opts{verbose} ? "-v " : "");
 		$command .= $file;
 		push(@commands, $command);

@@ -4,8 +4,6 @@ cdburn
 - Need to add overburn support. Here are the switches:
     $ cdrecord driveropts=burnfree -sao -overburn dev=/dev/hdc foo.iso
 
-- Maybe take out the default 24x and make it not specify at all? This would handle future faster drives without adjustment.
-
 %%
 exifsetdate
 
