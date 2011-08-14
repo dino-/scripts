@@ -1,8 +1,6 @@
 %%
 cdburn
 
-- Change this to use strict and also make the docs use the $opt_* vars.
-
 - Need to add overburn support. Here are the switches:
     $ cdrecord driveropts=burnfree -sao -overburn dev=/dev/hdc foo.iso
 
