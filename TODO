@@ -4,6 +4,12 @@ cdburn
 - Need to add overburn support. Here are the switches:
     $ cdrecord driveropts=burnfree -sao -overburn dev=/dev/hdc foo.iso
 
+- Rewrite this script to be less complicated, maybe a thin bash wrapper instead with less of its own switches, just help with optional but popular wodim switches
+
+- In above rewrite, remove music CD capability. It's just never used.
+
+- Check to see if cdcheck really works any longer without ejecting. May be able to remove this as well.
+
 %%
 exifsetdate
 
