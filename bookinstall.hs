@@ -40,6 +40,7 @@ usage = putStrLn $ unlines
    ]
 
 
+installToReader :: [FilePath] -> (FilePath, FilePath) -> IO (Either String ())
 installToReader epubFiles (mountPoint, destSuffix) =
    runErrorT $ do
       liftIO $ putStrLn ""
