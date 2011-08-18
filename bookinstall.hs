@@ -29,16 +29,15 @@ parseArgs args
 
 
 usage :: IO ()
-usage = do
-   putStrLn $ unlines
-      [ "Usage: bookinstall.hs [OPTIONS] EPUB_FILES"
-      , "Install epub book files on all connected readers"
-      , ""
-      , "Options:"
-      , "  -h, --help  This usage information"
-      , ""
-      , "Dino Morelli <dino@ui3.info>"
-      ]
+usage = putStrLn $ unlines
+   [ "Usage: bookinstall.hs [OPTIONS] EPUB_FILES"
+   , "Install epub book files on all connected readers"
+   , ""
+   , "Options:"
+   , "  -h, --help  This usage information"
+   , ""
+   , "Dino Morelli <dino@ui3.info>"
+   ]
 
 
 installToReader epubFiles (mountPoint, destSuffix) =
