@@ -3,7 +3,7 @@
 
 # Find these for your system in xrandr output
 laptopDisplay="LVDS"
-extDisplay="DisplayPort-1"
+extDisplay="DFP2"
 
 
 basename=`basename $0`
