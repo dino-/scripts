@@ -5,7 +5,7 @@
 # delete the messages.
 #--------------------------------------------------------------------------
 
-salearnBin=$(which sa-learn)
+salearnBin="/usr/bin/vendor_perl/sa-learn"
 
 mailFolder=$1
 
