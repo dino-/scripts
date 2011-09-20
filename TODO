@@ -13,9 +13,9 @@ exifsetdate
 
 
 %%
-hibernate
+hibernate and suspend
 
-- This script's name conflicts with hibernate in the hibernate-script package. Not sure what to do about it yet, probably need better names for both suspend and hibernate.
+- Change these to run pm-hibernate and pm-suspend. Anything else need to be done that pm-utils can't do?
 
 - Also, may be a good idea to group suspend and hibernate into a subdir
 
