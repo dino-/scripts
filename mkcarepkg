@@ -1,0 +1,20 @@
+#! /bin/bash
+
+# Add files to this list as needed
+files=(
+   .bash_profile
+   .bashrc
+   .cabal/config
+   .darcs/defaults
+   .ssh/id_rsa.pub
+   .vimrc
+)
+
+archive="carepkg.tar"
+
+cd $HOME
+tar cvf $archive ${files[*]}
+
+echo
+echo "File $archive created. Add more files like this:"
+echo "   $ tar uvf $archive FILE..."
