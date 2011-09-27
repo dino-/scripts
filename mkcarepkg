@@ -13,7 +13,7 @@ files=(
 archive="carepkg.tar"
 
 cd $HOME
-tar cvf $archive ${files[*]}
+tar cvf $archive ${files[*]} $*
 
 echo
 echo "File $archive created. Add more files like this:"
