@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Perform a test build on a Haskell package, to be done between cabal 
+# sdist and Hackage upload
+
+if [ ! -f "$1" ]
+then
+   echo "usage: $0 PACKAGE_ARCHIVE"
+   exit 1
+fi
+
+set -e
+
+# Get absolute path to the passed Haskell package
+package=$(readlink -m $1)
+
+# Unpack it in /tmp
+cd /tmp
+tar xzf $package
+
+# Perform the full build, test, the works
+packageDir=$(basename $package .tar.gz)
+cd $packageDir
+cabal configure --enable-test
+cabal build
+cabal test
+cabal haddock
+
+# Clean up that mess
+cd ..
+rm -rf $packageDir
+
+# If we got here, this was successful
+echo "Package $packageDir builds successfully!"
