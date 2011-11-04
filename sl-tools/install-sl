@@ -41,7 +41,7 @@ print "done\n";
 # This owner/group is pretty normal for /usr/local/share
 # Not using Perl's own chown here because of its lack of recursivity.
 print "Changing new client software user/group...";
-system "chown -R root:staff $newDirName";
+system "chown -R root:users $newDirName";
 print "done\n";
 
 # Create the new simlink
