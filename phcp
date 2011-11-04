@@ -22,7 +22,7 @@ umount $photoSrcPath
 
 echo
 echo "Renaming icky caps .JPG extensions to .jpg"
-prename -v 's/\.JPG$/.jpg/' *.JPG
+perl-rename -v 's/\.JPG$/.jpg/' *.JPG
 
 echo
 echo "Changing permissions to NOT executable"
