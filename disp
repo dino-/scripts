@@ -30,10 +30,12 @@ USAGE
 }
 
 
+commonSwitches="--dpi 100"
+
 case "$1" in
-   laptop)  switches="--output $laptopDisplay --auto --output $extDisplay --off" ;;
-   ext)     switches="--output $laptopDisplay --off --output $extDisplay --auto" ;;
-   both)    switches="--output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay" ;;
+   laptop)  switches="--output $laptopDisplay --auto --output $extDisplay --off $commonSwitches" ;;
+   ext)     switches="--output $laptopDisplay --off --output $extDisplay --auto $commonSwitches" ;;
+   both)    switches="--output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay $commonSwitches" ;;
    *) usage ;;
 esac
 
