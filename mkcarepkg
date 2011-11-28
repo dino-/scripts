@@ -6,7 +6,6 @@ files=(
    .bashrc
    .cabal/config
    .darcs/defaults
-   .ssh/id_rsa.pub
    .vimrc
 )
 
@@ -18,3 +17,6 @@ tar cvf $archive ${files[*]} $*
 echo
 echo "File $archive created. Add more files like this:"
 echo "   $ tar uvf $archive FILE..."
+echo ""
+echo "   Suggested files that may be helpful:"
+echo "      .ssh/id_rsa.pub"
