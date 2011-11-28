@@ -12,6 +12,7 @@ files=(
 archive="carepkg-$USER-$HOSTNAME.tar"
 
 cd $HOME
+rm -v $archive
 tar cvf $archive ${files[*]} $*
 
 echo
