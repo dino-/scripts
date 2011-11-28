@@ -9,7 +9,7 @@ files=(
    .vimrc
 )
 
-archive="carepkg.tar"
+archive="carepkg-$USER-$HOSTNAME.tar"
 
 cd $HOME
 tar cvf $archive ${files[*]} $*
