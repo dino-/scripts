@@ -8,7 +8,10 @@
 # This script is a crude solution, let ebook-viewer touch a junk copy 
 # of the book in /tmp
 
-tmpFile="/tmp/$(basename $1)"
-cp $1 $tmpFile
-/usr/bin/ebook-viewer $tmpFile
-rm $tmpFile
+set -u
+set -e
+
+tmpFile=/tmp/$(basename "$1")
+cp "$1" "$tmpFile"
+/usr/bin/ebook-viewer "$tmpFile"
+rm "$tmpFile"
