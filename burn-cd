@@ -8,6 +8,6 @@ set -e
 
 device=/dev/scd0
 
--n "$1"
+[ -n "$1" ]
 
 cdrecord driveropts=burnfree -tao dev=$device $*
