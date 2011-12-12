@@ -11,4 +11,4 @@ device=/dev/scd0
 
 [ -n "$1" ]
 
-growisofs -Z $device -r -joliet-long $*
+growisofs -Z $device -r -joliet-long -speed=4 $*
