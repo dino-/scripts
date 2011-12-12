@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# Script to perform the common-case data CD burning. Argument should be a
+# ISO image file at a minimum. Any other cdrecord/wodim args are good here.
+
+set -u
+set -e
+
+device=/dev/scd0
+
+-n "$1"
+
+cdrecord driveropts=burnfree -tao dev=$device $*

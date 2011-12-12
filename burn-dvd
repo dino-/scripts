@@ -1,0 +1,14 @@
+#! /bin/bash
+
+# Script to perform the common-case data DVD burning. Argument should be a
+# directory at a minimum. Any other growisofs or mkisofs args are
+# good here.
+
+set -u
+set -e
+
+device=/dev/scd0
+
+-n "$1"
+
+growisofs -Z $device -r -joliet-long $*
