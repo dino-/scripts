@@ -4,11 +4,17 @@
 # directory at a minimum. Any other growisofs or mkisofs args are
 # good here.
 
-set -u
-set -e
-
 device=/dev/scd0
+prefix="growisofs -Z $device -r -J"
 
-[ -n "$1" ]
+case "$1" in
+   "" | "-h" | "--help")
+      echo "command: $prefix [ADDL ARGS] DIR"
+      echo "useful args:"
+      echo "  -joliet-long instead of -J"
+      echo "  -speed=1, 2 or 4 instead of default"
+      exit 1
+      ;;
+esac
 
-growisofs -Z $device -r -joliet-long -speed=4 $*
+$prefix $*
