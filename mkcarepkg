@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Add files to this list as needed
+# Add files to this list as needed, these are relative to ~
 files=(
    .bash_profile
    .bashrc
