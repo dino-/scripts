@@ -5,14 +5,16 @@
 # good here.
 
 device=/dev/scd0
-prefix="growisofs -Z $device -r -J"
+
+# speed of 4 is safe with Toshiba and JVC 8x media
+prefix="growisofs -Z $device -r -J -speed=4"
 
 case "$1" in
    "" | "-h" | "--help")
       echo "command: $prefix [ADDL ARGS] DIR"
       echo "useful args:"
       echo "  -joliet-long instead of -J"
-      echo "  -speed=1, 2 or 4 instead of default"
+      echo "  -speed=[SPEED] or none (default, max) instead of 4 as above"
       exit 1
       ;;
 esac
