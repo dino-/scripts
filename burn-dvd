@@ -12,9 +12,15 @@ prefix="growisofs -Z $device -r -J -speed=4"
 case "$1" in
    "" | "-h" | "--help")
       echo "command: $prefix [ADDL ARGS] DIR"
+      echo
       echo "useful args:"
+      echo "  -dry-run"
       echo "  -joliet-long instead of -J"
       echo "  -speed=[SPEED] or none (default, max) instead of 4 as above"
+      echo "  exclusions: -x EXCL1 -x EXCL2 ... DIR"
+      echo "    can be tricky, mind slashes and where . is, example:"
+      echo "      \$ cd TOPLEVELDIR"
+      echo "      \$ burn-dvd -x ./DIR -x ./FILE ."
       exit 1
       ;;
 esac
