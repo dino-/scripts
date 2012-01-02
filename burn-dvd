@@ -4,7 +4,7 @@
 # directory at a minimum. Any other growisofs or mkisofs args are
 # good here.
 
-device=/dev/scd0
+device=/dev/sr0
 
 # speed of 4 is safe with Toshiba and JVC 8x media
 prefix="growisofs -Z $device -r -J -speed=4"
