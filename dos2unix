@@ -12,8 +12,7 @@ oldfile=$1.old
 
 mv $newfile $oldfile
 
-sed -e 's/
-//' $oldfile > $newfile
+sed -e 's///' $oldfile > $newfile
 
 if [ -e $newfile ]
 then
