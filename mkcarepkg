@@ -10,7 +10,7 @@ files=(
    .vimrc
 )
 
-archive="carepkg-$USER-$HOSTNAME.tar"
+archive="carepkg-$HOSTNAME-$USER.tar"
 
 cd $HOME
 rm -v $archive
