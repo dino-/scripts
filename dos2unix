@@ -4,11 +4,10 @@
 # Script to fix the line ending of a DOS style file to be like Unix
 #--------------------------------------------------------------------------
 
-newfile=$1
-oldfile=$1.old
+set -u
 
-#echo $newfile
-#echo $oldfile
+newfile=$1
+oldfile=${newfile}.old
 
 mv $newfile $oldfile
 
