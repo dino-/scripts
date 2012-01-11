@@ -1,8 +1,6 @@
 #! /bin/sh
 
-#--------------------------------------------------------------------------
-# Script to fix the line ending of a DOS style file to be like Unix
-#--------------------------------------------------------------------------
+# Script to replace DOS style line ending with UNIX style
 
 set -u
 
