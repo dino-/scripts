@@ -6,14 +6,31 @@
 md5Sums=$(mktemp --tmpdir --suffix=.md5 cdcheck-XXXX)
 optMount="/media/cd"
 
+echo "Computing md5 sums for source files..."
 find . -type f | xargs md5sum | tee $md5Sums
 
+echo
+echo "Mounting optical media..."
 mount $optMount
 pushd $optMount
 
-md5sum -c $md5Sums || echo "FAILED, THIS DISC IS PROBABLY BAD!"
+echo
+echo "Checking md5 sums against the optical media..."
+md5sum -c $md5Sums
+exitCode=$?
 
+if [ "$exitCode" == "0" ]
+   then
+      echo "md5 sums matched, disc looks good"
+   else
+      echo "FAILED, THIS DISC IS PROBABLY BAD!"
+fi
+
+echo
+echo "Cleaning up"
 popd
 umount $optMount
 
 rm $md5Sums
+
+exit $exitCode
