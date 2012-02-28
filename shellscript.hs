@@ -6,6 +6,7 @@ import System.Directory
 --import System.Environment
 import System.Exit
 import System.Locale
+--import System.Process
 import System.Time
 import Text.Printf
 
@@ -80,9 +81,12 @@ ok _           = False
    string interpolation             Text.Printf
       "foo $bar ${baz}"                printf "foo %s %d" bar baz
 
-   execution                        System.Cmd
+   execution, exit code             System.Cmd
       program -x val arg               ec <- system "program -x val arg"
       ec=$?
+
+   execution, capture stdout        System.Process
+      output=$(program -x val arg)     output <- readProcess "program" ["-x", "val", "arg"] "stdin data, if desired"
 
    exiting                          System.Exit
       exit 0                           exitSuccess
