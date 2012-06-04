@@ -88,6 +88,10 @@ ok _           = False
    execution, capture stdout        System.Process
       output=$(program -x val arg)     output <- readProcess "program" ["-x", "val", "arg"] "stdin data, if desired"
 
+      or use System.Process.readProcessWithExitCode
+      :: FilePath -> [String] -> String -> IO (ExitCode, String, String)
+         program     args        stdin         exitcode  stdout  stderr
+
    exiting                          System.Exit
       exit 0                           exitSuccess
       exit 1                           exitFailure
