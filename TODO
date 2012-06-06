@@ -38,21 +38,6 @@ mkcarepkg
 
 
 %%
-sshtun
-
-- Write a document explaining:
-   - what this is all for
-   - the issues
-   - things you need to do
-   - things you need to install
-   - and how to use the script.
-
-- This project needs its own subdirectory
-
-- Try to make this a service that can start a boot time. Can be done without a controlling terminal?
-
-
-%%
 general notes
 
 - In a perfect world, all scripts would check for existence of binaries they call
