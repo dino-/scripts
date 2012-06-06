@@ -18,14 +18,6 @@ exifsetdate
 
 
 %%
-hibernate and suspend
-
-- Change these to run pm-hibernate and pm-suspend. Anything else need to be done that pm-utils can't do?
-
-- Also, may be a good idea to group suspend and hibernate into a subdir
-
-
-%%
 megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to whois services.

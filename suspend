@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# An appropriate place for this script is /usr/local/sbin/
-
-hibernate -F /etc/hibernate/ususpend-ram.conf
