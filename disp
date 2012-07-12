@@ -2,8 +2,8 @@
 
 
 # Find these for your system in xrandr output
-laptopDisplay="LVDS"
-extDisplay="DFP5"
+laptopDisplay="LVDS-0"
+extDisplay="HDMI-0"
 
 
 basename=`basename $0`
