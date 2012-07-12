@@ -30,7 +30,7 @@ USAGE
 }
 
 
-commonSwitches="--dpi 100"
+commonSwitches=""
 
 case "$1" in
    laptop)  switches="--output $laptopDisplay --auto --output $extDisplay --off $commonSwitches" ;;
