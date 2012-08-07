@@ -25,7 +25,10 @@ $salearnBin --spam --mbox $mailFolder
 
 mailFolderNew=${mailFolder}.new
 
-awk '/^From / { messages++ }; messages > 1 { exit 0 }; { print }' $mailFolder > $mailFolderNew
+# This was for pine, to preserve those dumb dummy emails in each folder
+#awk '/^From / { messages++ }; messages > 1 { exit 0 }; { print }' $mailFolder > $mailFolderNew
+# Added this for mutt
+touch $mailFolderNew
 
 if [ -e $mailFolderNew ]
 then
