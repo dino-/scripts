@@ -1,0 +1,8 @@
+#! /bin/bash
+
+# kill unresponsive mutt and blow away the temp files
+
+set -e
+
+killall mutt
+rm -fv /tmp/mutt-jupiter-*
