@@ -75,7 +75,11 @@ ok _           = False
       pwd                              getCurrentDirectory
       cd DIR                           setCurrentDirectory DIR
 
-   other env variables              System.Environment
+   arguments                        System.Environment
+      arg1=$1                          (arg1 : arg2 : _) <- getArgs
+      arg2=$2
+
+   environment variables            System.Environment
       $VAR                             getEnv "VAR"
 
    string interpolation             Text.Printf
