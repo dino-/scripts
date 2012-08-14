@@ -9,6 +9,7 @@ import System.Locale
 --import System.Process
 import System.Time
 import Text.Printf
+--import Text.Regex
 
 
 main :: IO ()
@@ -100,5 +101,9 @@ ok _           = False
       exit 0                           exitSuccess
       exit 1                           exitFailure
       exit INT                         exitWith $ ExitFailure INT
+
+   regular expressions              Text.Regex
+      (see bash docs for =~            mbMatches = matchRegex (mkRegex "a(.)b(.)") string
+       and BASH_REMATCH)                  :: Maybe [String]
 
 -}
