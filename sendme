@@ -1,8 +1,10 @@
 #! /bin/sh
 
+subject=${2:-a link}
+
 /usr/sbin/sendmail -ti <<MESSAGE
 To: dino
-Subject: a link
+Subject: $subject
 
 $1
 MESSAGE
