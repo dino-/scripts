@@ -1,5 +1,28 @@
 #! /bin/sh
 
+basename=$(basename $0)
+
+function usage {
+   cat <<USAGE
+$basename - Send a simple email
+
+usage:
+   $basename OPTIONS
+   $basename BODY [SUBJECT]
+
+options:
+   -h, --help  This help info
+
+USAGE
+
+   exit 1
+}
+
+
+case "$1" in
+   -h | --help) usage ;;
+esac
+
 subject=${2:-a link}
 
 /usr/sbin/sendmail -ti <<MESSAGE
