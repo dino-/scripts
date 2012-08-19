@@ -103,7 +103,8 @@ ok _           = False
       exit INT                         exitWith $ ExitFailure INT
 
    regular expressions              Text.Regex
-      (see bash docs for =~            mbMatches = matchRegex (mkRegex "a(.)b(.)") string
-       and BASH_REMATCH)                  :: Maybe [String]
+      (see bash docs for =~            mbMatches = matchRegex
+       and BASH_REMATCH)                  (mkRegex "a(.)b(.)") string
+                                          :: Maybe [String]
 
 -}
