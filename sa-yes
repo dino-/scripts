@@ -1,8 +1,0 @@
-# Use from Pine to pipe an uncaught spam to SpamAssassin's learn tool.
-
-#--------------------------------------------------------------------------
-# Script to teach SpamAssassin that an email is spam.
-#--------------------------------------------------------------------------
-
-sa-learn --spam --no-sync $1
-

@@ -1,8 +1,0 @@
-# Use from Pine to pipe false positive spam to SpamAssassin's learn tool.
-
-#--------------------------------------------------------------------------
-# Script to teach SpamAssassin that an email is NOT spam.
-#--------------------------------------------------------------------------
-
-sa-learn --ham --no-sync $1
-
