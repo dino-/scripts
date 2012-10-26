@@ -1,9 +1,0 @@
-#!/bin/sh
-
-#--------------------------------------------------------------------------
-# Script as detailed by man growisofs to allow burning with sudo
-#--------------------------------------------------------------------------
-
-unset SUDO_COMMAND
-export MKISOFS=/usr/bin/mkisofs
-exec growisofs "$@"
