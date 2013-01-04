@@ -19,7 +19,7 @@ usage() {
    echo "   $scriptName SLIDES_PDF_FILE"
    echo
    echo "This script requires that these programs are installed:"
-   echo "   - psf2ps"
+   echo "   - pdf2ps"
    echo "   - psnup"
    echo "   - lpr"
 
