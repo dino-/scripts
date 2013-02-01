@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# TODO: Check for existence of $1
+# TODO: Better error message if no $1
+# TODO: Notes about running as root user
+# TODO: Usage about: Using the output of ghc-pkg list or the contents of /usr/local/lib, /usr/local/share and /usr/local/share/doc to figure out what to remove. Also be mindful that some packages may have installed binaries in /usr/local/bin
+
+ghc-pkg unregister $1 || exit 1
+rm -rfv /usr/local/lib/$1
+rm -rfv /usr/local/share/$1
+rm -rfv /usr/local/share/doc/$1
