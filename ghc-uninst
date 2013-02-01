@@ -1,7 +1,20 @@
 #! /bin/bash
 
-# TODO: Check for existence of $1
-# TODO: Better error message if no $1
+case "$1" in
+   "" | "-h" | "--help")
+
+      echo "Script for 'clean' removal of globally-installed GHC packages"
+      echo "usage: $(basename $0) GHC-PACKAGE"
+      echo
+      echo "Find packages to remove by looking at output of \`ghc-pkg list\`"
+      echo "or looking in /usr/local/share"
+      echo
+      echo "This script is intended be run as root"
+
+      exit 1
+      ;;
+esac
+
 # TODO: Notes about running as root user
 # TODO: Usage about: Using the output of ghc-pkg list or the contents of /usr/local/lib, /usr/local/share and /usr/local/share/doc to figure out what to remove. Also be mindful that some packages may have installed binaries in /usr/local/bin
 
