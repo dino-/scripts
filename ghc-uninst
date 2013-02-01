@@ -7,7 +7,7 @@ case "$1" in
       echo "usage: $(basename $0) GHC-PACKAGE"
       echo
       echo "Find packages to remove by looking at output of \`ghc-pkg list\`"
-      echo "or looking in /usr/local/share"
+      echo "or looking in /usr/local/lib, /usr/local/share and /usr/local/share/doc"
       echo
       echo "Also, be aware that some packages may have installed binaries in"
       echo "/usr/local/bin that will need to be hand-removed by you."
