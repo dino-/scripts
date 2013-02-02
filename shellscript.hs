@@ -66,8 +66,8 @@ dateFormat fmt = fmap (formatCalendarTime defaultTimeLocale
 -}
 logM :: String -> IO ()
 logM msg = do
-   date <- dateFormat "%Y-%m-%d %H:%M:%S"
-   printf "%s> %s\n" date msg
+   tstamp <- dateFormat "%Y-%m-%d %H:%M:%S"
+   printf "%s> %s\n" tstamp msg
 
 
 {- Turn an exit code (say, from system) into a Bool
