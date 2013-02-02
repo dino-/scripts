@@ -1,5 +1,27 @@
 #! /usr/bin/env runhaskell
 
+{- This is a 'skeleton file' for writing shell scripts with Haskell
+
+   Haskell is my go-to language for anything more complicated than a
+   simple sequence of shell commands in a bash script. Doing list
+   processing and a lot of logic in bash is a grind, to me.
+
+   The idea here is to take a copy of this script and hack it to do
+   what you need quickly. Throw the rest out.
+
+   The script starts off (after the imports) with some simple examples
+   in main.
+
+   After that are a few functions that simplify things like getting
+   the date as a String, logging a date-stamped String to stdout and
+   manupulating an ExitCode as a true/false value.
+
+   Finally, there is a comment block full of examples in bash and some
+   Haskell code to do something along the same lines.
+
+   version: 1.0
+-}
+
 --import Control.Monad ( when, unless )
 --import System.Cmd
 import System.Directory
@@ -55,11 +77,7 @@ ok ExitSuccess = True
 ok _           = False
 
 
-{- This is a skeleton file for writing shell scripts with Haskell
-   Use what you need from this and delete the rest, including 
-   unused imports.
-
-   Some common bash things to use here:
+{- Some common bash things and their Haskell counterparts:
 
    bash                             Haskell
    ----                             -------
@@ -68,6 +86,7 @@ ok _           = False
 
       date +"%Y%m%d"                   dateFormat "%Y%m%d"
          result: 20120213
+                                    (these two functions above)
 
    file/dir things                  System.Directory
       $HOME                            getHomeDirectory
