@@ -95,12 +95,12 @@ ok _           = False
       pwd                              getCurrentDirectory
       cd DIR                           setCurrentDirectory DIR
 
+   environment variables            System.Environment
+      $VAR                             getEnv "VAR"
+
    arguments                        System.Environment
       arg1=$1                          (arg1 : arg2 : _) <- getArgs
       arg2=$2
-
-   environment variables            System.Environment
-      $VAR                             getEnv "VAR"
 
    string interpolation             Text.Printf
       "foo $bar ${baz}"                printf "foo %s %d" bar baz
