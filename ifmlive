@@ -1,0 +1,61 @@
+#! /bin/bash
+
+usage() {
+   scriptName=$(basename $0)
+
+   echo $1
+   echo
+   echo "$scriptName - ifm live view with custom editor"
+   echo
+   echo "usage:"
+   echo "   $scriptName IMFFILE [GV_SWITCHES]"
+   echo
+   echo "This script requires:"
+   echo "   - gv is installed"
+   echo "   - your EDITOR environment variable is set"
+   echo "   - ifm binaries are installed (of course)"
+   echo
+   echo "GV_SWITCHES is additional arguments to be sent to gv. See man 1 gv"
+   echo
+   echo "A useful gv switch:"
+   echo "   -orientation=landscape"
+
+   exit 1
+}
+
+ifmFile=$1
+[ -f "$ifmFile" ] || usage "No ifm file given to edit"
+shift
+psFile="$(basename $ifmFile '.ifm').ps"
+
+ifmBin="ifm"
+[ $(which $ifmBin) ] || usage "No ifm binary found!"
+
+[ $(which gv) ] || usage "No gv binary found!"
+
+[ $EDITOR ] || usage "No EDITOR environment variable set!"
+
+
+# How many seconds between file-changed checks
+checkInterval=2
+
+
+# Background a loop to watch for changes to the .ifm file
+while true
+do
+   [ $ifmFile -nt $psFile ] &&
+      $ifmBin -m -f ps -o $psFile $ifmFile
+
+   sleep $checkInterval
+done &
+
+# Run gv with watching the state of the ps file, this is the live
+# map viewer
+gv -watch $psFile $* &
+
+# Finally, leave the user in their favorite editor
+$EDITOR $ifmFile
+
+# When they are finished, kill the loop above and the viewer
+kill %1
+kill %2
