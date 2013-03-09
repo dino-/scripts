@@ -21,7 +21,7 @@ tar xzf $package
 # Perform the full build, test, the works
 packageDir=$(basename $package .tar.gz)
 cd $packageDir
-cabal configure --enable-test
+cabal configure --enable-tests
 cabal build
 cabal test
 cabal haddock
