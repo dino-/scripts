@@ -28,7 +28,9 @@ parseArgs _                   = usage
 
 -- General failure message, used by several patterns above
 usage :: IO a
-usage = error "usage: txt2hslist.hs FILE [INDENTSPACES]"
+usage = do
+   pn <- getProgName
+   error $ printf "usage: %s FILE [INDENTSPACES]" pn
 
 
 -- Output a line with a specified indent and specified first character
