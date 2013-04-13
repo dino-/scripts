@@ -37,9 +37,17 @@ usage = do
 outputLine :: Int -> Char -> String -> IO ()
 outputLine indent ']'       _    = printf "%s]\n" (spaces indent)
 outputLine indent startChar line =
-   printf "%s%c \"%s\"\n" (spaces indent) startChar line
+   printf "%s%c \"%s\"\n" (spaces indent) startChar (escapeQuotes line)
 
 
 -- Construct a String containing a specific number of spaces
 spaces :: Int -> String
 spaces i = replicate i ' '
+
+
+-- We need to escape all " characters
+escapeQuotes :: String -> String
+escapeQuotes = concatMap repl
+   where
+      repl '"' = "\\\""
+      repl c   = [c]
