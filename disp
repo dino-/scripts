@@ -33,13 +33,20 @@ USAGE
 commonSwitches=""
 
 case "$1" in
-   laptop)  switches="--output $laptopDisplay --auto --output $extDisplay --off $commonSwitches" ;;
-   ext)     switches="--output $laptopDisplay --off --output $extDisplay --auto $commonSwitches" ;;
-   both)    switches="--output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay $commonSwitches" ;;
+   laptop)
+      set -x
+      xrandr --output $laptopDisplay --auto --output $extDisplay --off $commonSwitches
+      ;;
+   ext)
+      set -x
+      xrandr --output $laptopDisplay --off --output $extDisplay --auto $commonSwitches
+      ;;
+   both)
+      set -x
+      xrandr --output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay $commonSwitches
+      xrandr --output $extDisplay --primary
+      ;;
    *) usage ;;
 esac
 
-
-set -x
-xrandr $switches
 eval `cat $HOME/.fehbg`
