@@ -5,4 +5,4 @@
 set -e
 
 killall mutt
-rm -fv /tmp/mutt-jupiter-*
+rm -fv /tmp/mutt-${HOSTNAME}-*
