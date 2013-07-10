@@ -30,21 +30,22 @@ USAGE
 }
 
 
-commonSwitches=""
-
 case "$1" in
    laptop)
       set -x
-      xrandr --output $laptopDisplay --auto --output $extDisplay --off $commonSwitches
+      xrandr --output $laptopDisplay --auto --output $extDisplay --off
+      xrandr --dpi 130
       ;;
    ext)
       set -x
-      xrandr --output $laptopDisplay --off --output $extDisplay --auto $commonSwitches
+      xrandr --output $laptopDisplay --off --output $extDisplay --auto
+      xrandr --dpi 85
       ;;
    both)
       set -x
-      xrandr --output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay $commonSwitches
+      xrandr --output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay
       xrandr --output $extDisplay --primary
+      xrandr --dpi 85
       ;;
    *) usage ;;
 esac
