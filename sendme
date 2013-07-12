@@ -25,7 +25,7 @@ esac
 
 subject=${2:-a link}
 
-/usr/bin/msmtp -ti <<MESSAGE
+/usr/sbin/sendmail -ti <<MESSAGE
 To: $USER
 Subject: $subject
 
