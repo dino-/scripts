@@ -17,6 +17,14 @@ mkcarepkg
 
 
 %%
+mountsshfs
+
+- Add a note about ways to get around "connection reset by peer" errors
+
+- Possible to catch ctrl-c or other interrupt and execute fusermount -u ?
+
+
+%%
 general notes
 
 - In a perfect world, all scripts would check for existence of binaries they call
