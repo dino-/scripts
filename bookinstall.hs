@@ -53,7 +53,7 @@ installToReader epubFiles (mountPoint, destSuffix) =
       mapM_ (chattyCopy (mountPoint </> destSuffix)) epubFiles
 
       -- umount the reader
-      systemE $ "umount " ++ mountPoint
+      systemE $ "fusermount -u " ++ mountPoint
       liftIO $ printf "unmounted %s\n" mountPoint
 
       return ()
