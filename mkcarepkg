@@ -16,16 +16,18 @@ cd $HOME
 rm -v $archive
 tar cvf $archive ${files[*]} $*
 
-echo
-echo "File $HOME/$archive created"
-echo
-echo "Add more files by running this script again:"
-echo "   $ mkcarepkg FILE1 FILE2 ..."
-echo
-echo "Or add to existing tar like this:"
-echo "   $ tar uvf $archive FILE..."
-echo
-echo "Some additional files that may be helpful:"
-echo "   .gitconfig"
-echo "   .profile"
-echo "   .ssh/id_rsa.pub"
+cat << INFO
+
+File $HOME/$archive created
+
+Add more files by running this script again:
+   $ mkcarepkg FILE1 FILE2 ...
+
+Or add to existing tar like this:
+   $ tar uvf $archive FILE...
+
+Some additional files that may be helpful:
+   .gitconfig
+   .profile
+   .ssh/id_rsa.pub
+INFO
