@@ -1,6 +1,9 @@
 #! /usr/bin/env runhaskell
 
-import Control.Monad.Error (liftIO, runErrorT, throwError)
+{-# LANGUAGE FlexibleContexts #-}
+
+import Control.Monad.Error
+import Data.List (isInfixOf)
 import System.Cmd (system)
 import System.Directory (copyFile)
 import System.Environment (getArgs, getProgName)
@@ -35,6 +38,7 @@ usage = do
       , "  -h, --help  This usage information"
       , ""
       , "This script will quietly overwrite files on the destination. Be careful!"
+      , "If the filesystem was already mounted, it will be left that way."
       , ""
       , "Dino Morelli <dino@ui3.info>"
       ]
@@ -45,20 +49,40 @@ installFiles (mountPoint : destSuffix : files) = do
    result <- runErrorT $ do
       liftIO $ putStrLn ""
 
-      -- mount the reader
-      systemE $ "mount " ++ mountPoint
-      liftIO $ printf "mounted %s\n" mountPoint
+      -- mount the filesystem
+      alreadyMounted <- mount mountPoint
 
       -- copy the files
       mapM_ (chattyCopy (mountPoint </> destSuffix)) files
 
-      -- umount the reader
-      systemE $ "fusermount -u " ++ mountPoint
-      liftIO $ printf "unmounted %s\n" mountPoint
+      -- umount the filesystem
+      if (alreadyMounted)
+         then liftIO $ putStrLn "WARNING: filesystem was not unmounted!"
+         else do
+            liftIO $ putStrLn "Unmounting filesystem now.. please wait.."
+            systemE $ "fusermount -u " ++ mountPoint
+            liftIO $ putStrLn "Done"
 
       return ()
 
    either putStrLn return result
+
+
+{- Mount the filesystem only if it's not already mounted. Returns
+   True if it was already mounted, otherwise False
+-}
+mount :: (MonadIO m, MonadError String m) => String -> m Bool
+mount mountPoint = do
+   output <- liftIO $ readFile "/etc/mtab"
+
+   if (mountPoint `isInfixOf` output)
+      then do
+         liftIO $ putStrLn "Filesystem already mounted"
+         return True
+      else do
+         liftIO $ putStrLn "Filesystem not mounted, mounting now"
+         systemE $ "mount " ++ mountPoint
+         return False
 
 
 {- Wrapper so that failed system commands produce failure in ErrorT
