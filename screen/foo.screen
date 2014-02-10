@@ -1,0 +1,8 @@
+screen
+title foo
+
+chdir $HOME/dev/working
+screen
+title bar
+
+select 0
