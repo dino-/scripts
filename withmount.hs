@@ -43,8 +43,6 @@ usage = do
 execute :: [String] -> IO ()
 execute (mountPoint : commandParts) = do
    result <- runErrorT $ do
-      liftIO $ putStrLn ""
-
       -- mount the filesystem
       alreadyMounted <- mount mountPoint
 
@@ -54,11 +52,10 @@ execute (mountPoint : commandParts) = do
 
       -- umount the filesystem
       if alreadyMounted
-         then liftIO $ putStrLn "WARNING: filesystem was not unmounted!"
+         then return ()
          else do
-            liftIO $ putStrLn "Unmounting filesystem now.. please wait.."
-            systemE $ "fusermount -u " ++ mountPoint
-            liftIO $ putStrLn "Done"
+            _ <- systemE $ "fusermount -u " ++ mountPoint
+            return ()
 
       return ()
 
@@ -73,11 +70,8 @@ mount mountPoint = do
    output <- liftIO $ readFile "/etc/mtab"
 
    if trimTrailingSlash mountPoint `isInfixOf` output
-      then do
-         liftIO $ putStrLn "Filesystem already mounted"
-         return True
+      then return True
       else do
-         liftIO $ putStrLn "Filesystem not mounted, mounting now"
          systemE $ "mount " ++ mountPoint
          return False
 
