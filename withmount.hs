@@ -7,6 +7,7 @@ import Data.List (intercalate, isInfixOf)
 import System.Cmd (system)
 import System.Environment (getArgs, getProgName)
 import System.Exit (ExitCode (..))
+import System.IO (hPutStrLn, stderr)
 
 
 main :: IO ()
@@ -59,7 +60,7 @@ execute (mountPoint : commandParts) = do
 
       return ()
 
-   either putStrLn return result
+   either (hPutStrLn stderr) return result
 
 
 {- Mount the filesystem only if it's not already mounted. Returns
