@@ -1,7 +1,6 @@
 #! /usr/bin/env runhaskell
 
 import Control.Monad ( mplus )
-import Data.Char ( isDigit )
 import Data.List ( intercalate )
 import Data.Time
    ( FormatTime, ParseTime, UTCTime
@@ -72,7 +71,8 @@ parseInput' ("-e" : epochString : []) = strToUTCTime 1 epochString
 parseInput' ("-m" : milliString : []) = strToUTCTime 1000 milliString
 parseInput' ("-f" : as)               = parseDateString $ joinArgs as
 parseInput' as
-   | any (not . isDigit) $ joinArgs as = parseInput' $ "-f" : as
+   | any (not . (flip elem) "-0123456789")
+      $ joinArgs as = parseInput' $ "-f" : as
    | otherwise = strToUTCTime 1 (joinArgs as)
 
 
