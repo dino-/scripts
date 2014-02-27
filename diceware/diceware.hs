@@ -1,5 +1,9 @@
 #! /usr/bin/env runhaskell
 
+{- This software was inspired by The Diceware Passphrase Home Page
+   http://world.std.com/~reinhold/diceware.html
+-}
+
 import Control.Monad (replicateM, replicateM_)
 import Data.List (intercalate)
 import Data.Map hiding ( map )
