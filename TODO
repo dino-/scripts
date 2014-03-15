@@ -19,6 +19,8 @@ mkcarepkg
 %%
 withmount.hs
 
+- This is becoming a part of the "davbox" project and needs to be a real binary-producing project that can be installed with distro packaging.
+
 - Would like a verbose option. For this to happen, needs to have more serious arg parsing and probably be a project of its own.
 
 
@@ -35,6 +37,7 @@ scripts going public
 
 Candidates for this:
 - megawho
+- withmount.hs
 
 Scripts slated for public release need some things:
 - Author email address
