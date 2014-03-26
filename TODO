@@ -17,6 +17,18 @@ mkcarepkg
 
 
 %%
+tidy-ind
+tidy-xml
+
+- Found these switches in a file called tidy-html.conf, figure out
+  how to bring all this together into one script perhaps
+
+   indent-spaces: 3
+   indent-attributes: yes
+   wrap: 0
+
+
+%%
 withmount.hs
 
 - This is becoming a part of the "davbox" project and needs to be a real binary-producing project that can be installed with distro packaging.
