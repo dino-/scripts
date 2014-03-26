@@ -1,6 +1,6 @@
 #! /bin/bash
 
-tidy -i --indent-spaces 3 --wrap 0 -xml $*
+tidy --indent --indent-spaces 3 --wrap 0 -xml $*
 
 echo >&2
 echo "Use $0 with -m to modify the file in place" >&2
