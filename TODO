@@ -1,4 +1,16 @@
 %%
+clrvimtmp
+
+- Rewrite in bash instead of Perl, I bet it'll be smaller even
+
+   use this:
+      for F in $(find $HOME -regex '.*sw[mnop]')
+      do
+         stat --printf="%n\n   %y\n" $F
+      done
+
+
+%%
 exifsetdate
 
 - Document this thing so it's clear how to use it
