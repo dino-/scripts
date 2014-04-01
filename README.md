@@ -44,9 +44,6 @@ Much of this is specific to something I needed, but some of these may be of use 
    * **mkcarepkg** - Make a 'care package' of files from your home
       directory, for getting up to speed on a new system
    * **mountiso** - Mount an iso image to /mnt
-   * **new-hs.hs** - Create a very simple Haskell starter shell
-      script
-   * **new-pl** - Create a very simple Perl starter script
    * **sendme** - Send yourself a simple email from the shell
    * **sshtun** - Establish a persistent SSH tunnel on a remote
       system
