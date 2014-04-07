@@ -124,7 +124,7 @@ output (Right ut) = do
    printf "\n %s ISO1601: %s\n" (fmt "%Z" local) (fmt iso1601Offset local)
    putStrLn $ " UTC ISO1601: " ++ fmt iso1601Zulu ut
 
-   putStrLn $ "\n       epoch: " ++ fmt "%s" ut
+   putStrLn $ "\n   Unix time: " ++ fmt "%s" ut
    putStrLn $ "milliseconds: " ++ (show . fromIntegral . truncate
       . (* 1000) . realToFrac . utcTimeToPOSIXSeconds $ ut)
 
