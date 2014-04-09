@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# Process /SOMEDIR/FILE.md or .markdown into
+# /SOMEDIR/FILE.html using Pandoc
+
+
+MDPATH=$1
+MDFILE=$(basename $MDPATH)
+HTMLPATH="$(dirname $MDPATH)/${MDFILE%.*}.html"
+
+pandoc -s -o $HTMLPATH $MDPATH

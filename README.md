@@ -40,6 +40,7 @@ Much of this is specific to something I needed, but some of these may be of use 
       to ensure it's complete
    * **kickmutt** - Kill unresponsive mutt and blow away the
       temp files
+   * **md2html** - Convert Markdown to HTML with Pandoc
    * **megawho** - Check registration of domain names
    * **mkcarepkg** - Make a 'care package' of files from your home
       directory, for getting up to speed on a new system
