@@ -14,12 +14,6 @@
 - Document this thing so it's clear how to use it
 
 
-### md2html
-
-- Add support for a specific HTML file path/name
-- Add usage info output
-
-
 ### megawho
 
 - Add info in usage: Please don't be a jerk with mega hits to
