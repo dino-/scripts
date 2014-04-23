@@ -1,41 +1,37 @@
-%%
-clrvimtmp
+### clrvimtmp
 
 - Rewrite in bash instead of Perl, I bet it'll be smaller even
+  use this:
 
-   use this:
       for F in $(find $HOME -regex '.*sw[mnop]')
       do
          stat --printf="%n\n   %y\n" $F
       done
 
 
-%%
-exifsetdate
+### exifsetdate
 
 - Document this thing so it's clear how to use it
 
-%%
-md2html
+
+### md2html
 
 - Add support for a specific HTML file path/name
 - Add usage info output
 
-%%
-megawho
 
-- Add info in usage: Please don't be a jerk with mega hits to whois services.
+### megawho
+
+- Add info in usage: Please don't be a jerk with mega hits to
+  whois services.
 
 
-%%
-mkcarepkg
+### mkcarepkg
 
 - Need some usage info
 
 
-%%
-tidy-ind
-tidy-xml
+### tidy-ind, tidy-xml
 
 - Found these switches in a file called tidy-html.conf, figure out
   how to bring all this together into one script perhaps
@@ -45,32 +41,34 @@ tidy-xml
    wrap: 0
 
 
-%%
-withmount.hs
+### withmount.hs
 
-- This is becoming a part of the "davbox" project and needs to be a real binary-producing project that can be installed with distro packaging.
+- This is becoming a part of the "davbox" project and needs to be
+  a real binary-producing project that can be installed with distro
+  packaging.
+- Deal with umount/fusermount confusion. Maybe try umount first
+  and check for failure.
+- Would like a verbose option. For this to happen, needs to have
+  more serious arg parsing and probably be a project of its own.
 
-- Deal with umount/fusermount confusion. Maybe try umount first and check for failure.
 
-- Would like a verbose option. For this to happen, needs to have more serious arg parsing and probably be a project of its own.
+### general notes
 
-
-%%
-general notes
-
-- In a perfect world, all scripts would check for existence of binaries they call
-
+- In a perfect world, all scripts would check for existence of
+  binaries they call
 - Change all scripts to use here document for usage notes
 
 
-%%
-scripts going public
+### scripts going public
 
 Candidates for this:
+
 - megawho
 - withmount.hs
 
+
 Scripts slated for public release need some things:
+
 - Author email address
 - Version number
 - Uniform and comprehensive help
