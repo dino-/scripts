@@ -4,10 +4,10 @@
 
 import Control.Monad.Error
 import Data.List (intercalate, isInfixOf)
-import System.Cmd (system)
 import System.Environment (getArgs, getProgName)
 import System.Exit (ExitCode (..))
 import System.IO (hPutStrLn, stderr)
+import System.Process (system)
 
 
 main :: IO ()
