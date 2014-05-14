@@ -86,7 +86,7 @@ joinArgs = intercalate " "
 
 
 parseDateString :: String -> Either String UTCTime
-parseDateString s = maybe (Left $ "Unable to parse " ++ s)
+parseDateString s = maybe (Left $ printf "Unable to parse \"%s\"" s)
    (Right . id) $ foldl mplus Nothing $ map ($ s) parsers
 
 
