@@ -8,6 +8,7 @@ import System.Environment (getArgs, getProgName)
 import System.Exit (ExitCode (..))
 import System.IO (hPutStrLn, stderr)
 import System.Process (system)
+import Text.Printf (printf)
 
 
 main :: IO ()
@@ -93,4 +94,5 @@ systemE cmd = do
    ec <- liftIO $ system cmd
    case ec of
       ExitSuccess   -> return 0
-      ExitFailure c -> throwError . show $ c
+      ExitFailure c -> throwError $ printf "command: %s\nexitcode: %d"
+         cmd c
