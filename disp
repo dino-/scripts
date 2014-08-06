@@ -34,18 +34,18 @@ case "$1" in
    laptop)
       set -x
       xrandr --output $laptopDisplay --auto --output $extDisplay --off
-      xrandr --dpi 130
+      xrandr --dpi 90
       ;;
    ext)
       set -x
       xrandr --output $laptopDisplay --off --output $extDisplay --auto
-      xrandr --dpi 85
+      xrandr --dpi 90
       ;;
    both)
       set -x
       xrandr --output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay
       xrandr --output $extDisplay --primary
-      xrandr --dpi 85
+      xrandr --dpi 90
       ;;
    *) usage ;;
 esac
