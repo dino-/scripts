@@ -84,9 +84,7 @@ mount mountPoint = do
    the string in /etc/mtab
 -}
 trimTrailingSlash :: String -> String
-trimTrailingSlash s = if last s == '/'
-   then init s
-   else s
+trimTrailingSlash s = if last s == '/' then init s else s
 
 
 {- Wrapper so that failed system commands produce failure in ErrorT
