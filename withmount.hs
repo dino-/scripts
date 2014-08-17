@@ -50,14 +50,16 @@ execute (mountPoint : commandParts) = do
 
       -- perform the shell command
       let command = intercalate " " commandParts
-      systemE command
+      systemP command
+
+      -- debugging
+      when alreadyMounted $
+         liftIO $ printf "%s already mounted" mountPoint
 
       -- umount the filesystem
-      if alreadyMounted
-         then return ()
-         else do
-            _ <- systemE $ "fusermount -u " ++ mountPoint
-            return ()
+      unless alreadyMounted $ do
+         _ <- systemE $ "fusermount -u " ++ mountPoint
+         return ()
 
       return ()
 
@@ -96,3 +98,14 @@ systemE cmd = do
       ExitSuccess   -> return 0
       ExitFailure c -> throwError $ printf "command: %s\nexitcode: %d"
          cmd c
+
+
+{- Wrapper so that failed system commands are chatty about the failure
+   (but don't fail the monadic action they're in)
+-}
+systemP :: (MonadIO m, MonadError String m) => String -> m ()
+systemP cmd = liftIO $ do
+   ec <- system cmd
+   case ec of
+      ExitSuccess   -> return ()
+      ExitFailure c -> printf "command: %s\nexitcode: %d" cmd c
