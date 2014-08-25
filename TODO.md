@@ -9,6 +9,12 @@
       done
 
 
+### epochconv.hs
+
+- Add usage examples for all formats allowed, use the parsers
+  for this
+
+
 ### exifsetdate
 
 - Document this thing so it's clear how to use it
