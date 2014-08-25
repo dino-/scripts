@@ -44,7 +44,8 @@ parseInput as         = return . parseInput' $ as
 usage :: IO String
 usage = do
    appName <- getProgName
-   return $ unlines
+   now <- getCurrentTime
+   return $ unlines $
       [ "Show a given date (or the current date) in a variety of formats"
       , ""
       , "Usage: " ++ appName ++ " [OPTION] [DATE]"
@@ -59,6 +60,10 @@ usage = do
       , "The -e and -f options are mostly unnecessary. -m is needed to"
       , "disambiguate between epoch and milliseconds."
       , ""                                                 
+      , "Parsable input formats for -f:"
+      ]
+      ++ (map (\fp -> "   " ++ fmt fp now) formatPatterns) ++
+      [ ""                                                 
       , "Output will be the date/time in a variety of formats, both localized"                                                 
       , "and UTC, as well as epoch and milliseconds."
       , ""                                                 
@@ -100,14 +105,18 @@ iso1601Offset = "%FT%T%z"
 iso1601Zulu = "%FT%TZ"
 
 
-parsers :: ParseTime t => [String -> Maybe t]
-parsers = map (parseTime defaultTimeLocale)
+formatPatterns :: [String]
+formatPatterns =
    [ "%c"
    , rfc5322Date
    , iso1601Offset
    , iso1601Zulu
    , "%F"
    ]
+
+
+parsers :: ParseTime t => [String -> Maybe t]
+parsers = map (parseTime defaultTimeLocale) formatPatterns
 
 
 output :: Either String UTCTime -> IO ()
@@ -130,6 +139,6 @@ output (Right ut) = do
 
    exitSuccess
 
-   where
-      fmt :: FormatTime t => String -> t -> String
-      fmt = formatTime defaultTimeLocale
+
+fmt :: FormatTime t => String -> t -> String
+fmt = formatTime defaultTimeLocale

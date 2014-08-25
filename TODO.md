@@ -11,8 +11,7 @@
 
 ### epochconv.hs
 
-- Add usage examples for all formats allowed, use the parsers
-  for this
+- Better error message when this fails: 2014-08-25
 
 
 ### exifsetdate
