@@ -1,0 +1,8 @@
+#! /bin/bash
+
+src=$1
+dest="$(basename $src .jpg)-sw.jpg"
+
+largestDim=$2
+
+convert -quality 80 -resize ${largestDim:=1280}x${largestDim} ${src:?No file specified} $dest
