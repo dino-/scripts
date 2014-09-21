@@ -21,6 +21,8 @@ case "$1" in
       echo "    can be tricky, mind slashes and where . is, example:"
       echo "      \$ cd TOPLEVELDIR"
       echo "      \$ burn-dvd -x ./DIR -x ./FILE ."
+      echo "  when trying to burn individual files larger than 2G: -iso-level 3"
+      echo "    (see man mkisofs(8))"
       exit 1
       ;;
 esac
