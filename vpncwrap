@@ -1,0 +1,47 @@
+#!/bin/bash
+
+
+# conf file for your vpn, leave off the .conf ext
+# Runs as root, so absolute path is necessary
+vpncConfPath="/home/dino/doc/jobs/PAC/work/pac.vpnc"
+
+
+basename=`basename $0`
+
+
+function usage {
+   cat <<USAGE
+$basename - Bring vpnc up or down
+
+usage:
+   $basename COMMAND
+
+options:
+   -h, --help  This help info
+
+commands:
+   up    Bring the vpn up
+   down  Bring the vpn down
+
+USAGE
+
+   exit 1
+}
+
+
+function disconnect {
+   vpnc-disconnect
+   resolvconf -d tun0
+}
+
+
+case "$1" in
+   up)
+      disconnect
+      vpnc $vpncConfPath
+      ;;
+   down)
+      disconnect
+      ;;
+   *) usage ;;
+esac
