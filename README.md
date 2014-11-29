@@ -57,9 +57,9 @@ Much of this is specific to something I needed, but some of these may be of use 
 
 Get the source with darcs:
 
-    $ darcs get http://ui3.info/darcs/scripts
+    $ darcs get http://hub.darcs.net/dino/scripts
 
-Or [browse the source](http://ui3.info/darcs/scripts)
+Or [browse the source](http://hub.darcs.net/dino/scripts)
 
 
 ## Contact
