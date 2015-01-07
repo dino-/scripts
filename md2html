@@ -8,7 +8,6 @@
 
 
 MDPATH=$1
-MDFILE=$(basename $MDPATH)
-HTMLPATH="$(dirname $MDPATH)/${MDFILE%.*}.html"
+HTMLPATH="${MDPATH%.*}.html"
 
 pandoc -s -o $HTMLPATH $MDPATH
