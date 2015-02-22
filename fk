@@ -1,0 +1,5 @@
+#! /bin/bash
+
+# fix keyboard mapping using Xkb
+
+setxkbmap -option ctrl:swapcaps -option keypad:pointerkeys -option compose:sclk
