@@ -11,6 +11,8 @@ fi
 
 set -e
 
+sandboxConfFile=$(pwd)/cabal.sandbox.config
+
 # Get absolute path to the passed Haskell package
 package=$(readlink -m $1)
 
@@ -19,8 +21,9 @@ cd /tmp
 tar xzf $package
 
 # Perform the full build, test, the works
-packageDir=$(basename $package .tar.gz)
-cd $packageDir
+buildDir=$(basename $package .tar.gz)
+cd $buildDir
+[ -f "$sandboxConfFile" ] && cp $sandboxConfFile .
 cabal configure --enable-tests
 cabal build
 cabal test
@@ -28,7 +31,7 @@ cabal haddock
 
 # Clean up that mess
 cd ..
-rm -rf $packageDir
+rm -rf $buildDir
 
 # If we got here, this was successful
-echo "Package $packageDir builds successfully!"
+echo "Package $buildDir builds successfully!"
