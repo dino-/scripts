@@ -76,8 +76,8 @@ parseInput' ("-e" : epochString : []) = strToUTCTime 1 epochString
 parseInput' ("-m" : milliString : []) = strToUTCTime 1000 milliString
 parseInput' ("-f" : as)               = parseDateString $ joinArgs as
 parseInput' as
-   | any (not . (flip elem) "-0123456789")
-      $ joinArgs as = parseInput' $ "-f" : as
+   | any (not . (flip elem) "0123456789")
+      . tail . joinArgs $ as = parseInput' $ "-f" : as
    | otherwise = strToUTCTime 1 (joinArgs as)
 
 

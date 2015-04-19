@@ -9,11 +9,6 @@
       done
 
 
-### epochconv.hs
-
-- Better error message when this fails: 2014-08-25
-
-
 ### exifsetdate
 
 - Document this thing so it's clear how to use it
