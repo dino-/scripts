@@ -2,4 +2,5 @@
 
 # fix keyboard mapping using Xkb
 
-setxkbmap -option ctrl:swapcaps -option keypad:pointerkeys -option compose:sclk
+#setxkbmap -option ctrl:swapcaps -option keypad:pointerkeys -option compose:sclk
+test -f ~/.Xkeymap && xkbcomp -w 3 ~/.Xkeymap $DISPLAY
