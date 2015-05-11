@@ -2,7 +2,7 @@
 
 {-# LANGUAGE FlexibleContexts #-}
 
-import Control.Monad.Error
+import Control.Monad.Except
 import Data.List (intercalate, isInfixOf)
 import System.Environment (getArgs, getProgName)
 import System.Exit (ExitCode (..))
@@ -44,7 +44,7 @@ usage = do
 
 execute :: [String] -> IO ()
 execute (mountPoint : commandParts) = do
-   result <- runErrorT $ do
+   result <- runExceptT $ do
       -- mount the filesystem
       alreadyMounted <- mount mountPoint
 
