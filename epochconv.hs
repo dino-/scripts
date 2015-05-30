@@ -23,7 +23,7 @@ import Text.Printf ( printf )
    getting what we all know as epoch time. Or you can use parseTimeM
    with "%s" for format string.
 
-   But UTCTime is the low-level format that everything uses in the 
+   But UTCTime is the low-level format that everything uses in the
    Haskell APIs
 
    Functions for converting between the two are in
@@ -60,15 +60,15 @@ usage = do
       , "If no date is given, the current date/time will be used."
       , "The -e and -f options are mostly unnecessary. -m is needed to"
       , "determine whether a long number is epoch or milliseconds."
-      , ""                                                 
+      , ""
       , "Parsable input formats for -f:"
       ]
       ++ (map (\fp -> "  " ++ fmt fp now) formatPatterns) ++
-      [ ""                                                 
-      , "Output will be the date/time in a variety of formats, both localized"                                                 
+      [ ""
+      , "Output will be the date/time in a variety of formats, both localized"
       , "and UTC, as well as epoch and milliseconds."
-      , ""                                                 
-      , "Version 1.2  Dino Morelli <dino@ui3.info>"                     
+      , ""
+      , "Version 1.2  Dino Morelli <dino@ui3.info>"
       ]
 
 
