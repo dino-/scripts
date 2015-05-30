@@ -5,6 +5,8 @@
 # Runs as root, so absolute path is necessary
 vpncConfPath="/home/dino/doc/jobs/PAC/work/pac.vpnc"
 
+device="tun0"
+
 
 basename=`basename $0`
 
@@ -29,19 +31,17 @@ USAGE
 }
 
 
-function disconnect {
+function vpnAction {
    vpnc-disconnect
-   resolvconf -d tun0
+   resolvconf -d $device
+   $*
+   sleep 1
+   ip addr show $device
 }
 
 
 case "$1" in
-   up)
-      disconnect
-      vpnc $vpncConfPath
-      ;;
-   down)
-      disconnect
-      ;;
-   *) usage ;;
+   up)   vpnAction vpnc $vpncConfPath ;;
+   down) vpnAction ;;
+   *)    usage ;;
 esac
