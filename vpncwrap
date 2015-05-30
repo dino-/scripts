@@ -25,6 +25,11 @@ commands:
    up    Bring the vpn up
    down  Bring the vpn down
 
+built-in params:
+
+   vpncConfPath: $vpncConfPath
+   device: $device
+
 USAGE
 
    exit 1
