@@ -68,7 +68,7 @@ usage = do
       , "Output will be the date/time in a variety of formats, both localized"                                                 
       , "and UTC, as well as epoch and milliseconds."
       , ""                                                 
-      , "Version 1.1  Dino Morelli <dino@ui3.info>"                     
+      , "Version 1.2  Dino Morelli <dino@ui3.info>"                     
       ]
 
 
