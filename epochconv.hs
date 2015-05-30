@@ -4,13 +4,13 @@ import Control.Monad ( mplus )
 import Data.List ( intercalate )
 import Data.Time
    ( FormatTime, ParseTime, UTCTime
-   , formatTime, getCurrentTime, parseTime, utcToLocalZonedTime
+   , formatTime, getCurrentTime, parseTimeM, utcToLocalZonedTime
    )
+import Data.Time.Format ( defaultTimeLocale )
 import Data.Time.Clock.POSIX
    ( posixSecondsToUTCTime, utcTimeToPOSIXSeconds )
 import System.Environment ( getArgs, getProgName )
 import System.Exit ( exitFailure, exitSuccess )
-import System.Locale ( defaultTimeLocale )
 import Text.Printf ( printf )
 
 
@@ -20,7 +20,8 @@ import Text.Printf ( printf )
    as a fractional number
 
    By using (fromIntegral . truncate) on it, you can strip off the picos
-   getting what we all know as epoch time. Or you can use parseTime "%s"
+   getting what we all know as epoch time. Or you can use parseTimeM
+   with "%s" for format string.
 
    But UTCTime is the low-level format that everything uses in the 
    Haskell APIs
@@ -116,7 +117,7 @@ formatPatterns =
 
 
 parsers :: ParseTime t => [String -> Maybe t]
-parsers = map (parseTime defaultTimeLocale) formatPatterns
+parsers = map (parseTimeM True defaultTimeLocale) formatPatterns
 
 
 output :: Either String UTCTime -> IO ()
