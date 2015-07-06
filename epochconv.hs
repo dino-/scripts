@@ -19,9 +19,16 @@ import Text.Printf ( printf )
    POSIXTime is basically this: secs-since-epoch.picoseconds
    as a fractional number
 
-   By using (fromIntegral . truncate) on it, you can strip off the picos
-   getting what we all know as epoch time. Or you can use parseTimeM
-   with "%s" for format string.
+   By using round on it, you can strip off the picos getting what
+   we all know as epoch time. Type annotation (Int or Integer)
+   may be required. Like this:
+
+      epoch = round . utcTimeToPOSIXSeconds $ someUTCTime
+
+   If you just need a String you can use parseTimeM with "%s"
+   for format string:
+
+      epochAsString = formatTime defaultTimeLocale "%s" someUTCTime
 
    But UTCTime is the low-level format that everything uses in the
    Haskell APIs
@@ -135,8 +142,8 @@ output (Right ut) = do
    putStrLn $ " UTC ISO1601: " ++ fmt iso1601Zulu ut
 
    putStrLn $ "\n   Unix time: " ++ fmt "%s" ut
-   putStrLn $ "milliseconds: " ++ (show . fromIntegral . truncate
-      . (* 1000) . realToFrac . utcTimeToPOSIXSeconds $ ut)
+   putStrLn $ "milliseconds: " ++
+      (show . (* 1000) . round .  utcTimeToPOSIXSeconds $ ut)
 
    exitSuccess
 
