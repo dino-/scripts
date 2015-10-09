@@ -87,7 +87,7 @@ trimTrailingSlash :: String -> String
 trimTrailingSlash s = if last s == '/' then init s else s
 
 
-{- Wrapper so that failed system commands produce failure in ErrorT
+{- Wrapper so that failed system commands produce failure in ExceptT
 -}
 systemE :: (Num a, MonadIO m, MonadError String m) => String -> m a
 systemE cmd = do
