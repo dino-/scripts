@@ -1,8 +1,20 @@
 #! /bin/bash
 
-# Do this when your system is new
-# It will write a ~/.config/user-dirs.dirs file
+# This script will result in the creation of a
+# ~/.config/user-dirs.dirs file
 
+# It's also great to do when your system is new, before you start
+# getting those annoying Mac/Windows-like directories like Desktop
+# and Videos
+
+
+# When xdg-user-dirs-update is run automatically at login, it
+# behaves in a dumb manner if any of the directories you have set
+# don't exist. It resets to the system default path and dorks your
+# user-dirs.dirs file.
+#
+# To avoid that, we'll create these directories at the same time
+# that we set them.
 
 function setDir {
    xdg=$1
