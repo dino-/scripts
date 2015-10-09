@@ -37,9 +37,9 @@
 
 ### withmount.hs
 
-- This is becoming a part of the "davbox" project and needs to be
-  a real binary-producing project that can be installed with distro
-  packaging.
+- This is becoming a part of the personal shared storage project
+  and needs to be a real binary-producing project that can be
+  installed with distro packaging.
 - Deal with umount/fusermount confusion. Maybe try umount first
   and check for failure.
 - Would like a verbose option. For this to happen, needs to have
