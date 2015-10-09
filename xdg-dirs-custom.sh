@@ -1,26 +1,23 @@
 #! /bin/bash
 
 # Do this when your system is new
+# It will write a ~/.config/user-dirs.dirs file
 
-xdg-user-dirs-update --set DESKTOP ~
 
-mkdir -p ~/pictures/misc
-xdg-user-dirs-update --set PICTURES ~/pictures/misc
+function setDir {
+   xdg=$1
+   dir=$2
 
-mkdir -p ~/pictures/video
-xdg-user-dirs-update --set VIDEOS ~/pictures/video
+   mkdir -p $dir
+   xdg-user-dirs-update --set $xdg $dir
+}
 
-mkdir -p ~/doc
-xdg-user-dirs-update --set DOCUMENTS ~/doc
 
-mkdir -p ~/doc/templates
-xdg-user-dirs-update --set TEMPLATES ~/doc/templates
-
-mkdir -p ~/tmp
-xdg-user-dirs-update --set DOWNLOAD ~/tmp
-
-mkdir -p ~/tmp/music
-xdg-user-dirs-update --set MUSIC ~/tmp/music
-
-mkdir -p ~/tmp/share
-xdg-user-dirs-update --set PUBLICSHARE ~/tmp/share
+setDir DESKTOP $HOME
+setDir PICTURES $HOME/pictures/misc
+setDir VIDEOS $HOME/pictures/video
+setDir DOCUMENTS $HOME/doc
+setDir TEMPLATES $HOME/doc/templates
+setDir DOWNLOAD $HOME/tmp
+setDir MUSIC $HOME/tmp/music
+setDir PUBLICSHARE $HOME/tmp/share
