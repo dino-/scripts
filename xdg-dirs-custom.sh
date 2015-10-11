@@ -31,5 +31,5 @@ setDir VIDEOS $HOME/pictures/video
 setDir DOCUMENTS $HOME/doc
 setDir TEMPLATES $HOME/doc/templates
 setDir DOWNLOAD $HOME/tmp
-setDir MUSIC $HOME/tmp/music
+setDir MUSIC $HOME/sound/music
 setDir PUBLICSHARE $HOME/tmp/share
