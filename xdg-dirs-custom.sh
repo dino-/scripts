@@ -25,7 +25,7 @@ function setDir {
 }
 
 
-setDir DESKTOP $HOME
+setDir DESKTOP $HOME/.local/share/desktop
 setDir PICTURES $HOME/pictures/misc
 setDir VIDEOS $HOME/pictures/video
 setDir DOCUMENTS $HOME/doc
