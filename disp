@@ -5,6 +5,8 @@
 laptopDisplay="eDP1"
 extDisplay="DP1"
 
+DPI=96
+
 
 basename=`basename $0`
 
@@ -34,18 +36,18 @@ case "$1" in
    laptop)
       set -x
       xrandr --output $laptopDisplay --auto --output $extDisplay --off
-      xrandr --dpi 90
+      xrandr --dpi $DPI
       ;;
    ext)
       set -x
       xrandr --output $laptopDisplay --off --output $extDisplay --auto
-      xrandr --dpi 90
+      xrandr --dpi $DPI
       ;;
    both)
       set -x
       xrandr --output $laptopDisplay --auto --output $extDisplay --auto --right-of $laptopDisplay
       xrandr --output $extDisplay --primary
-      xrandr --dpi 90
+      xrandr --dpi $DPI
       ;;
    *) usage ;;
 esac
