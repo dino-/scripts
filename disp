@@ -2,7 +2,7 @@
 
 
 # Find these for your system in xrandr output
-laptopDisplay="LVDS1"
+laptopDisplay="eDP1"
 extDisplay="DP1"
 
 
