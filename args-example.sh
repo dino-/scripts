@@ -31,11 +31,14 @@ if [ $? != 0 ]; then usage; exit 1; fi
 # Note the quotes around '$getoptResults': they are essential!
 eval set -- "$getoptResults"
 
+optA=false
+optHelp=false
+
 while true ; do
 	case "$1" in
-      -a|--arg-a) optA=1; shift;;
+      -a|--arg-a) optA=true; shift;;
       -b|--arg-b) optB="$2"; shift 2;;
-      -h|--help) optHelp=1; shift;;
+      -h|--help) optHelp=true; shift;;
 		--) shift; break;;
 	esac
 done
@@ -48,7 +51,7 @@ echo "number of remaining parameters: $#"
 echo "remaining parameters: $@"
 echo
 
-if [ "$optHelp" = 1 ]; then usage; exit 0; fi
+if $optHelp; then usage; exit 0; fi
 
 if [ $# -lt 2 ]
 then
