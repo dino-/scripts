@@ -35,12 +35,12 @@ optA=false
 optHelp=false
 
 while true ; do
-	case "$1" in
+   case "$1" in
       -a|--arg-a) optA=true; shift;;
       -b|--arg-b) optB="$2"; shift 2;;
       -h|--help) optHelp=true; shift;;
-		--) shift; break;;
-	esac
+      --) shift; break;;
+   esac
 done
 
 echo "detail of arguments"
