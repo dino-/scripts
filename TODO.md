@@ -9,6 +9,11 @@
       done
 
 
+### disp
+
+- Check for existence of ~/.fehbg before trying to eval it
+
+
 ### exifsetdate
 
 - Document this thing so it's clear how to use it
