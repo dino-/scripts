@@ -45,7 +45,7 @@ case "$1" in
       ;;
    both)
       set -x
-      xrandr --output $laptopDisplay --auto --output $extDisplay --auto --left-of $laptopDisplay
+      xrandr --output $extDisplay --auto --output $laptopDisplay --auto --pos 2560x800
       xrandr --output $extDisplay --primary
       xrandr --dpi $DPI
       ;;
