@@ -6,10 +6,14 @@
 if [ ! -f "$1" ]
 then
    echo "usage: $0 PACKAGE_ARCHIVE"
+   echo
+   echo "Also, '.' should be the root of your development dir"
    exit 1
 fi
 
 set -e
+
+devDir=$(pwd)
 
 # Get absolute path to the passed Haskell package
 package=$(readlink -m $1)
@@ -18,8 +22,16 @@ package=$(readlink -m $1)
 cd /tmp
 tar xzf $package
 
-# Perform the full build, test, the works
 buildDir=$(basename $package .tar.gz)
+
+# Compare the directories
+echo
+echo "Checking directory contents"
+diff --brief --recursive --exclude _darcs --exclude .git --exclude *.swp --exclude .stack-work $devDir "/tmp/$buildDir"
+echo "Done checking directory contents"
+echo
+
+# Perform the full build, test, the works
 cd $buildDir
 stack build
 stack test
