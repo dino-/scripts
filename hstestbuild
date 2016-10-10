@@ -16,7 +16,7 @@ set -e
 devDir=$(pwd)
 
 # Get absolute path to the passed Haskell package
-package=$(readlink -m $1)
+package=$(readlink --canonicalize-missing $1)
 
 # Unpack it in /tmp
 cd /tmp
@@ -38,7 +38,7 @@ stack test
 
 # Clean up that mess
 cd ..
-rm -rf $buildDir
+rm --recursive --force $buildDir
 
 # If we got here, this was successful
 echo "Package $buildDir builds successfully!"
