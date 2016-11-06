@@ -4,18 +4,19 @@
    http://world.std.com/~reinhold/diceware.html
 -}
 
+import Control.Arrow ( (&&&) )
 import Control.Monad (replicateM, replicateM_)
+import Data.Char ( isDigit )
 import Data.List (intercalate)
-import Data.Map hiding ( map )
+import qualified Data.Map as M
 import Data.Maybe ( catMaybes, fromJust )
 import Prelude hiding ( lookup )
 import System.Environment ( getArgs )
-import System.Random
-import Text.Printf
-import Text.Regex (mkRegex, matchRegex)
+import System.Random ( newStdGen, randomRs )
+import Text.Printf ( printf )
 
 
-type Dicemap = Map String String
+type Dicemap = M.Map String String
 
 
 dicewareWordlistPath = "diceware.wordlist.asc"
@@ -28,13 +29,9 @@ defaultNumLines = "20"
 -}
 loadWordlist :: IO Dicemap
 loadWordlist = do
-   contents <- readFile dicewareWordlistPath
-   let wordlistLines = lines contents
-   let parsed =
-         map (\(k:v:[]) -> (k, v))
-         $ catMaybes
-         $ map (matchRegex $ mkRegex "([0-9]{5})\t(.*)") wordlistLines
-   return $ fromList parsed
+   wordlistLines <- lines <$> readFile dicewareWordlistPath
+   let parsed = map (takeWhile isDigit &&& tail . dropWhile isDigit) wordlistLines
+   return $ M.fromList parsed
 
 
 {- Randomly generate dice rolls and return the corresponding diceware
@@ -45,7 +42,7 @@ getWord dm = do
    g <- newStdGen
    let rNums = take 5 $ randomRs (1, 6 :: Int) g
    let key = concat $ map show rNums
-   return $ fromJust $ lookup key dm
+   return $ fromJust $ M.lookup key dm
 
 
 {- Pick lists of lists of diceware words given a number of words per line
