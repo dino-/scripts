@@ -2,8 +2,12 @@
 
 
 # Find these for your system in xrandr output
+
 laptopDisplay="eDP1"
+laptopMode="--mode 1600x900"  # My preferred res for this (very dense!) display
+
 extDisplay="DP1"
+extMode="--auto"  # auto means the native res and best refresh rate
 
 DPI=96
 
@@ -35,17 +39,17 @@ USAGE
 case "$1" in
    laptop)
       set -x
-      xrandr --output $laptopDisplay --auto --output $extDisplay --off
+      xrandr --output $laptopDisplay $laptopMode --output $extDisplay --off
       xrandr --dpi $DPI
       ;;
    ext)
       set -x
-      xrandr --output $laptopDisplay --off --output $extDisplay --auto
+      xrandr --output $laptopDisplay --off --output $extDisplay $extMode
       xrandr --dpi $DPI
       ;;
    both)
       set -x
-      xrandr --output $extDisplay --auto --output $laptopDisplay --auto --pos 2560x800
+      xrandr --output $extDisplay $extMode --output $laptopDisplay $laptopMode --pos 2560x800
       xrandr --output $extDisplay --primary
       xrandr --dpi $DPI
       ;;
