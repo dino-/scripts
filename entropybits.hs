@@ -45,10 +45,12 @@ main = do
    -- Examine the number of arguments given
    case (length argStrings) of
       2 -> do
-         -- Convert to numeric type and bind them
+         -- Convert to numeric types and bind them
          let (ne : l : []) = map read argStrings
 
          -- Calculate entropy
+         -- Note, when you don't have base 2 log, you can also do:
+         --   (log ne) / (log 2)  Many calculators are like this.
          let entropy = (logBase 2 ne) * l
 
          -- Display results
