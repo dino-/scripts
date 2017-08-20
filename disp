@@ -12,7 +12,7 @@ extMode="--auto"  # auto means the native res and best refresh rate
 DPI=96
 
 
-basename=`basename $0`
+basename=$(basename "$0")
 
 
 function usage {
@@ -39,7 +39,7 @@ USAGE
 case "$1" in
    laptop)
       set -x
-      xrandr --output $laptopDisplay $laptopMode --output $extDisplay --off
+      xrandr --output $laptopDisplay "$laptopMode" --output $extDisplay --off
       xrandr --dpi $DPI
       ;;
    ext)
@@ -49,12 +49,12 @@ case "$1" in
       ;;
    both)
       set -x
-      xrandr --output $extDisplay $extMode --output $laptopDisplay $laptopMode --pos 2560x800
+      xrandr --output $extDisplay $extMode --output $laptopDisplay "$laptopMode" --pos 2560x800
       xrandr --output $extDisplay --primary
       xrandr --dpi $DPI
       ;;
    *) usage ;;
 esac
 
-eval $(~/.fehbg)
+eval "$(~/.fehbg)"
 fk
