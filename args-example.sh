@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-basename=$(basename $0)
+basename=$(basename "$0")
 
 
 function usage {
@@ -24,11 +24,11 @@ USAGE
 
 # arg parsing
 
-getoptResults=$(getopt -o ab:h --long arg-a,arg-b:,help -n $basename -- "$@")
+getoptResults=$(getopt -o ab:h --long arg-a,arg-b:,help -n "$basename" -- "$@")
 
 if [ $? != 0 ]; then usage; exit 1; fi
 
-# Note the quotes around '$getoptResults': they are essential!
+# Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
 optA=false
