@@ -55,11 +55,9 @@ Much of this is specific to something I needed, but some of these may be of use 
 
 ## Getting source
 
-Get the source with darcs:
+    $ git clone https://github.com/dino-/scripts.git
 
-    $ darcs get http://hub.darcs.net/dino/scripts
-
-Or [browse the source](http://hub.darcs.net/dino/scripts)
+Or [browse the source](https://github.com/dino-/scripts.git) at the same URL
 
 
 ## Contact
