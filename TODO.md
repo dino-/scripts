@@ -14,6 +14,11 @@
 - Check for existence of ~/.fehbg before trying to eval it
 
 
+### epochconv.hs
+
+- Handle milliseconds properly. See library `tce-time` for help.
+
+
 ### exifsetdate
 
 - Document this thing so it's clear how to use it
