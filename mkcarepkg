@@ -6,8 +6,9 @@ files=(
    .bash_profile
    .bashrc
    .cabal/config
-   .darcs/defaults
    .ghci
+   .gitconfig
+   .stack/config.yaml
    .vimrc
 )
 
@@ -28,7 +29,7 @@ Or add to existing tar like this:
    $ tar uvf $archive FILE...
 
 Some additional files that may be helpful:
-   .gitconfig
+   .darcs/defaults
    .profile
    .ssh/id_rsa.pub
 INFO
