@@ -1,0 +1,51 @@
+#! /bin/bash
+
+
+basename=$(basename "$0")
+
+
+function usage {
+   cat <<USAGE
+$basename - Convert Markdown to various formats using Pandoc
+
+usage:
+   $basename OUTPUT_FORMAT MARKDOWN_DOCUMENT
+
+OUTPUT_FORMAT is one of: html, pdf
+
+The new file will be in the same directory and named just like the
+Markdown file with the appropriate extension.
+
+Note, on Arch Linux, creating PDFs this way required the installation
+of texlive-core and texlive-bin
+
+v1.0  2018-01-17  Dino Morelli <dino@ui3.info>
+
+USAGE
+}
+
+
+# arg parsing
+
+if [ $# -lt 2 ]
+then
+   echo "ERROR: Missing required arguments"
+   usage
+   exit 1
+fi
+
+format="$1"
+infile="$2"
+switches="-s"
+
+while true ; do
+   case "$format" in
+      html) break;;
+      pdf) switches="$switches -V geometry:margin=1in"; break;;
+      *) echo "ERROR: Unknown format"; usage; exit 1; break;;
+   esac
+done
+
+outfile="${infile%.*}.$format"
+
+pandoc $switches -o $outfile $infile
