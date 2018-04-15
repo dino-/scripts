@@ -28,7 +28,7 @@ options:
 profiles:
    laptop   Laptop display only
    ext      External monitor only
-   both     Both of the above outputs, laptop on the left
+   both     Both of the above outputs
 
 USAGE
 
