@@ -16,7 +16,7 @@ my $dir;
 # Used by find(), the real work is done here
 sub wanted {
    # We're only concerned with Vim swap files
-   return unless /.*\.sw[mnop]/;
+   return unless /.*\.sw[lmnop]$/;
 
    # Store the paths for later possible deletion
    push @files, $File::Find::name;
