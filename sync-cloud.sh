@@ -4,6 +4,7 @@
 #   -silent       When running from cron to suppress normal output
 #   -batch=false  To manually resolve conflicts
 #   -debug=all    For lots of debug output
+#   -force=/home/dino/doc/cloud  To force the local copy to be copied to the remote
 
 
 # This script relies on another tool, and is routinely run from
