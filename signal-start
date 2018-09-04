@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# Script for restarting signal-desktop with as little effort as possible
+
+binaryName="signal-desktop"
+
+# Get rid of any existing instance of signal-desktop
+killall $binaryName && sleep 1
+
+# Start a new one and put its job in the background
+$binaryName &
