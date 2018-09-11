@@ -3,13 +3,13 @@
 # This is the default set of files to be archived into the care package
 # Add to this list as needed, these are relative to ~
 files=(
-   .bash_profile
-   .bashrc
-   .cabal/config
-   .ghci
-   .gitconfig
-   .stack/config.yaml
-   .vimrc
+  .bash_profile
+  .bashrc
+  .cabal/config
+  .ghci
+  .gitconfig
+  .stack/config.yaml
+  .vimrc
 )
 
 archive="carepkg-$HOSTNAME-$USER.tar"
@@ -23,19 +23,19 @@ cat << INFO
 File $HOME/$archive created
 
 Add more files by running this script again:
-   $ mkcarepkg FILE1 FILE2 ...
+  $ mkcarepkg FILE1 FILE2 ...
 
 Or add to existing tar like this:
-   $ tar uvf $archive FILE...
+  $ tar uvf $archive FILE...
 
 Some additional files that may be helpful:
-   .darcs/defaults
-   .gitignore
-   .profile
-   .screenrc
-   .ssh/id_rsa.pub
-   .XCompose
-   .xinitrc
-   .Xkeymap
-   .Xresources
+  .darcs/defaults
+  .gitignore
+  .profile
+  .screenrc
+  .ssh/id_rsa.pub
+  .XCompose
+  .xinitrc
+  .Xkeymap
+  .Xresources
 INFO
