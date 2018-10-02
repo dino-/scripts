@@ -8,4 +8,4 @@ fileWithExt=$(basename "$inputFile")
 file="${fileWithExt%.*}"
 ext="${fileWithExt##*.}"
 
-ffmpeg -i "$inputFile" -ac 2 "$dir/${file}_ac2.$ext"
+ffmpeg -i "$inputFile" -map 0:0 -map 0:1 -map 0:1 -c:v copy -c:a:0 aac -b:a:0 192k -ac 2 -c:a:1 copy "$dir/${file}_ac2.$ext"
