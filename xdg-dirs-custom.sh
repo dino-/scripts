@@ -26,10 +26,10 @@ function setDir {
 
 
 setDir DESKTOP $HOME/.local/share/desktop
-setDir PICTURES $HOME/doc/pictures/misc
-setDir VIDEOS $HOME/doc/video
+setDir PICTURES $HOME/pictures/misc
+setDir VIDEOS $HOME/pictures/video
 setDir DOCUMENTS $HOME/doc
 setDir TEMPLATES $HOME/doc/templates
 setDir DOWNLOAD $HOME/tmp
-setDir MUSIC $HOME/doc/music
+setDir MUSIC $HOME/sound/music
 setDir PUBLICSHARE $HOME/tmp/share
