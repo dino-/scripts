@@ -8,7 +8,7 @@ usage() {
    echo "$scriptName - ifm live view with custom editor"
    echo
    echo "usage:"
-   echo "   $scriptName IMFFILE [GV_SWITCHES]"
+   echo "   $scriptName IFMFILE [GV_SWITCHES]"
    echo
    echo "This script requires:"
    echo "   - gv is installed"
