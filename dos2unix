@@ -1,18 +1,0 @@
-#! /bin/sh
-
-# Script to replace DOS style line ending with UNIX style
-
-set -u
-
-newfile=$1
-oldfile=${newfile}.old
-
-mv $newfile $oldfile
-
-sed -e 's///' $oldfile > $newfile
-
-if [ -e $newfile ]
-then
-	rm $oldfile
-fi
-
