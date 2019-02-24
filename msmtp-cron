@@ -1,0 +1,20 @@
+#! /bin/bash
+
+# This script exists for use with cron for sending emails. There's a problem
+# with (dumb) GMail where mail is rejected if it doesn't have a correct @domain
+# portion. Because of some severe limitations with how cron works on Ubuntu,
+# the only solution I could find was writing this script and hacking the
+# /usr/sbin/sendmail symlink to point to it
+# 
+# This symlink will get clobbered in the future by an update of msmtp-mta, so
+# this may be necessary:
+#
+#   $ cd /usr/sbin
+#   # rm sendmail
+#   # ln -s /usr/local/bin/msmtp-cron sendmail
+
+
+# Use this to see a copy of the email
+# sed '' > /tmp/cron-mail-capture.txt
+
+sed -e 's/root .Cron Daemon./Cron Daemon <root@hostname>/' | /usr/bin/msmtp -t "$@"
