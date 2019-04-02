@@ -33,7 +33,7 @@ main = do
          let sum' = lo + hi
          let perc = lo * 100 / sum'
 
-         printf "%.0f is %f%% of %.0f\n"
+         printf "%.2f is %.2f%% of %.2f\n"
             (lo :: Float) (perc :: Float) (sum' :: Float)
 
       _ -> displayUsage
