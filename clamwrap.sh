@@ -27,9 +27,21 @@ For more clamscan switches: $ clamscan --help
 
 Most common usage:
 
-  $ clamwrap.sh -r
+  $ clamwrap.sh -ri
 
-v1.0  2018-08-27  Dino Morelli <dino@ui3.info>
+UPDATING THE VIRUS DATABASE
+
+If you get a warning from clamav about old virus defs, do this:
+
+    # freshclam
+
+INFECTION FALSE-POSITIVES
+
+If you get reports of a file or files infected with Unix.Trojan.Mirai, it may
+be a false-positive with the local clamav. Try checking the files with an
+online scanner like https://www.virustotal.com
+
+v1.1  2019-04-13  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
