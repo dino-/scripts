@@ -8,6 +8,7 @@ files=(
   .cabal/config
   .ghci
   .gitconfig
+  .gitignore
   .stack/config.yaml
   .vimrc
 )
@@ -30,7 +31,6 @@ Or add to existing tar like this:
 
 Some additional files that may be helpful:
   .darcs/defaults
-  .gitignore
   .profile
   .screenrc
   .ssh/id_rsa.pub
