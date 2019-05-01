@@ -14,4 +14,12 @@
 #   'ERROR some error message from rsync'
 #   'any line with --dry-run in it'
 
-egrep '(^rsync: |^[A-Z]|--dry-run)' $@
+# Isolate the last argument
+logFile="${!#}"
+
+if [ -s $logFile ]
+  then
+    egrep '(^rsync: |^[A-Z]|--dry-run)' $@  # Calling with all arguments
+  else
+    echo "ERROR: File $logFile is empty, may have been logrotated, try ${logFile}.1"
+fi
