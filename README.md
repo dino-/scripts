@@ -60,6 +60,17 @@ Much of this is specific to something I needed, but some of these may be of use 
 Or [browse the source](https://github.com/dino-/scripts.git) at the same URL
 
 
+## Development
+
+Scripts being pulled out into their own projects need some things:
+
+  - Author email address
+  - Version number
+  - Uniform and comprehensive help
+  - More idiot-proofing with args
+  - License
+
+
 ## Contact
 
 Dino Morelli <[dino@ui3.info](mailto:dino@ui3.info)>
