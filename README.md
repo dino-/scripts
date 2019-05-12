@@ -16,14 +16,15 @@ big enough to have a project of their own.
 
 ### Some of the more useful scripts in this repo
 
-Much of this is specific to something I needed, but some of these may be of use to you.
+Much of this is specific to something I needed, but some of these may be of use
+to you.
 
+   * **args-example.sh** - Example of args parsing with usage output
    * **burn-cd** - Perform the common-case CD burning I often need
    * **burn-dvd** - Perform the common-case DVD burning I often need
    * **cdcheck** - Thoroughly check the contents of a CD or DVD
       using md5sum
    * **clrvimtmp** - List and optionally remove Vim swap files
-   * **diceware** - Generate passphrases using the Diceware method
    * **disp** - Change active video outputs using xrandr, for
       docking laptops
    * **dpi.hs** - Calculate DPI from screen resolution and screen
@@ -40,11 +41,15 @@ Much of this is specific to something I needed, but some of these may be of use 
       to ensure it's complete
    * **kickmutt** - Kill unresponsive mutt and blow away the
       temp files
-   * **md2html** - Convert Markdown to HTML with Pandoc
+   * **mdconv** - Convert Markdown to HTML or PDF with Pandoc
    * **megawho** - Check registration of domain names
    * **mkcarepkg** - Make a 'care package' of files from your home
       directory, for getting up to speed on a new system
    * **mountiso** - Mount an iso image to /mnt
+   * **osx-clean.sh** - Blow away `__MACOSX` and `.DS_Store` items from a
+      directory structure. These are often accidentally bundled with software
+      made on Macs.
+   * **rsync-errors.sh** - grep for any error reports in an rsync log file
    * **sendme** - Send yourself a simple email from the shell
    * **sshtun** - Establish a persistent SSH tunnel on a remote
       system
