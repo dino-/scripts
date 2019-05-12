@@ -1,0 +1,21 @@
+#! /bin/bash
+
+# Specialized switches for tree for development directories which often contain
+# a lot of noisy build artifacts.
+
+
+# Add directories to this list
+ignoreDirs=(
+  '_cache'          # Hakyll cache directory
+  '_darcs'          # darcs source control
+  'node_modules'    # npm download directories
+  'project/target'  # sbt build artifacts
+  'target'          # sbt build artifacts
+)
+
+# Combine the dirs together delimited with | chars
+ignoreArg=$(printf "|%s" "${ignoreDirs[@]}")
+# Remove the first "dangling" | character
+ignoreArg=${ignoreArg:1}
+
+eval "tree -I \"$ignoreArg\""
