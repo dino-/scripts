@@ -1,7 +1,0 @@
-#! /bin/bash
-
-# Recursively list all files with last modified datetime, sorted
-# Useful for finding the most recent time anything was changed in a
-# directory structure
-
-find . -type f -printf "%TY-%Tm-%Td %TT %p\n" | sort
