@@ -18,4 +18,4 @@ ignoreArg=$(printf "|%s" "${ignoreDirs[@]}")
 # Remove the first "dangling" | character
 ignoreArg=${ignoreArg:1}
 
-eval "tree -I \"$ignoreArg\""
+eval "tree -I \"$ignoreArg\" $@"
