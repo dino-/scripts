@@ -8,9 +8,9 @@
 ignoreDirs=(
   '_cache'          # Hakyll cache directory
   '_darcs'          # darcs source control
-  'node_modules'    # npm download directories
-  'project/target'  # sbt build artifacts
-  'target'          # sbt build artifacts
+  'node_modules'    # JavaScript: npm download directories
+  'project/target'  # Scala: sbt build artifacts
+  'target'          # Scala: sbt build artifacts
 )
 
 # Combine the dirs together delimited with | chars
