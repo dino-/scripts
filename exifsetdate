@@ -1,3 +1,68 @@
 #! /bin/bash
 
-exiv2 -M"del Exif.Photo.DateTimeOriginal" -M"del Exif.Photo.DateTimeDigitized" -M"set Exif.Image.DateTime Ascii $1" -M"set Exif.Photo.UserComment Comment DateTime is a guess" $2
+basename=$(basename "$0")
+
+
+function usage {
+  cat <<USAGE
+$basename - Set the date/time of a JPG image file
+
+usage:
+  $basename [OPTIONS] DATETIME FILE
+
+options:
+  -h, --help       This help information
+
+This script will delete existing dates in the file in these EXIF fields:
+
+  Exif.Photo.DateTimeOriginal
+  Exif.Photo.DateTimeDigitized
+
+And will then set the supplied datetime in:
+
+  Exif.Image.DateTime
+
+It will also set 'Exif.Photo.UserComment' to 'DateTime is a guess'. All other
+EXIF fields are left as they were.
+
+DATETIME must be in this format: "YYYY:MM:DD HH:MM:SS"
+
+To see all existing EXIF fields for a JPG file: exiv2 -pa FILE
+
+v1.0  2019-05-27  Dino Morelli <dino@ui3.info>
+
+USAGE
+}
+
+
+# arg parsing
+
+getoptResults=$(getopt -o h --long help -n "$basename" -- "$@")
+
+if [ $? != 0 ]; then usage; exit 1; fi
+
+# Note the quotes around "$getoptResults": they are essential!
+eval set -- "$getoptResults"
+
+optHelp=false
+
+while true ; do
+  case "$1" in
+    -h|--help) optHelp=true; shift;;
+    --) shift; break;;
+  esac
+done
+
+if $optHelp; then usage; exit 0; fi
+
+if [ $# -lt 2 ]
+then
+  echo "Incorrect number of arguments"
+  usage
+  exit 1
+fi
+
+dateTime="$1"
+file="$2"
+
+exiv2 -M"del Exif.Photo.DateTimeOriginal" -M"del Exif.Photo.DateTimeDigitized" -M"set Exif.Image.DateTime Ascii $dateTime" -M"set Exif.Photo.UserComment Comment DateTime is a guess" $file
