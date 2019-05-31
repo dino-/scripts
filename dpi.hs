@@ -19,7 +19,7 @@ displayUsage = putStrLn $ unlines
    , "Options:"
    , "  -h, --help  This usage information"
    , ""
-   , "Dino Morelli <dino@ui3.info>"
+   , "v1.1  2019-05-31  Dino Morelli <dino@ui3.info>"
    ]
 
 
