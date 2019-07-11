@@ -12,6 +12,7 @@
 #
 #   'rsync: some message from rsync'
 #   'ERROR some error message from rsync'
+#   'file has vanished ...'
 #   'any line with --dry-run in it'
 
 # Isolate the last argument
