@@ -16,7 +16,7 @@ options:
   -b, --arg-b INT  An argument named b
   -h, --help       This help information
 
-v1.0  2016-02-17  Dino Morelli <dino@ui3.info>
+v1.1  2019-07-24  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -24,9 +24,8 @@ USAGE
 
 # arg parsing
 
-getoptResults=$(getopt -o ab:h --long arg-a,arg-b:,help -n "$basename" -- "$@")
-
-if [ $? != 0 ]; then usage; exit 1; fi
+getoptResults=$(getopt -o ab:h --long arg-a,arg-b:,help -n "$basename" -- "$@") \
+  || { usage; exit 1; }
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
@@ -48,10 +47,10 @@ echo "optA: $optA"
 echo "optB: $optB"
 echo "optHelp: $optHelp"
 echo "number of remaining parameters: $#"
-echo "remaining parameters: $@"
+echo "remaining parameters: $*"
 echo
 
-if $optHelp; then usage; exit 0; fi
+$optHelp && { usage; exit 0; }
 
 if [ $# -lt 2 ]
 then
