@@ -1,0 +1,66 @@
+#! /bin/bash
+
+
+basename=$(basename "$0")
+
+
+function usage {
+  cat <<USAGE
+$basename - Control mbsync service and timer
+
+usage:
+  $basename [OPTIONS] COMMAND
+
+options:
+  -h, --help       This help information
+
+commands:
+
+  status  Show status of the mbsync timer, including how long to next run
+  sync    Synchronize mail now
+  start   Start mbsync.timer
+  stop    Stop mbsync.timer
+  log     Tail -f the mbsync.service log
+
+v1.0  2019-08-01  Dino Morelli <dino@ui3.info>
+
+USAGE
+}
+
+
+# arg parsing
+
+getoptResults=$(getopt -o h --long help -n "$basename" -- "$@") \
+  || { usage; exit 1; }
+
+# Note the quotes around "$getoptResults": they are essential!
+eval set -- "$getoptResults"
+
+optHelp=false
+
+while true ; do
+  case "$1" in
+    -h|--help) optHelp=true; shift;;
+    --) shift; break;;
+  esac
+done
+
+$optHelp && { usage; exit 0; }
+
+if [ $# -ne 1 ]
+then
+  echo "Missing COMMAND"
+  usage
+  exit 1
+fi
+
+command=$1
+
+case "$command" in
+  status) systemctl  --user status mbsync.timer;;
+  sync)   systemctl  --user start  mbsync;;       # Default is mbsync.service
+  start)  systemctl  --user start  mbsync.timer;;
+  stop)   systemctl  --user stop   mbsync.timer;;
+  log)    journalctl --user -u mbsync -f;;        # Default is mbsync.service
+  *)      echo "Invalid command: $command"; exit 1;;
+esac
