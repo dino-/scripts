@@ -16,8 +16,8 @@ options:
 
 commands:
 
-  status  Show status of the mbsync timer, including how long to next run
-  sync    Synchronize mail now
+  status  Status of the mbsync timer, including how long until the next run
+  sync    Synchronize mail now by starting the mbsync.service
   start   Start mbsync.timer
   stop    Stop mbsync.timer
   log     Tail -f the mbsync.service log
