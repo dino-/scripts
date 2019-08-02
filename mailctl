@@ -9,7 +9,7 @@ function usage {
 $basename - Control mbsync service and timer
 
 usage:
-  $basename [OPTIONS] COMMAND
+  $basename [OPTIONS] COMMAND [-- ARG ARG ...]
 
 options:
   -h, --help       This help information
@@ -20,9 +20,13 @@ commands:
   sync    Synchronize mail now by starting the mbsync.service
   start   Start mbsync.timer
   stop    Stop mbsync.timer
-  log     Tail -f the mbsync.service log
+  log     Tail -f the mbsync.service log with journalctl
 
-v1.0  2019-08-01  Dino Morelli <dino@ui3.info>
+Additional args can be supplied after the -- switch, an example:
+
+    $ $basename log -- --since '1 hour ago'
+
+v1.1  2019-08-02  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -47,7 +51,7 @@ done
 
 $optHelp && { usage; exit 0; }
 
-if [ $# -ne 1 ]
+if [ $# -lt 1 ]
 then
   echo "Missing COMMAND"
   usage
@@ -55,12 +59,13 @@ then
 fi
 
 command=$1
+shift
 
 case "$command" in
   status) systemctl  --user status mbsync.timer;;
-  sync)   systemctl  --user start  mbsync;;       # Default is mbsync.service
+  sync)   systemctl  --user start  mbsync;;        # Default is mbsync.service
   start)  systemctl  --user start  mbsync.timer;;
   stop)   systemctl  --user stop   mbsync.timer;;
-  log)    journalctl --user -u mbsync -f;;        # Default is mbsync.service
+  log)    journalctl --user -u mbsync -f "$@";;    # Default is mbsync.service
   *)      echo "Invalid command: $command"; exit 1;;
 esac
