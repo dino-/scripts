@@ -9,7 +9,7 @@ function usage {
 $basename - Control mbsync service and timer
 
 usage:
-  $basename [OPTIONS] COMMAND [-- ARG ARG ...]
+  $basename [OPTIONS] COMMAND
 
 options:
   -h, --help       This help information
@@ -21,10 +21,6 @@ commands:
   start   Start mbsync.timer
   stop    Stop mbsync.timer
   log     Tail -f the mbsync.service log with journalctl
-
-Additional args can be supplied after the -- switch, an example:
-
-    $ $basename log -- --since '1 hour ago'
 
 v1.1  2019-08-02  Dino Morelli <dino@ui3.info>
 
@@ -51,9 +47,9 @@ done
 
 $optHelp && { usage; exit 0; }
 
-if [ $# -lt 1 ]
+if [ $# -ne 1 ]
 then
-  echo "Missing COMMAND"
+  echo "COMMAND should be exactly one argument"
   usage
   exit 1
 fi
@@ -62,10 +58,10 @@ command=$1
 shift
 
 case "$command" in
-  status) systemctl  --user status mbsync.timer;;
-  sync)   systemctl  --user start  mbsync;;        # Default is mbsync.service
-  start)  systemctl  --user start  mbsync.timer;;
-  stop)   systemctl  --user stop   mbsync.timer;;
-  log)    journalctl --user -u mbsync -f "$@";;    # Default is mbsync.service
-  *)      echo "Invalid command: $command"; exit 1;;
+  status) set -x; systemctl  --user status mbsync.timer;;
+  sync)   set -x; systemctl  --user start  mbsync;;        # Default is mbsync.service
+  start)  set -x; systemctl  --user start  mbsync.timer;;
+  stop)   set -x; systemctl  --user stop   mbsync.timer;;
+  log)    set -x; journalctl --user -u mbsync -f "$@";;    # Default is mbsync.service
+  *)      echo "Invalid command: $command"; usage; exit 1;;
 esac
