@@ -16,44 +16,44 @@ basename=$(basename "$0")
 
 
 function usage {
-   cat <<USAGE
+  cat <<USAGE
 $basename - Change active outputs
 
 usage:
-   $basename [OPTIONS] PROFILE
+ $basename [OPTIONS] PROFILE
 
 options:
-   -h, --help  This help info
+ -h, --help  This help info
 
 profiles:
-   laptop   Laptop display only
-   ext      External monitor only
-   both     Both of the above outputs
+  laptop   Laptop display only
+  ext      External monitor only
+  both     Both of the above outputs
 
 USAGE
 
-   exit 1
+  exit 1
 }
 
 
 case "$1" in
-   laptop)
-      set -x
-      xrandr --output $laptopDisplay "$laptopMode" --output $extDisplay --off
-      xrandr --dpi $DPI
-      ;;
-   ext)
-      set -x
-      xrandr --output $laptopDisplay --off --output $extDisplay $extMode
-      xrandr --dpi $DPI
-      ;;
-   both)
-      set -x
-      xrandr --output $extDisplay $extMode --output $laptopDisplay "$laptopMode" --pos 3440x800
-      xrandr --output $extDisplay --primary
-      xrandr --dpi $DPI
-      ;;
-   *) usage ;;
+  laptop)
+    set -x
+    xrandr --output $laptopDisplay "$laptopMode" --output $extDisplay --off
+    xrandr --dpi $DPI
+    ;;
+  ext)
+    set -x
+    xrandr --output $laptopDisplay --off --output $extDisplay $extMode
+    xrandr --dpi $DPI
+    ;;
+  both)
+    set -x
+    xrandr --output $extDisplay $extMode --output $laptopDisplay "$laptopMode" --pos 3440x800
+    xrandr --output $extDisplay --primary
+    xrandr --dpi $DPI
+    ;;
+  *) usage ;;
 esac
 
 eval "$(~/.fehbg)"
