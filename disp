@@ -6,7 +6,7 @@
 laptopDisplay="eDP1"
 laptopMode="--mode 1600x900"  # My preferred res for this (very dense!) display
 
-extDisplay="HDMI2"
+extDisplay="HDMI1"
 extMode="--auto"  # auto means the native res and best refresh rate
 
 DPI=96
