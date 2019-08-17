@@ -39,7 +39,8 @@ USAGE
 case "$1" in
   laptop)
     set -x
-    xrandr --output $laptopDisplay "$laptopMode" --output $extDisplay --off
+    # shellcheck disable=SC2086
+    xrandr --output $laptopDisplay $laptopMode --output $extDisplay --off
     xrandr --dpi $DPI
     ;;
   ext)
@@ -49,7 +50,8 @@ case "$1" in
     ;;
   both)
     set -x
-    xrandr --output $extDisplay $extMode --output $laptopDisplay "$laptopMode" --pos 3440x800
+    # shellcheck disable=SC2086
+    xrandr --output $extDisplay $extMode --output $laptopDisplay $laptopMode --pos 3440x800
     xrandr --output $extDisplay --primary
     xrandr --dpi $DPI
     ;;
