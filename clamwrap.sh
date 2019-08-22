@@ -41,7 +41,7 @@ If you get reports of a file or files infected with Unix.Trojan.Mirai, it may
 be a false-positive with the local clamav. Try checking the files with an
 online scanner like https://www.virustotal.com
 
-v1.1  2019-04-13  Dino Morelli <dino@ui3.info>
+v1.2  2019-08-22  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
