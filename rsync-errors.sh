@@ -20,7 +20,8 @@ logFile="${!#}"
 
 if [ -s $logFile ]
   then
-    egrep '(^rsync|^[A-Z]{2,}|^file has vanished|--dry-run)' $@  # Calling with all arguments
+    # Calling with all arguments so addional arguments can be passed for grep
+    grep -E '(^rsync|^[A-Z]{2,}|^file has vanished|--dry-run)' "$@"
   else
     echo "ERROR: File $logFile is empty, may have been logrotated, try ${logFile}.1"
 fi
