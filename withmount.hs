@@ -3,12 +3,14 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 import Control.Monad.Except
-import Data.List (intercalate, isInfixOf)
+import Data.List (isInfixOf)
 import System.Environment (getArgs, getProgName)
 import System.Exit (ExitCode (..))
 import System.IO (hPutStrLn, stderr)
 import System.Process (system)
 import Text.Printf (printf)
+
+{-# ANN parseArgs "HLint: ignore Use infix" #-}
 
 
 main :: IO ()
@@ -49,7 +51,7 @@ execute (mountPoint : commandParts) = do
       alreadyMounted <- mount mountPoint
 
       -- perform the shell command
-      let command = intercalate " " commandParts
+      let command = unwords commandParts
       systemP command
 
       -- debugging
@@ -60,8 +62,6 @@ execute (mountPoint : commandParts) = do
       unless alreadyMounted $ do
          _ <- systemE $ "fusermount -u " ++ mountPoint
          return ()
-
-      return ()
 
    either (hPutStrLn stderr) return result
 
