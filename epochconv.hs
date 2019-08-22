@@ -69,7 +69,7 @@ usage = do
       , ""
       , "Parsable input formats for -f:"
       ]
-      ++ (map (\fp -> "  " ++ fmt fp now) formatPatterns) ++
+      ++ map (\fp -> "  " ++ fmt fp now) formatPatterns ++
       [ ""
       , "Output will be the date/time in a variety of formats, both localized"
       , "and UTC, as well as epoch and milliseconds."
@@ -79,11 +79,11 @@ usage = do
 
 
 parseInput' :: [String] -> Either String UTCTime
-parseInput' ("-e" : epochString : []) = strToUTCTime 1 epochString
-parseInput' ("-m" : milliString : []) = strToUTCTime 1000 milliString
-parseInput' ("-f" : as)               = parseDateString . unwords $ as
+parseInput' ["-e", epochString] = strToUTCTime 1 epochString
+parseInput' ["-m", milliString] = strToUTCTime 1000 milliString
+parseInput' ("-f" : as)         = parseDateString . unwords $ as
 parseInput' as
-   | any (not . (flip elem) "0123456789")
+   | any (not . flip elem "0123456789")
       . tail . unwords $ as = parseInput' $ "-f" : as
    | otherwise = strToUTCTime 1 . unwords $ as
 
