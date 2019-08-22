@@ -143,7 +143,7 @@ output (Right ut) = do
 
    putStrLn $ "\n   Unix time: " ++ fmt "%s" ut
    putStrLn $ "milliseconds: " ++
-      (show . (* 1000) . round .  utcTimeToPOSIXSeconds $ ut)
+      (show . round . (* 1000) .  utcTimeToPOSIXSeconds $ ut)
 
    exitSuccess
 
