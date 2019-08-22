@@ -52,4 +52,4 @@ case "$1" in
 esac
 
 set -x
-clamscan --bytecode-timeout=300000 --max-filesize=4000M --max-scansize=4000M $*
+clamscan --bytecode-timeout=300000 --max-filesize=4000M --max-scansize=4000M "$@"
