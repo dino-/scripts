@@ -47,8 +47,9 @@ USAGE
 }
 
 
-if [ "$1" == "-h" ]; then usage; exit 0; fi
-if [ "$1" == "--help" ]; then usage; exit 0; fi
+case "$1" in
+  -h|--help) usage; exit 0;;
+esac
 
 set -x
 clamscan --bytecode-timeout=300000 --max-filesize=4000M --max-scansize=4000M $*
