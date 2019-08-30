@@ -8,6 +8,7 @@
 ignoreDirs=(
   '_cache'          # Hakyll cache directory
   '_darcs'          # darcs source control
+  '.git'            # git source control
   'node_modules'    # JavaScript: npm download directories
   'project/target'  # Scala: sbt build artifacts
   'target'          # Scala: sbt build artifacts
@@ -18,4 +19,7 @@ ignoreArg=$(printf "|%s" "${ignoreDirs[@]}")
 # Remove the first "dangling" | character
 ignoreArg=${ignoreArg:1}
 
-eval "tree -I \"$ignoreArg\" $@"
+# Note: Using -a so we get all dotfiles and directories, BUT placing the -I
+# ignore switch after means some things get filtered out (like .git from our
+# list above)
+eval "tree -a -I \"$ignoreArg\" $*"
