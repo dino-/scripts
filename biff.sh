@@ -13,8 +13,7 @@ do
 
   # Show only folders that have unread mail
   [[ $unreadCount -gt 0 ]] && {
-    # shellcheck disable=SC2046,SC2086
-    folderName="$(splitpath --takebasename $(splitpath --takedirectory $dir))"
+    folderName=$(splitpath --takedirectory "$dir" | xargs splitpath --takebasename)
     printf "%4d %s\n" "$unreadCount" "$folderName"
   }
 done
