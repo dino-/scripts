@@ -1,10 +1,11 @@
 #! /bin/bash
 
 # fix keyboard mapping using Xkb
+# Note: Don't bother using this if it can be achieved with custom xorg conf. See Dino's custom xkb project.
 
 
 # setxkbmap is a more civilized way to do this but some keys can't be mapped easily with it...
-# setxkbmap -option ctrl:swapcaps -option keypad:pointerkeys -option compose:sclk
+setxkbmap -option altwin:prtsc_rwin -option compose:sclk -option ctrl:swapcaps -option keypad:pointerkeys
 
 # ...in those cases, a custom .Xkeymap file can be used
-test -f ~/.Xkeymap && xkbcomp -w 3 ~/.Xkeymap $DISPLAY
+# test -f ~/.Xkeymap && xkbcomp -w 3 ~/.Xkeymap $DISPLAY

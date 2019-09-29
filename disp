@@ -59,4 +59,3 @@ case "$1" in
 esac
 
 eval "$(~/.fehbg)"
-fk
