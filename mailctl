@@ -20,7 +20,7 @@ commands:
   sync    Synchronize mail now by starting the mbsync.service
   start   Start mbsync.timer
   stop    Stop mbsync.timer
-  log     Tail -f the mbsync.service log with journalctl
+  log     Display the log from the last 5 minutes
 
 log is performing this command:
 
