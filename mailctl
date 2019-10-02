@@ -22,7 +22,11 @@ commands:
   stop    Stop mbsync.timer
   log     Tail -f the mbsync.service log with journalctl
 
-v1.1  2019-08-02  Dino Morelli <dino@ui3.info>
+log is performing this command:
+
+  journalctl --user -u mbsync --since "5 minutes ago"
+
+v1.2  2019-10-02  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -62,9 +66,9 @@ case "$command" in
     set -x
     systemctl --user status mbsync.timer
     systemctl --user list-timers mbsync.timer;;
-  sync)   set -x; systemctl  --user start  mbsync;;        # Default is mbsync.service
+  sync)   set -x; systemctl  --user start  mbsync;;
   start)  set -x; systemctl  --user start  mbsync.timer;;
   stop)   set -x; systemctl  --user stop   mbsync.timer;;
-  log)    set -x; journalctl --user -u mbsync -f "$@";;    # Default is mbsync.service
+  log)    set -x; journalctl --user -u mbsync --since "5 minutes ago";;
   *)      echo "Invalid command: $command"; usage; exit 1;;
 esac
