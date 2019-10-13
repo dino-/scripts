@@ -11,6 +11,7 @@ ignoreDirs=(
   '.git'            # git source control
   'node_modules'    # JavaScript: npm download directories
   'project/target'  # Scala: sbt build artifacts
+  '.stack-work'     # Haskell stack build artifacts directory
   'target'          # Scala: sbt build artifacts
 )
 
