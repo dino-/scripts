@@ -64,8 +64,8 @@ shift
 case "$command" in
   status)
     set -x
-    systemctl --user status mbsync.timer
-    systemctl --user list-timers mbsync.timer;;
+    systemctl --user --no-pager status mbsync.timer
+    systemctl --user --no-pager list-timers mbsync.timer;;
   sync)   set -x; systemctl  --user start  mbsync;;
   start)  set -x; systemctl  --user start  mbsync.timer;;
   stop)   set -x; systemctl  --user stop   mbsync.timer;;
