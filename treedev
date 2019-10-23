@@ -6,14 +6,26 @@
 
 # Add directories to this list
 ignoreDirs=(
+  '.idea'           # IntelliJ
+
+  # Haskell
   '_cache'          # Hakyll cache directory
-  '_darcs'          # darcs source control
-  '.git'            # git source control
-  '.idea'           # IntelliJ stuff
-  'node_modules'    # JavaScript: npm download directories
-  'project/target'  # Scala: sbt build artifacts
-  '.stack-work'     # Haskell stack build artifacts directory
-  'target'          # Maven build artifacts
+  '.stack-work'     # stack build artifacts directory
+
+  # JavaScript, ECMAScript, TypeScript
+  'node_modules'    # npm download directories
+
+  # Maven, sbt, JVM, Java and Scala
+  'project/target'  # maven/sbt build artifacts
+  'target'          # maven/sbt build artifacts
+
+  # Python
+  '.mypy_cache'     # mypy cache directory
+  '.venv'           # Conventional Python virtual env directory
+
+  # Source control
+  '_darcs'          # darcs
+  '.git'            # git
 )
 
 # Combine the dirs together delimited with | chars
