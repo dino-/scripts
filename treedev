@@ -7,9 +7,9 @@
 # Add directories to this list
 ignoreDirs=(
   '.idea'           # IntelliJ
+  '*cache*'         # We never want to see caches of any kind
 
   # Haskell
-  '_cache'          # Hakyll cache directory
   '.stack-work'     # stack build artifacts directory
 
   # JavaScript, ECMAScript, TypeScript
@@ -20,7 +20,6 @@ ignoreDirs=(
   'target'          # maven/sbt build artifacts
 
   # Python
-  '.mypy_cache'     # mypy cache directory
   '.venv'           # Conventional Python virtual env directory
 
   # Source control
