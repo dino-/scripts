@@ -2,29 +2,38 @@
 
 # For a list of files for TZ, see /usr/share/zoneinfo
 
-txtreset="\e[0m"
+# shellcheck disable=SC2034
+colRedNrm="\e[0;31m"  # Difficult to see
+colRedBld="\e[1;31m"
+colGreenNrm="\e[0;32m"
+colYellowNrm="\e[0;33m"
+colBlueNrm="\e[0;34m"  # Difficult to see
+colBlueBld="\e[1;34m"  # Difficult to see
+colPurpleNrm="\e[0;35m"  # Difficult to see
+colPurpleBld="\e[1;35m"
+colCyanNrm="\e[0;36m"
+colWhiteNrm="\e[0;37m"
 
-txtred="\e[0;31m"  # Difficult to see
-bldred="\e[1;31m"
-txtgreen="\e[0;32m"
-txtyellow="\e[0;33m"
-txtblue="\e[0;34m"  # Difficult to see
-bldblue="\e[1;34m"  # Difficult to see
-txtpurple="\e[0;35m"  # Difficult to see
-bldpurple="\e[1;35m"
-txtcyan="\e[0;36m"
-txtwhite="\e[0;37m"
 
-timeFormat="%F %T %Z"
+function withColor() {
+  color=$1
+  zone=$2
+  colReset="\e[0m"
+  timeFormat="%F %T %Z"
+
+  echo -en "$color"; TZ="$zone" date +"$timeFormat $zone"; echo -en "$colReset"
+}
+
 
 while true
 do
-   clear
+  clear
 
-   echo -en "$txtyellow"; TZ='America/Los_Angeles' date +"$timeFormat"; echo -en "$txtreset"
-   echo -en "$txtcyan"; TZ='America/New_York' date +"$timeFormat"; echo -en "$txtreset"
-   echo -en "$txtgreen"; TZ='UTC' date +"$timeFormat"; echo -en "$txtreset"
-   # echo -en "$bldpurple"; TZ='EET' date +"$timeFormat"; echo -en "$txtreset"
+  withColor "$colYellowNrm" 'America/Los_Angeles'
+  withColor "$colCyanNrm" 'America/New_York'
+  withColor "$colGreenNrm" 'UTC'
+  # withColor "$colPurpleBld" 'Asia/Kolkata'  # All of India
+  # withColor "$colRedBld" 'EET'  # Eastern European Time
 
-   sleep 1
+  sleep 1
 done
