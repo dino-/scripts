@@ -19,6 +19,7 @@ This script is looking for lines like these:
 
   'rsync: some message from rsync'
   'rsync error: some message from rsync'
+  'rsync warning: some message from rsync'
   'ERROR some error message from rsync'
   'file has vanished ...'
   any line with '--dry-run' in it
@@ -34,7 +35,7 @@ this:
 
 No output means no rsync warning messages were found in the log.
 
-v2.0  2019-09-15  Dino Morelli <dino@ui3.info>
+v2.1  2019-12-03  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -44,25 +45,28 @@ function runtest {
 
   # This represents log data with lines we're interested in seeing,
   # one line for each.
-  testOutput=$(cat <<TESTDATA | "$0"
+  testInput=$(cat <<TESTDATA
 2019-08-31 03:00:02> Executing command: rsync --dry-run blah blah blah
 rsync: some message from rsync
 rsync error: some message from rsync
+rsync warning: some message from rsync
 ERROR some error message
 file has vanished foo bar
 Sep 10 03:00:46 machinename bak-machinename.sh[4134]: Executing command: rsync --dry-run blah blah blah
 Sep 10 03:02:38 machinename bak-machinename.sh[4134]: rsync: some message from rsync
 Sep 10 03:02:38 machinename bak-machinename.sh[4134]: rsync error: some message from rsync
+Sep 10 03:02:38 machinename bak-machinename.sh[4134]: rsync warning: some message from rsync
 Sep 10 03:02:39 machinename bak-machinename.sh[4134]: ERROR some error message
 Sep 10 03:02:44 machinename bak-machinename.sh[4134]: file has vanished foo bar
 TESTDATA
   )
 
-  targetErrorLineCount=$(echo "$testOutput" | wc -l)
+  expectedLineCount=$(echo "$testInput" | wc -l)
 
-  errorLineCount=$(echo "$testOutput" | wc -l)
-  [[ $errorLineCount -eq $targetErrorLineCount ]] || {
-    echo "Test failed because we got $errorLineCount bad lines but expected $targetErrorLineCount"
+  testOutput=$(echo "$testInput" | "$0")
+  actualLineCount=$(echo "$testOutput" | wc -l)
+  [[ $actualLineCount -eq $expectedLineCount ]] || {
+    echo "Test failed because we got $actualLineCount bad lines but expected $expectedLineCount"
     echo "Test output:"
     echo
     echo "$testOutput"
@@ -78,4 +82,4 @@ TESTDATA
 [ "$1" == "--help" ] && { usage; exit 0; }
 [ "$1" == "--test" ] && { runtest; exit 0; }
 
-grep -E '(rsync: |rsync error: |(^| )[A-Z]{2,} |file has vanished|--dry-run)' "$@" -
+grep -E '(rsync: |rsync warning: |rsync error: |(^| )[A-Z]{2,} |file has vanished|--dry-run)' "$@" -
