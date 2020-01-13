@@ -24,6 +24,8 @@ tar xzf $package
 
 buildDir=$(basename $package .tar.gz)
 
+echo "Package $package unpacked into /tmp/${buildDir}. If something goes wrong and this script exits early, be sure to clean this directory up sometime."
+
 # Compare the directories
 echo
 echo "Checking directory contents"
