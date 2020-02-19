@@ -35,7 +35,7 @@ this:
 
 No output means no rsync warning messages were found in the log.
 
-v2.1  2019-12-03  Dino Morelli <dino@ui3.info>
+v2.2  2020-02-19  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -82,4 +82,4 @@ TESTDATA
 [ "$1" == "--help" ] && { usage; exit 0; }
 [ "$1" == "--test" ] && { runtest; exit 0; }
 
-grep -E '(rsync: |rsync warning: |rsync error: |(^| )[A-Z]{2,} |file has vanished|--dry-run)' "$@" -
+grep -E '(rsync: |rsync warning: |rsync error: |(^|: )[A-Z]{2,} |file has vanished|--dry-run)' "$@" -
