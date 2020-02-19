@@ -8,6 +8,7 @@
 ignoreDirs=(
   '.idea'           # IntelliJ
   '*cache*'         # We never want to see caches of any kind
+  '.import'         # Godot
 
   # Haskell
   '.stack-work'     # stack build artifacts directory
