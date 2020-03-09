@@ -35,7 +35,7 @@ this:
 
 No output means no rsync warning messages were found in the log.
 
-v2.2  2020-02-19  Dino Morelli <dino@ui3.info>
+v2.3  2020-03-09  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -82,4 +82,22 @@ TESTDATA
 [ "$1" == "--help" ] && { usage; exit 0; }
 [ "$1" == "--test" ] && { runtest; exit 0; }
 
+
+# Examine the backup log with grep
 grep -E '(rsync: |rsync warning: |rsync error: |(^|: )[A-Z]{2,} |file has vanished|--dry-run)' "$@" -
+grepStatus=$?
+# echo "grep status: $grepStatus"  # For debugging
+
+
+# Evaluate the results and exit accordingly
+
+if [ $grepStatus -eq 0 ]    # grep matched something..
+then                        # we want to signal the backup failed
+  exit 1
+elif [ $grepStatus -eq 1 ]  # grep matched nothing..
+then                        # we want to signal the backup succeeded
+  exit 0
+else                        # Something unexpected from grep, exit with that
+  echo "ERROR: Something unexpected occurred with grep!"
+  exit $grepStatus
+fi
