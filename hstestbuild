@@ -16,31 +16,31 @@ set -e
 devDir=$(pwd)
 
 # Get absolute path to the passed Haskell package
-package=$(readlink --canonicalize-missing $1)
+package=$(readlink --canonicalize-missing "$1")
 
 # Unpack it in /tmp
 cd /tmp
-tar xzf $package
+tar xzf "$package"
 
-buildDir=$(basename $package .tar.gz)
+buildDir=$(basename "$package" .tar.gz)
 
 echo "Package $package unpacked into /tmp/${buildDir}. If something goes wrong and this script exits early, be sure to clean this directory up sometime."
 
 # Compare the directories
 echo
 echo "Checking directory contents"
-diff --brief --recursive --exclude _darcs --exclude .git --exclude *.swp --exclude .stack-work $devDir "/tmp/$buildDir"
+diff --brief --recursive --exclude _darcs --exclude .git --exclude ./*.swp --exclude .stack-work "$devDir" "/tmp/$buildDir"
 echo "Done checking directory contents"
 echo
 
 # Perform the full build, test, the works
-cd $buildDir
+cd "$buildDir"
 stack build
 stack test
 
 # Clean up that mess
 cd ..
-rm --recursive --force $buildDir
+rm --recursive --force "$buildDir"
 
 # If we got here, this was successful
 echo "Package $buildDir builds successfully!"
