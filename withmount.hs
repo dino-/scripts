@@ -5,7 +5,7 @@
 import Control.Monad.Except
 import Data.List (isInfixOf)
 import System.Environment (getArgs, getProgName)
-import System.Exit (ExitCode (..))
+import System.Exit ( ExitCode (..), exitFailure )
 import System.IO (hPutStrLn, stderr)
 import System.Process (system)
 import Text.Printf (printf)
@@ -50,20 +50,33 @@ execute (mountPoint : commandParts) = do
       -- mount the filesystem
       alreadyMounted <- mount mountPoint
 
-      -- perform the shell command
-      let command = unwords commandParts
-      systemP command
-
-      -- debugging
+      -- just being chatty
       when alreadyMounted $
          liftIO $ printf "%s already mounted" mountPoint
 
-      -- umount the filesystem
-      unless alreadyMounted $ do
-         _ <- systemE $ "fusermount -u " ++ mountPoint
-         return ()
+      -- perform the shell command, hold onto the result
+      let command = unwords commandParts
+      cmdEc <- liftIO $ system command
 
-   either (hPutStrLn stderr) return result
+      -- umount the filesystem, whether the above command failed or not
+      unless alreadyMounted $ umount mountPoint
+
+      -- assess the command result so withmount can fail if it failed
+      exitCodeThrow command cmdEc
+
+   either (\errMsg -> hPutStrLn stderr errMsg >> exitFailure) return result
+
+
+exitCodeThrow :: (MonadIO m, MonadError String m) => String -> ExitCode -> m ()
+exitCodeThrow _        ExitSuccess           = return ()
+exitCodeThrow command (ExitFailure exitCode) =
+  throwError $ printf "command: %s\nexitcode: %d" command exitCode
+
+
+systemThrow :: (MonadIO m, MonadError String m) => String -> m ()
+systemThrow command = do
+  ec <- liftIO $ system command
+  exitCodeThrow command ec
 
 
 {- Mount the filesystem only if it's not already mounted. Returns
@@ -76,9 +89,8 @@ mount mountPoint = do
    if trimTrailingSlash mountPoint `isInfixOf` output
       then return True
       else do
-         systemE $ "mount " ++ mountPoint
+         systemThrow $ "mount " ++ mountPoint
          return False
-
 
 {- If the mount point has a trailing slash, it's a problem to find
    the string in /etc/mtab
@@ -87,23 +99,7 @@ trimTrailingSlash :: String -> String
 trimTrailingSlash s = if last s == '/' then init s else s
 
 
-{- Wrapper so that failed system commands produce failure in ExceptT
--}
-systemE :: (Num a, MonadIO m, MonadError String m) => String -> m a
-systemE cmd = do
-   ec <- liftIO $ system cmd
-   case ec of
-      ExitSuccess   -> return 0
-      ExitFailure c -> throwError $ printf "command: %s\nexitcode: %d"
-         cmd c
-
-
-{- Wrapper so that failed system commands are chatty about the failure
-   (but don't fail the monadic action they're in)
--}
-systemP :: (MonadIO m, MonadError String m) => String -> m ()
-systemP cmd = liftIO $ do
-   ec <- system cmd
-   case ec of
-      ExitSuccess   -> return ()
-      ExitFailure c -> printf "command: %s\nexitcode: %d" cmd c
+umount :: (MonadIO m, MonadError String m) => String -> m ()
+umount mountPoint = do
+   systemThrow $ "fusermount -u " ++ mountPoint
+   return ()
