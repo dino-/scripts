@@ -1,15 +1,17 @@
 #!/bin/bash
 
 
-# Find these for your system in xrandr output
+# Find these for your system in nvidia-settings or xrandr output
 
-laptopDisplay="eDP1"
-laptopMode="--mode 1600x900"  # My preferred res for this (very dense!) display
+laptopDisplay="DP-4"  # LED panel on Legion Y740
+laptopAbsPos="+3440+360"
 
-extDisplay="HDMI1"
-extMode="--auto"  # auto means the native res and best refresh rate
+extDisplay="HDMI-0"  # Rear HDMI socket on Legion Y740
+extAbsPos="+0+0"
 
-DPI=96
+# DPI=144  # Native DPI of the Legion Y740 LCD panel
+# DPI=109  # Native DPI of the LG Ultrawide monitor
+DPI=96  # The DPI that works for us
 
 
 basename=$(basename "$0")
@@ -39,20 +41,17 @@ USAGE
 case "$1" in
   laptop)
     set -x
-    # shellcheck disable=SC2086
-    xrandr --output $laptopDisplay $laptopMode --output $extDisplay --off
+    nvidia-settings --assign CurrentMetaMode="${laptopDisplay}: nvidia-auto-select"
     xrandr --dpi $DPI
     ;;
   ext)
     set -x
-    xrandr --output $laptopDisplay --off --output $extDisplay $extMode
+    nvidia-settings --assign CurrentMetaMode="${extDisplay}: nvidia-auto-select"
     xrandr --dpi $DPI
     ;;
   both)
     set -x
-    # shellcheck disable=SC2086
-    xrandr --output $extDisplay $extMode --output $laptopDisplay $laptopMode --pos 3440x800
-    xrandr --output $extDisplay --primary
+    nvidia-settings --assign CurrentMetaMode="${extDisplay}: nvidia-auto-select ${extAbsPos}, ${laptopDisplay}: nvidia-auto-select ${laptopAbsPos}"
     xrandr --dpi $DPI
     ;;
   *) usage ;;
