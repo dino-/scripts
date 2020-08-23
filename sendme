@@ -1,33 +1,79 @@
 #! /bin/bash
 
-basename=$(basename $0)
+basename=$(basename "$0")
 
 function usage {
    cat <<USAGE
 $basename - Send a simple email
 
 usage:
-   $basename OPTIONS
-   $basename BODY [SUBJECT]
+   $basename [OPTIONS] [SUBJECT] BODY
 
 options:
-   -h, --help  This help info
+  -t, --to EMAIL  Email recipient, default \$USER
+  -h, --help      This help info
+
+If omitted, SUBJECT defaults to "a link"
+
+An email will be sent with a plain text part and an HTML part with the entire
+BODY wrapped in an anchor tag.
+
+v1.0  2020-08-23  Dino Morelli <dino@ui3.info>
 
 USAGE
-
-   exit 1
 }
 
+
+# arg parsing
+
+getoptResults=$(getopt -o t:h --long to:,help -n "$basename" -- "$@") \
+  || { usage; exit 1; }
+
+# Note the quotes around "$getoptResults": they are essential!
+eval set -- "$getoptResults"
+
+optTo="$USER"
+optHelp=false
+
+while true ; do
+  case "$1" in
+    -t|--to) optTo="$2"; shift 2;;
+    -h|--help) optHelp=true; shift;;
+    --) shift; break;;
+  esac
+done
+
+$optHelp && { usage; exit 0; }
+
+case "$#" in
+  2) subject="$1"; body="$2";;
+  1) subject="a link"; body="$1";;
+  *) echo "Can't continue because of missing email BODY argument"; usage; exit 1;;
+esac
 
 case "$1" in
    -h | --help) usage ;;
 esac
 
-subject=${2:-a link}
+boundaryString=$(echo -n "$body" | md5sum | awk '{print $1}')
 
 /usr/sbin/sendmail -ti <<MESSAGE
-To: $USER
+From: $USER@$HOSTNAME
+To: $optTo
 Subject: $subject
+Content-Type: multipart/alternative; boundary="$boundaryString"
 
-$1
+--$boundaryString
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+$body
+
+--$boundaryString
+Content-Type: text/html; charset="utf-8"
+
+<a href="$body">$body</a>
+
+--$boundaryString--
 MESSAGE
