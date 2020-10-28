@@ -4,9 +4,8 @@
 basename=$(basename "$0")
 
 
-function usage {
-  cat <<USAGE
-$basename - Argument parsing demo script
+usage=$(cat <<USAGE
+Argument parsing demo script
 
 usage:
   $basename [OPTIONS] ITEM1 ITEM2 ...
@@ -16,16 +15,29 @@ options:
   -b, --arg-b INT  An argument named b
   -h, --help       This help information
 
-v1.1  2019-07-24  Dino Morelli <dino@ui3.info>
+v1.2  2020-09-24  Dino Morelli <dino@ui3.info>
 
 USAGE
+)
+
+
+warn () {
+  echo "$basename:" "$@" >&2
+}
+
+
+die () {
+  rc="$1"
+  shift
+  warn "$@"
+  exit "$rc"
 }
 
 
 # arg parsing
 
 getoptResults=$(getopt -o ab:h --long arg-a,arg-b:,help -n "$basename" -- "$@") \
-  || { usage; exit 1; }
+  || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
@@ -50,11 +62,10 @@ echo "number of remaining parameters: $#"
 echo "remaining parameters: $*"
 echo
 
-$optHelp && { usage; exit 0; }
+$optHelp && die 0 "$usage"
 
 if [ $# -lt 2 ]
 then
-  echo "Incorrect number of ITEMs"
-  usage
-  exit 1
+  warn "Incorrect number of ITEMs"
+  die 1 "$usage"
 fi
