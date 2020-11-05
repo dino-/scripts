@@ -1,11 +1,24 @@
 #! /bin/bash
 
-# fix keyboard mapping using Xkb
+# fix keyboard mapping using xkb
+
 # Note: Don't bother using this if it can be achieved with custom xorg conf. See Dino's custom xkb project.
 
+# This script exists primarily for me to occasionally hack in the
+# ctrl:swap_rwin_rctl option for the Lenovo Legion Y740 laptop (which has no
+# right Windows key (Super_R)).
 
-# setxkbmap is a more civilized way to do this but some keys can't be mapped easily with it...
-setxkbmap -option altwin:prtsc_rwin -option compose:sclk -option ctrl:swapcaps -option keypad:pointerkeys
 
-# ...in those cases, a custom .Xkeymap file can be used
+# These end up adding cumulatively, so we should clear them first
+setxkbmap -option ''
+
+setxkbmap -option 'compose:sclk,ctrl:swap_rwin_rctl,ctrl:swapcaps,keypad:pointerkeys'
+# altwin:prtsc_rwin was good for ThinkPad X1 Carbons
+# setxkbmap -option 'altwin:prtsc_rwin,compose:sclk,ctrl:swapcaps,keypad:pointerkeys'
+
+# To view what things are set to:
+# $ setxkbmap -print -verbose 10
+
+# setxkbmap is the more civilized way to do these things but, if necessary,
+# make an xkbcomp keymap file
 # test -f ~/.Xkeymap && xkbcomp -w 3 ~/.Xkeymap $DISPLAY
