@@ -16,17 +16,19 @@ options:
 
 commands:
 
-  status  Status of the mbsync timer, including how long until the next run
-  sync    Synchronize mail now by starting the mbsync.service
-  start   Start mbsync.timer
-  stop    Stop mbsync.timer
-  log     Display the log from the last 5 minutes
+  status   Status of the mbsync timer, including how long until the next run
+  sync     Synchronize mail now by starting the mbsync.service
+  start    Start mbsync.timer
+  stop     Stop mbsync.timer
+  restart  Execute a 'systemctl --user daemon-reload' and restart mbsync.timer
+           Useful when editing the timer and service unit files
+  log      Display the log from the last 5 minutes
 
 log is performing this command:
 
   journalctl --user -u mbsync --since "5 minutes ago"
 
-v1.2  2019-10-02  Dino Morelli <dino@ui3.info>
+v1.3  2020-11-05  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -66,9 +68,12 @@ case "$command" in
     set -x
     systemctl --user --no-pager status mbsync.timer
     systemctl --user --no-pager list-timers mbsync.timer;;
-  sync)   set -x; systemctl  --user start  mbsync;;
-  start)  set -x; systemctl  --user start  mbsync.timer;;
-  stop)   set -x; systemctl  --user stop   mbsync.timer;;
-  log)    set -x; journalctl --user -u mbsync --since "5 minutes ago";;
-  *)      echo "Invalid command: $command"; usage; exit 1;;
+  sync)    set -x; systemctl --user start mbsync;;
+  start)   set -x; systemctl --user start mbsync.timer;;
+  stop)    set -x; systemctl --user stop  mbsync.timer;;
+  restart) set -x;
+    systemctl --user daemon-reload
+    systemctl --user restart mbsync.timer;;
+  log)     set -x; journalctl --user -u mbsync --since "5 minutes ago";;
+  *)       echo "Invalid command: $command"; usage; exit 1;;
 esac
