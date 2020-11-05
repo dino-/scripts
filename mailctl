@@ -3,6 +3,10 @@
 
 basename=$(basename "$0")
 
+# This is the interval set in mbsync.timer
+# Change it here if it's changed there.
+timerInterval="10"
+
 
 usage=$(cat <<USAGE
 Control mbsync service and timer
@@ -21,11 +25,11 @@ commands:
   stop     Stop mbsync.timer
   restart  Execute a 'systemctl --user daemon-reload' and restart mbsync.timer
            Useful when editing the timer and service unit files
-  log      Display the log from the last 5 minutes
+  log      Display the log from the last $timerInterval minutes
 
 log is performing this command:
 
-  journalctl --user -u mbsync --since "5 minutes ago"
+  journalctl --user -u mbsync --since "$timerInterval minutes ago"
 
 v1.3  2020-11-05  Dino Morelli <dino@ui3.info>
 
@@ -85,7 +89,7 @@ case "$command" in
   restart) set -x;
     systemctl --user daemon-reload
     systemctl --user restart mbsync.timer;;
-  log)     set -x; journalctl --user -u mbsync --since "5 minutes ago";;
+  log)     set -x; journalctl --user -u mbsync --since "$timerInterval minutes ago";;
   *)
     warn "Invalid command: $command"
     die 1 "$usage";;
