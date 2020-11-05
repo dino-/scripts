@@ -4,9 +4,8 @@
 basename=$(basename "$0")
 
 
-function usage {
-  cat <<USAGE
-$basename - Control mbsync service and timer
+usage=$(cat <<USAGE
+Control mbsync service and timer
 
 usage:
   $basename [OPTIONS] COMMAND
@@ -31,13 +30,26 @@ log is performing this command:
 v1.3  2020-11-05  Dino Morelli <dino@ui3.info>
 
 USAGE
+)
+
+
+warn () {
+  echo "$basename:" "$@" >&2
+}
+
+
+die () {
+  rc="$1"
+  shift
+  warn "$@"
+  exit "$rc"
 }
 
 
 # arg parsing
 
 getoptResults=$(getopt -o h --long help -n "$basename" -- "$@") \
-  || { usage; exit 1; }
+  || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
@@ -51,13 +63,12 @@ while true ; do
   esac
 done
 
-$optHelp && { usage; exit 0; }
+$optHelp && die 0 "$usage"
 
 if [ $# -ne 1 ]
 then
-  echo "COMMAND should be exactly one argument"
-  usage
-  exit 1
+  warn "COMMAND should be exactly one argument"
+  die 1 "$usage"
 fi
 
 command=$1
@@ -75,5 +86,7 @@ case "$command" in
     systemctl --user daemon-reload
     systemctl --user restart mbsync.timer;;
   log)     set -x; journalctl --user -u mbsync --since "5 minutes ago";;
-  *)       echo "Invalid command: $command"; usage; exit 1;;
+  *)
+    warn "Invalid command: $command"
+    die 1 "$usage";;
 esac
