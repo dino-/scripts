@@ -9,10 +9,24 @@
 # right Windows key (Super_R)).
 
 
+# This is the external WASD mechanical keyboard
+usbVendorId_WASDKeyboard="04d9:0169"
+
+baseOptions='ctrl:swapcaps'
+
+xkbOptions=$(if lsusb | grep -q "$usbVendorId_WASDKeyboard"
+  then echo "$baseOptions,compose:sclk,keypad:pointerkeys"
+  else echo "$baseOptions,ctrl:swap_rwin_rctl"
+fi)
+
 # These end up adding cumulatively, so we should clear them first
 setxkbmap -option ''
 
-setxkbmap -option 'compose:sclk,ctrl:swap_rwin_rctl,ctrl:swapcaps,keypad:pointerkeys'
+setxkbmap -option "$xkbOptions"
+
+
+# Additional notes, older stuff
+
 # altwin:prtsc_rwin was good for ThinkPad X1 Carbons
 # setxkbmap -option 'altwin:prtsc_rwin,compose:sclk,ctrl:swapcaps,keypad:pointerkeys'
 
