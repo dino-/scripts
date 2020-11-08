@@ -12,10 +12,10 @@
 # This is the external WASD mechanical keyboard
 usbVendorId_WASDKeyboard="04d9:0169"
 
-baseOptions='ctrl:swapcaps'
+baseOptions='compose:prsc,ctrl:swapcaps'
 
 xkbOptions=$(if lsusb | grep -q "$usbVendorId_WASDKeyboard"
-  then echo "$baseOptions,compose:sclk,keypad:pointerkeys"
+  then echo "$baseOptions,keypad:pointerkeys"
   else echo "$baseOptions,ctrl:swap_rwin_rctl"
 fi)
 
