@@ -26,12 +26,13 @@ commands:
   restart  Execute a 'systemctl --user daemon-reload' and restart mbsync.timer
            Useful when editing the timer and service unit files
   log      Display the log from the last $timerInterval minutes
+  health   Exit with success if mbsync.service has succeeded in the past hour
 
 log is performing this command:
 
   journalctl --user -u mbsync --since "$timerInterval minutes ago"
 
-v1.3  2020-11-05  Dino Morelli <dino@ui3.info>
+v1.4  2020-11-20  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -86,10 +87,17 @@ case "$command" in
   sync)    set -x; systemctl --user start mbsync;;
   start)   set -x; systemctl --user start mbsync.timer;;
   stop)    set -x; systemctl --user stop  mbsync.timer;;
-  restart) set -x;
+  restart)
+    set -x
     systemctl --user daemon-reload
     systemctl --user restart mbsync.timer;;
   log)     set -x; journalctl --user -u mbsync --since "$timerInterval minutes ago";;
+  health)
+    ( journalctl --user -u mbsync --since '1 hour ago' | grep -q "Succeeded" ) || ( \
+        warn "mbsync mail sync has not succeeded for over one hour!"
+        sleep 1  # This warn message was never being logged by systemd, so an ugly sleep
+        exit 1
+    );;
   *)
     warn "Invalid command: $command"
     die 1 "$usage";;
