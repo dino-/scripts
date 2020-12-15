@@ -19,20 +19,21 @@ options:
 
 commands:
 
-  status   Status of the mbsync timer, including how long until the next run
   sync     Synchronize mail now by starting the mbsync.service
+  status   Status of the mbsync timer, including how long until the next run
+  log      Display the log from the last $timerInterval minutes
+  health   Exit with success if mbsync.service has succeeded in the past hour
   start    Start mbsync.timer
   stop     Stop mbsync.timer
   restart  Execute a 'systemctl --user daemon-reload' and restart mbsync.timer
            Useful when editing the timer and service unit files
-  log      Display the log from the last $timerInterval minutes
-  health   Exit with success if mbsync.service has succeeded in the past hour
+  help     This help information, same as using -h, --help
 
 log is performing this command:
 
   journalctl --user -u mbsync --since "$timerInterval minutes ago"
 
-v1.4  2020-11-20  Dino Morelli <dino@ui3.info>
+v1.5  2020-12-14  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -80,17 +81,11 @@ command=$1
 shift
 
 case "$command" in
+  sync)    set -x; systemctl --user start mbsync;;
   status)
     set -x
     systemctl --user --no-pager status mbsync.timer
     systemctl --user --no-pager list-timers mbsync.timer;;
-  sync)    set -x; systemctl --user start mbsync;;
-  start)   set -x; systemctl --user start mbsync.timer;;
-  stop)    set -x; systemctl --user stop  mbsync.timer;;
-  restart)
-    set -x
-    systemctl --user daemon-reload
-    systemctl --user restart mbsync.timer;;
   log)     set -x; journalctl --user -u mbsync --since "$timerInterval minutes ago";;
   health)
     ( journalctl --user -u mbsync --since '1 hour ago' | grep -q "Succeeded" ) || ( \
@@ -98,6 +93,13 @@ case "$command" in
         sleep 1  # This warn message was never being logged by systemd, so an ugly sleep
         exit 1
     );;
+  start)   set -x; systemctl --user start mbsync.timer;;
+  stop)    set -x; systemctl --user stop  mbsync.timer;;
+  restart)
+    set -x
+    systemctl --user daemon-reload
+    systemctl --user restart mbsync.timer;;
+  help)    die 0 "$usage";;
   *)
     warn "Invalid command: $command"
     die 1 "$usage";;
