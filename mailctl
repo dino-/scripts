@@ -33,7 +33,11 @@ log is performing this command:
 
   journalctl --user -u mbsync --since "$timerInterval minutes ago"
 
-v1.5  2020-12-14  Dino Morelli <dino@ui3.info>
+If you are seeing failures, this may help to explore them
+
+  journalctl --user -u mbsync -S '1 week ago' | grep -B1 FAILURE
+
+v1.6  2020-12-15  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
