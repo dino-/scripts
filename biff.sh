@@ -4,8 +4,8 @@
 
 maildir="$HOME/.mail"
 
-# All mail folders except Trash
-allMailFolders=$(find "$maildir" \( -not -regex '.*Trash.*' -and -not -regex '.*ham-learn.*' \) -name new | sort)
+# All mail folders with some exceptions
+allMailFolders=$(find "$maildir" \( -not -regex '.*Trash.*' -and -not -regex '.*-learn.*' \) -name new | sort)
 
 for dir in $allMailFolders
 do
