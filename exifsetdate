@@ -65,4 +65,4 @@ fi
 dateTime="$1"
 file="$2"
 
-exiv2 -M"del Exif.Photo.DateTimeOriginal" -M"del Exif.Photo.DateTimeDigitized" -M"set Exif.Image.DateTime Ascii $dateTime" -M"set Exif.Photo.UserComment Comment DateTime is a guess" $file
+exiv2 -M"del Exif.Photo.DateTimeOriginal" -M"del Exif.Photo.DateTimeDigitized" -M"set Exif.Image.DateTime Ascii $dateTime" -M"set Exif.Photo.UserComment Comment DateTime is a guess" "$file"
