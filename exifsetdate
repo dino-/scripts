@@ -3,8 +3,7 @@
 basename=$(basename "$0")
 
 
-function usage {
-  cat <<USAGE
+usage=$(cat <<USAGE
 $basename - Set the date/time of a JPG image file
 
 usage:
@@ -29,17 +28,29 @@ DATETIME must be in this format: "YYYY:MM:DD HH:MM:SS"
 
 To see all existing EXIF fields for a JPG file: exiv2 -pa FILE
 
-v1.0  2019-05-27  Dino Morelli <dino@ui3.info>
+v1.1  2021-05-18  Dino Morelli <dino@ui3.info>
 
 USAGE
+)
+
+
+warn () {
+  echo "$basename:" "$@" >&2
+}
+
+
+die () {
+  rc="$1"
+  shift
+  warn "$@"
+  exit "$rc"
 }
 
 
 # arg parsing
 
-getoptResults=$(getopt -o h --long help -n "$basename" -- "$@")
-
-if [ $? != 0 ]; then usage; exit 1; fi
+getoptResults=$(getopt -o h --long help -n "$basename" -- "$@") \
+  || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
@@ -53,13 +64,12 @@ while true ; do
   esac
 done
 
-if $optHelp; then usage; exit 0; fi
+$optHelp && die 0 "$usage"
 
 if [ $# -lt 2 ]
 then
   echo "Incorrect number of arguments"
-  usage
-  exit 1
+  die 1 "$usage"
 fi
 
 dateTime="$1"
