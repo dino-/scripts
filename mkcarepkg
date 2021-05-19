@@ -15,9 +15,27 @@ files=(
 
 archive="carepkg-$HOSTNAME-$USER.tar"
 
-cd $HOME
-rm -v $archive
-tar cvf $archive ${files[*]} $*
+
+basename=$(basename "$0")
+
+
+warn () {
+  echo "$basename:" "$@" >&2
+}
+
+
+die () {
+  rc="$1"
+  shift
+  warn "$@"
+  exit "$rc"
+}
+
+
+cd "$HOME" || die 1 "Unable to cd into HOME, whose value is: $HOME"
+rm -v "$archive"
+# shellcheck disable=SC2068
+tar cvf "$archive" "${files[@]}" $@
 
 cat << INFO
 

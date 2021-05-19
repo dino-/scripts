@@ -48,4 +48,4 @@ done
 
 outfile="${infile%.*}.$format"
 
-pandoc $switches -o $outfile $infile
+pandoc "$switches" -o "$outfile" "$infile"
