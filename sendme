@@ -1,79 +1,79 @@
 #! /bin/bash
 
 basename=$(basename "$0")
+defaultSubject="no subject"
 
-function usage {
-   cat <<USAGE
-$basename - Send a simple email
+optFrom="${USER}@${HOSTNAME}"
+optTo="$USER"
+optHelp=false
+
+usage=$(cat <<USAGE
+Send a simple email
 
 usage:
    $basename [OPTIONS] [SUBJECT] BODY
 
 options:
-  -t, --to EMAIL  Email recipient, default \$USER
-  -h, --help      This help info
+  -f, --from EMAIL  Email sender, default "$optFrom"
+  -t, --to EMAIL    Email recipient, default "$optTo"
+  -h, --help        This help info
 
-If omitted, SUBJECT defaults to "a link"
+If omitted, SUBJECT defaults to "$defaultSubject"
 
-An email will be sent with a plain text part and an HTML part with the entire
-BODY wrapped in an anchor tag.
+Note that some recipient email addresses will reject the default sender this
+script will produce. In those cases, try a valid email address instead with the
+--from switch.
 
-v1.0  2020-08-23  Dino Morelli <dino@ui3.info>
+v1.1  2021-05-31  Dino Morelli <dino@ui3.info>
 
 USAGE
+)
+
+
+warn () {
+  echo "$basename:" "$@" >&2
+}
+
+
+die () {
+  rc="$1"
+  shift
+  warn "$@"
+  exit "$rc"
 }
 
 
 # arg parsing
 
-getoptResults=$(getopt -o t:h --long to:,help -n "$basename" -- "$@") \
-  || { usage; exit 1; }
+getoptResults=$(getopt -o f:t:h --long from:,to:,help -n "$basename" -- "$@") \
+  || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
-optTo="$USER"
-optHelp=false
-
 while true ; do
   case "$1" in
+    -f|--from) optFrom="$2"; shift 2;;
     -t|--to) optTo="$2"; shift 2;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
   esac
 done
 
-$optHelp && { usage; exit 0; }
+$optHelp && die 0 "$usage"
 
 case "$#" in
   2) subject="$1"; body="$2";;
-  1) subject="a link"; body="$1";;
-  *) echo "Can't continue because of missing email BODY argument"; usage; exit 1;;
+  1) subject="$defaultSubject"; body="$1";;
+  *) warn "Can't continue, incorrect number of arguments"; die 1 "$usage";;
 esac
-
-case "$1" in
-   -h | --help) usage ;;
-esac
-
-boundaryString=$(echo -n "$body" | md5sum | awk '{print $1}')
 
 /usr/sbin/sendmail -ti <<MESSAGE
-From: $USER@$HOSTNAME
+From: $optFrom
 To: $optTo
 Subject: $subject
-Content-Type: multipart/alternative; boundary="$boundaryString"
-
---$boundaryString
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 
 $body
-
---$boundaryString
-Content-Type: text/html; charset="utf-8"
-
-<a href="$body">$body</a>
-
---$boundaryString--
 MESSAGE
