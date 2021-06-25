@@ -3,4 +3,12 @@
 # Sizes of all dot and non-dot things, sorted
 # Because bash doesn't do what we'd really want when you try `du .* *`
 
-du -sch -- .[!.]* * | sort -h
+if [ $# -gt 0 ]; then
+  files=("$@")
+else
+  files=(".[!.]*" "*")
+fi
+
+# shellcheck disable=SC2068
+# We DO want these filenames globbed
+du -sch -- ${files[@]} | sort -h
