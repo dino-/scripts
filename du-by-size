@@ -3,4 +3,4 @@
 # Sizes of all dot and non-dot things, sorted
 # Because bash doesn't do what we'd really want when you try `du .* *`
 
-du -sch .[!.]* * | sort -h
+du -sch -- .[!.]* * | sort -h
