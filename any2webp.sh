@@ -80,6 +80,8 @@ extension="${inputImage##*.}"
 
 outputImage=${2:-${filename}${optSuffix}.webp}
 
+[ -e "$outputImage" ] && die 1 "Output file $outputImage already exists!"
+
 
 case "$extension" in
   jpg|JPG|jpeg|JPEG) switches="-quality $optQuality";;
