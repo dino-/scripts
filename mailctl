@@ -37,7 +37,7 @@ If you are seeing failures, this may help to explore them
 
   journalctl --user -u mbsync -S '1 week ago' | grep -B1 FAILURE
 
-v1.6  2020-12-15  Dino Morelli <dino@ui3.info>
+v1.7  2021-07-14  Dino Morelli <dino@ui3.info>
 
 USAGE
 )

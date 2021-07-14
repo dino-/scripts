@@ -28,7 +28,7 @@ PNG and GIF files will be converted losslessly.
 
 If DESTFILE is omitted, SRCFILE will be used with the extension changed to '.webp'
 
-v1.0  2021-07-05  Dino Morelli <dino@ui3.info>
+v1.1  2021-07-14  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
