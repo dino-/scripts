@@ -92,7 +92,7 @@ case "$command" in
     systemctl --user --no-pager list-timers mbsync.timer;;
   log)     set -x; journalctl --user -u mbsync --since "$timerInterval minutes ago";;
   health)
-    ( journalctl --user -u mbsync --since '1 hour ago' | grep -q "Succeeded" ) || ( \
+    ( journalctl --user -u mbsync --since '1 hour ago' | grep -q "Deactivated successfully" ) || ( \
         warn "mbsync mail sync has not succeeded for over one hour!"
         sleep 1  # This warn message was never being logged by systemd, so an ugly sleep
         exit 1
