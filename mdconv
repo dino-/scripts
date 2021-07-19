@@ -48,4 +48,5 @@ done
 
 outfile="${infile%.*}.$format"
 
-pandoc "$switches" -o "$outfile" "$infile"
+# shellcheck disable=SC2086
+pandoc $switches -o "$outfile" "$infile"
