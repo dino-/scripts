@@ -3,7 +3,7 @@
 basename=$(basename "$0")
 defaultSubject="no subject"
 
-optFrom="${USER}@${HOSTNAME}"
+optFrom="${USER}@${HOSTNAME}.localdomain"
 optTo="$USER"
 optHelp=false
 
@@ -24,7 +24,7 @@ Note that some recipient email addresses will reject the default sender this
 script will produce. In those cases, try a valid email address instead with the
 --from switch.
 
-v1.1  2021-05-31  Dino Morelli <dino@ui3.info>
+v1.2  2021-07-30  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
