@@ -19,7 +19,8 @@ function withColor() {
   color=$1
   zone=$2
   colReset="\e[0m"
-  timeFormat="%F %T %Z"
+  # timeFormat="%F %T %Z"
+  timeFormat="%F %T %_4Z %z"
 
   echo -en "$color"; TZ="$zone" date +"$timeFormat $zone"; echo -en "$colReset"
 }
@@ -29,11 +30,12 @@ while true
 do
   clear
 
-  withColor "$colYellowNrm" 'America/Los_Angeles'
-  withColor "$colCyanNrm" 'America/New_York'
+  withColor "$colYellowNrm" 'America/Los_Angeles'   # PST/PDT
+  withColor "$colCyanNrm" 'America/New_York'        # EST/EDT
   withColor "$colGreenNrm" 'UTC'
-  # withColor "$colPurpleBld" 'Asia/Kolkata'  # All of India
-  # withColor "$colRedBld" 'EET'  # Eastern European Time
+  withColor "$colPurpleBld" 'Europe/Berlin'         # CEST
+  withColor "$colRedBld" 'EET'  # Eastern European Time (EET)
+  withColor "$colBlueBld" 'Asia/Kolkata'  # All of India (IST)
 
   sleep 1
 done
