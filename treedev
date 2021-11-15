@@ -11,6 +11,7 @@ ignoreDirs=(
   '.import'         # Godot
 
   # Haskell
+  'dist'            # cabal build artifacts directory (old-school?)
   'dist-newstyle'   # cabal build artifacts directory
   '.stack-work'     # stack build artifacts directory
 
