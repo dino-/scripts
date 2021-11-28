@@ -45,17 +45,17 @@ parseInput :: [String] -> IO (Either String UTCTime)
 parseInput []         = Right `fmap` getCurrentTime
 parseInput ["-h"]     = Left `fmap` usage
 parseInput ["--help"] = Left `fmap` usage
-parseInput as         = return . parseInput' $ as
+parseInput as         = pure . parseInput' $ as
 
 
 usage :: IO String
 usage = do
    appName <- getProgName
    now <- getCurrentTime
-   return $ unlines $
+   pure $ unlines $
       [ "Show a given date (or the current date) in a variety of formats"
       , ""
-      , "Usage: " ++ appName ++ " [OPTION] [DATE]"
+      , "Usage: " <> appName <> " [OPTION] [DATE]"
       , ""
       , "Options:"
       , "  -e          Input is epoch (seconds since 1970-01-01)"
@@ -69,12 +69,12 @@ usage = do
       , ""
       , "Parsable input formats for -f:"
       ]
-      ++ map (\fp -> "  " ++ fmt fp now) formatPatterns ++
+      <> map (\fp -> "  " <> fmt fp now) formatPatterns <>
       [ ""
       , "Output will be the date/time in a variety of formats, both localized"
       , "and UTC, as well as epoch and milliseconds."
       , ""
-      , "Version 1.3  Dino Morelli <dino@ui3.info>"
+      , "Version 1.4  Dino Morelli <dino@ui3.info>"
       ]
 
 
@@ -83,9 +83,11 @@ parseInput' ["-e", epochString] = strToUTCTime 1 epochString
 parseInput' ["-m", milliString] = strToUTCTime 1000 milliString
 parseInput' ("-f" : as)         = parseDateString . unwords $ as
 parseInput' as
-   | any (not . flip elem "0123456789")
-      . tail . unwords $ as = parseInput' $ "-f" : as
-   | otherwise = strToUTCTime 1 . unwords $ as
+  -- All of the characters are not digits, probably a formatted date
+  -- The tail is here to allow a negative sign for epochs prior to 0
+  | not . all (flip elem "0123456789") . tail . unwords $ as
+    = parseInput' $ "-f" : as
+  | otherwise = strToUTCTime 1 . unwords $ as
 
 
 strToUTCTime :: Double -> String -> Either String UTCTime
@@ -131,13 +133,13 @@ output (Left errMsg) = do
 output (Right ut) = do
    local <- utcToLocalZonedTime ut
 
-   putStrLn $ "     RFC5322: " ++ fmt rfc5322Date local
+   putStrLn $ "     RFC5322: " <> fmt rfc5322Date local
 
    printf "\n %s ISO1601: %s\n" (fmt "%Z" local) (fmt iso1601Offset local)
-   putStrLn $ " UTC ISO1601: " ++ fmt iso1601Zulu ut
+   putStrLn $ " UTC ISO1601: " <> fmt iso1601Zulu ut
 
-   putStrLn $ "\n   Unix time: " ++ fmt "%s" ut
-   putStrLn $ "milliseconds: " ++
+   putStrLn $ "\n   Unix time: " <> fmt "%s" ut
+   putStrLn $ "milliseconds: " <>
       (show . round . (* 1000) .  utcTimeToPOSIXSeconds $ ut)
 
    exitSuccess
