@@ -11,6 +11,9 @@ sshPort=22
 localPort=22
 
 # User and host of remote system
+# This procedure is going to allow unattended shell access to the remote system
+# through this user, so it's not a bad idea to make a new special-purpose user
+# with no permissions for this role.
 remoteUser=$USER
 remoteHost=remotehost
 
