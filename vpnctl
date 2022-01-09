@@ -1,0 +1,95 @@
+#! /bin/bash
+
+
+basename=$(basename "$0")
+
+# Edit the vpnservice variable below to refer to a specific vpn
+# YOURVPN corresponds to a file /etc/openvpn/client/YOURVPN.conf that you
+# already have present
+vpnservice="openvpn-client@YOURVPN.service"
+
+
+usage=$(cat <<USAGE
+Control the vpn service
+
+usage:
+  $basename [OPTIONS] COMMAND
+
+options:
+  -h, --help       This help information
+
+commands:
+
+  status   Status of the vpn systemd service
+  log      Display the systemd log from today
+  start    Start $vpnservice
+  stop     Stop $vpnservice
+  restart  Restart $vpnservice
+  help     This help information, same as using -h, --help
+
+log is performing this command:
+
+  journalctl -u $vpnservice --since today
+
+If you are seeing failures, this may help to explore them
+
+  journalctl -u $vpnservice -S today | grep -B1 FAILURE
+
+v1.1  2021-01-09  Dino Morelli <dino@ui3.info>
+
+USAGE
+)
+
+
+warn () {
+  echo "$basename:" "$@" >&2
+}
+
+
+die () {
+  rc="$1"
+  shift
+  warn "$@"
+  exit "$rc"
+}
+
+
+# arg parsing
+
+getoptResults=$(getopt -o h --long help -n "$basename" -- "$@") \
+  || die 1 "$usage"
+
+# Note the quotes around "$getoptResults": they are essential!
+eval set -- "$getoptResults"
+
+optHelp=false
+
+while true ; do
+  case "$1" in
+    -h|--help) optHelp=true; shift;;
+    --) shift; break;;
+  esac
+done
+
+$optHelp && die 0 "$usage"
+
+if [ $# -ne 1 ]
+then
+  warn "COMMAND should be exactly one argument"
+  die 1 "$usage"
+fi
+
+command=$1
+shift
+
+case "$command" in
+  status)  set -x ; systemctl --no-pager status "$vpnservice" ;;
+  log)     set -x ; journalctl -u "$vpnservice" --since today ;;
+  start)   set -x ; sudo systemctl start "$vpnservice" ;;
+  stop)    set -x ; sudo systemctl stop  "$vpnservice" ;;
+  restart) set -x ; sudo systemctl restart "$vpnservice" ;;
+  help)    die 0 "$usage";;
+  *)
+    warn "Invalid command: $command"
+    die 1 "$usage";;
+esac
