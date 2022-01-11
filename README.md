@@ -29,8 +29,6 @@ to you.
       docking laptops
    * **dpi.hs** - Calculate DPI from screen resolution and screen
       size
-   * **epochconv.hs** - Show a given date (or the current date)
-      in a variety of formats
    * **exifsetdate** - Set a file's Exif.Image.DateTime to a
       specific value
    * **finddate** - Recursively list all files with last modified
@@ -39,13 +37,10 @@ to you.
       packages
    * **hstestbuild** - Perform a test build on a Haskell package
       to ensure it's complete
-   * **kickmutt** - Kill unresponsive mutt and blow away the
-      temp files
    * **mdconv** - Convert Markdown to HTML or PDF with Pandoc
    * **megawho** - Check registration of domain names
    * **mkcarepkg** - Make a 'care package' of files from your home
       directory, for getting up to speed on a new system
-   * **mountiso** - Mount an iso image to /mnt
    * **osx-clean.sh** - Blow away `__MACOSX` and `.DS_Store` items from a
       directory structure. These are often accidentally bundled with software
       made on Macs.
