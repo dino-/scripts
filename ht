@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 # This is older, doesn't seem to work as well as letting hasktags do the
 # recursive file walk
