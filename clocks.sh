@@ -14,11 +14,12 @@ colPurpleBld="\e[1;35m"
 colCyanNrm="\e[0;36m"
 colWhiteNrm="\e[0;37m"
 
+colReset="\e[0m"
+
 
 function withColor() {
   color=$1
   zone=$2
-  colReset="\e[0m"
   # timeFormat="%F %T %Z"
   timeFormat="%F %T %_4Z %z"
 
@@ -31,11 +32,13 @@ do
   clear
 
   withColor "$colYellowNrm" 'America/Los_Angeles'   # PST/PDT
+  withColor "$colBlueBld" 'America/Denver'          # MT
   withColor "$colCyanNrm" 'America/New_York'        # EST/EDT
   withColor "$colGreenNrm" 'UTC'
-  withColor "$colPurpleBld" 'Europe/Berlin'         # CEST
-  withColor "$colRedBld" 'EET'  # Eastern European Time (EET)
-  withColor "$colBlueBld" 'Asia/Kolkata'  # All of India (IST)
+  withColor "$colPurpleBld" 'Europe/Berlin'         # CET
+  withColor "$colRedBld" 'EET'                      # Eastern European Time (EET)
+  withColor "$colBlueBld" 'Asia/Kolkata'            # All of India (IST)
+  withColor "$colCyanNrm" 'Portugal'                # WET
 
   sleep 1
 done
