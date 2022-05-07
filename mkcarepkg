@@ -10,6 +10,7 @@ files=(
   .gitconfig
   .gitignore
   .stack/config.yaml
+  .vim/after
   .vimrc
 )
 
