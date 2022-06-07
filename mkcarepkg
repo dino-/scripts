@@ -9,8 +9,8 @@ files=(
   .ghci
   .gitconfig
   .gitignore
+  .screenrc
   .stack/config.yaml
-  .tmux.conf
   .vim/after
   .vimrc
 )
@@ -55,6 +55,7 @@ Some additional files that may be helpful:
   .profile
   .screenrc
   .ssh/id_rsa.pub
+  .tmux.conf
   .XCompose
   .xinitrc
   .Xkeymap
