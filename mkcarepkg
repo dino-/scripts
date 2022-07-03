@@ -11,6 +11,7 @@ files=(
   .gitignore
   .screenrc
   .stack/config.yaml
+  .tmux.conf
   .vim/after
   .vimrc
 )
@@ -53,9 +54,7 @@ Some additional files that may be helpful:
   .darcs/defaults
   .local/share/stack/templates/*
   .profile
-  .screenrc
   .ssh/id_rsa.pub
-  .tmux.conf
   .XCompose
   .xinitrc
   .Xkeymap
