@@ -1,17 +1,32 @@
 #!/bin/bash
 
 
-# Find these for your system in nvidia-settings or xrandr output
+# Find these for your system in nvidia-settings and/or xrandr output
 
-laptopDisplay="DP-4"  # LED panel on Legion Y740
-laptopAbsPos="+3440+360"
+laptopDisplay="DP-4"  # LED panel on Legion 5 Pro (nvidia-settings reports as DPY-5)
+laptopRes="1920x1200"
+laptopSinglePos="+0+0"
+laptopDualPos="+3440+240"
+laptopViewports="{ViewPortIn=${laptopRes}, ViewPortOut=2560x1600+0+0}"
 
-extDisplay="HDMI-0"  # Rear HDMI socket on Legion Y740
-extAbsPos="+0+0"
+laptopMode="${laptopDisplay}: nvidia-auto-select @${laptopRes} ${laptopSinglePos} ${laptopViewports}"
 
-# DPI=144  # Native DPI of the Legion Y740 LCD panel
-# DPI=109  # Native DPI of the LG Ultrawide monitor
-DPI=96  # The DPI that works for us
+
+extDisplay="HDMI-0"  # Rear HDMI socket on Legion 5 Pro (nvidia-settings reports as DPY-4)
+
+extMode="${extDisplay}: nvidia-auto-select @3440x1440 +0+0 {ViewPortIn=3440x1440, ViewPortOut=3440x1440+0+0}"
+
+
+bothMode="${extMode}, ${laptopDisplay}: nvidia-auto-select @${laptopRes} ${laptopDualPos} ${laptopViewports}"
+
+
+# xrandr --dpi doesn't work with nvidia
+# NOTE: Changes to dpi are much more effective when made in ~/.Xresources to
+# the Xft.dpi setting!!
+
+# DPI=144  # Native DPI of the Legion Y740 LCD panel (1920x1080 15.6")
+# DPI=109  # Native DPI of the LG Ultrawide monitor (3440x1440 34")
+# DPI=96  # The DPI that works for us
 
 
 basename=$(basename "$0")
@@ -40,21 +55,15 @@ USAGE
 
 case "$1" in
   laptop)
-    set -x
-    nvidia-settings --assign CurrentMetaMode="${laptopDisplay}: nvidia-auto-select"
-    xrandr --dpi $DPI
+    nvidia-settings --assign CurrentMetaMode="${laptopMode}"
     ;;
   ext)
-    set -x
-    nvidia-settings --assign CurrentMetaMode="${extDisplay}: nvidia-auto-select"
-    xrandr --dpi $DPI
+    nvidia-settings --assign CurrentMetaMode="${extMode}"
     ;;
   both)
-    set -x
-    nvidia-settings --assign CurrentMetaMode="${extDisplay}: nvidia-auto-select ${extAbsPos}, ${laptopDisplay}: nvidia-auto-select ${laptopAbsPos}"
-    xrandr --dpi $DPI
+    nvidia-settings --assign CurrentMetaMode="${bothMode}"
     ;;
   *) usage ;;
 esac
 
-eval "$(~/.fehbg)"
+[[ -f ~/.fehbg ]] && eval "$(~/.fehbg)"
