@@ -74,7 +74,7 @@ set -x
 sudo systemctl disable --now nix-daemon.service
 sudo systemctl disable --now nix-daemon.socket
 
-rm -rf $HOME/{.nix-*,.cache/nix}
+rm -rf "$HOME"/{.nix-*,.cache/nix}
 sudo rm -rf /root/{.nix-channels,.nix-defexpr,.nix-profile,.cache/nix}
 sudo rm -rf /etc/profile.d/nix.sh*
 sudo rm -rf /nix
@@ -83,7 +83,10 @@ sudo sh -c 'for N in $(seq 32); do userdel "nixbld$N"; done'
 
 if $optRemoveConfig
 then
-  rm -rf $HOME/.config/nix
+  rm -rf "$HOME"/.config/nix
   sudo rm -rf /root/.config/nixpkgs
   sudo rm -rf /etc/nix
 fi
+
+echo "Uninstallation complete."
+echo "This script did not modify your $HOME/.bash_profile or $HOME/.profile, there may be nix-specific things there that you need to take care of."
