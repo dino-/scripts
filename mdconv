@@ -36,12 +36,12 @@ fi
 
 format="$1"
 infile="$2"
-switches="-s"
+switches="--standalone"
 
 while true ; do
   case "$format" in
     html) break;;
-    pdf) switches="$switches -V geometry:margin=1in"; break;;
+    pdf) switches="$switches --variable=geometry:margin=1in"; break;;
     *) echo "ERROR: Unknown format"; usage; exit 1; break;;
   esac
 done
@@ -49,4 +49,4 @@ done
 outfile="${infile%.*}.$format"
 
 # shellcheck disable=SC2086
-pandoc $switches -o "$outfile" "$infile"
+pandoc $switches --output "$outfile" "$infile"
