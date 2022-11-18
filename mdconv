@@ -19,7 +19,7 @@ Markdown file with the appropriate extension.
 Note, on Arch Linux, creating PDFs this way required the installation
 of texlive-core and texlive-bin
 
-v1.0  2018-01-17  Dino Morelli <dino@ui3.info>
+v1.1  2022-11-17  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -36,17 +36,23 @@ fi
 
 format="$1"
 infile="$2"
-switches="--standalone"
+switches=("--standalone")
 
 while true ; do
   case "$format" in
     html) break;;
-    pdf) switches="$switches --variable=geometry:margin=1in"; break;;
+    pdf) switches+=("--variable=geometry:margin=1in"); break;;
     *) echo "ERROR: Unknown format"; usage; exit 1; break;;
   esac
 done
 
 outfile="${infile%.*}.$format"
 
-# shellcheck disable=SC2086
-pandoc $switches --output "$outfile" "$infile"
+# Special 'from' handling for Literate Haskell source code with Markdown
+[[ "${infile##*.}" == "lhs" ]] && switches+=("--from=markdown+lhs")
+
+set -x
+# These checks are for whitespace, globbing and quoting. We want the whitespace
+# in this expanded array.
+# shellcheck disable=SC2048 disable=SC2086
+pandoc ${switches[*]} --output "$outfile" "$infile"
