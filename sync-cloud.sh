@@ -30,7 +30,7 @@ specialhome=/home/dino
 mountPoint="/media/cloud"
 
 # Note: 'cloud:' here refers to a remote system configured in $HOME/.config/rclone/rclone.conf
-rclone mount --daemon cloud:doc/cloud "$mountPoint" \
+rclone mount --daemon ui3:doc/cloud "$mountPoint" \
   || die 1 "Can't continue because the rclone mount failed"
 
 flock -n "${specialhome}/var/run/lock/unison-cloud.lock" unison "$@" -ui text cloud
