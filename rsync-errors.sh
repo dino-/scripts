@@ -23,6 +23,7 @@ This script is looking for lines like these:
   'ERROR some error message from rsync'
   'file has vanished ...'
   any line with '--dry-run' in it
+  'Suppressed 13 messages' which is due to journald rate limiting
 
 Any other options will be passed to grep. For example:
 
@@ -35,7 +36,7 @@ this:
 
 No output means no rsync warning messages were found in the log.
 
-v2.3  2020-03-09  Dino Morelli <dino@ui3.info>
+v2.4  2023-02-07  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -52,12 +53,14 @@ rsync error: some message from rsync
 rsync warning: some message from rsync
 ERROR some error message
 file has vanished foo bar
+Suppressed 13 messages from bak@ext.service
 Sep 10 03:00:46 machinename bak-machinename.sh[4134]: Executing command: rsync --dry-run blah blah blah
 Sep 10 03:02:38 machinename bak-machinename.sh[4134]: rsync: some message from rsync
 Sep 10 03:02:38 machinename bak-machinename.sh[4134]: rsync error: some message from rsync
 Sep 10 03:02:38 machinename bak-machinename.sh[4134]: rsync warning: some message from rsync
 Sep 10 03:02:39 machinename bak-machinename.sh[4134]: ERROR some error message
 Sep 10 03:02:44 machinename bak-machinename.sh[4134]: file has vanished foo bar
+Feb 07 09:50:26 plum systemd-journald[867169]: Suppressed 13 messages from bak@ext.service
 TESTDATA
   )
 
@@ -84,7 +87,7 @@ TESTDATA
 
 
 # Examine the backup log with grep
-grep -E '(rsync: |rsync warning: |rsync error: |(^|: )[A-Z]{2,} |file has vanished|--dry-run)' "$@" -
+grep -E '(rsync: |rsync warning: |rsync error: |(^|: )[A-Z]{2,} |file has vanished|--dry-run|Suppressed [0-9]+ messages)' "$@" -
 grepStatus=$?
 # echo "grep status: $grepStatus"  # For debugging
 
