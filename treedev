@@ -23,6 +23,7 @@ ignoreDirs=(
   'target'          # maven/sbt build artifacts
 
   # Python
+  '__pycache__'     # Python cache directory
   '.venv'           # Conventional Python virtual env directory
 
   # Source control
