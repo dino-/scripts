@@ -3,9 +3,10 @@
 basename=$(basename "$0")
 defaultSubject="no subject"
 
-optFrom="${USER}@${HOSTNAME}.localdomain"
+unset optFrom
 optTo="$USER"
 optHelp=false
+optDebug=""
 
 usage=$(cat <<USAGE
 Send a simple email
@@ -14,17 +15,22 @@ usage:
    $basename [OPTIONS] [SUBJECT] BODY
 
 options:
-  -f, --from EMAIL  Email sender, default "$optFrom"
+  -f, --from EMAIL  Email sender, defaults to sendmail's configuration
   -t, --to EMAIL    Email recipient, default "$optTo"
+  -d, --debug       Pass --debug to sendmail
   -h, --help        This help info
 
-If omitted, SUBJECT defaults to "$defaultSubject"
+If omitted, SUBJECT defaults to "[HOSTNAME] $defaultSubject"
+
+If you have /etc/aliases set up, the default --to will send to those addresses
+that map to the user name.
 
 Note that some recipient email addresses will reject the default sender this
-script will produce. In those cases, try a valid email address instead with the
---from switch.
+script will produce, it may be dependent on the sendmail configuration. In
+those cases, try a valid email address for the account instead with the --from
+switch.
 
-v1.2  2021-07-30  Dino Morelli <dino@ui3.info>
+v1.3  2023-04-28  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -45,7 +51,7 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt -o f:t:h --long from:,to:,help -n "$basename" -- "$@") \
+getoptResults=$(getopt -o f:t:dh --long from:,to:,debug,help -n "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
@@ -53,12 +59,20 @@ eval set -- "$getoptResults"
 
 while true ; do
   case "$1" in
-    -f|--from) optFrom="$2"; shift 2;;
     -t|--to) optTo="$2"; shift 2;;
+    -f|--from) optFrom="$2"; shift 2;;
+    -d|--debug) optDebug="--debug"; shift;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
   esac
 done
+
+# Because of weird trailing newline stuff, we need to construct the From and To
+# headers together if we're specifying a From at all.
+if [[ -z ${optFrom+x} ]]
+  then optFromTo=$(printf "To: %s" "$optTo")
+  else optFromTo=$(printf "From: %s\nTo: %s" "$optFrom" "$optTo")
+fi
 
 $optHelp && die 0 "$usage"
 
@@ -68,10 +82,9 @@ case "$#" in
   *) warn "Can't continue, incorrect number of arguments"; die 1 "$usage";;
 esac
 
-/usr/sbin/sendmail -ti <<MESSAGE
-From: $optFrom
-To: $optTo
-Subject: $subject
+/usr/sbin/sendmail "$optDebug" -ti <<MESSAGE
+${optFromTo}
+Subject: [${HOSTNAME}] $subject
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 
