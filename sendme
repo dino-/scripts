@@ -20,7 +20,7 @@ options:
   -d, --debug       Pass --debug to sendmail
   -h, --help        This help info
 
-If omitted, SUBJECT defaults to "[HOSTNAME] $defaultSubject"
+If omitted, SUBJECT defaults to "$defaultSubject"
 
 If you have /etc/aliases set up, the default --to will send to those addresses
 that map to the user name.
@@ -84,7 +84,7 @@ esac
 
 /usr/sbin/sendmail "$optDebug" -ti <<MESSAGE
 ${optFromTo}
-Subject: [${HOSTNAME}] $subject
+Subject: $subject
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 
