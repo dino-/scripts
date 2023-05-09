@@ -76,7 +76,7 @@ $optHelp && die 0 "$usage"
 
 $optUpdateDefs && sudo freshclam
 
-packagesDir="/var/lib/pacman/local"
+packagesDir="/var/cache/pacman/pkg"
 
 scanCommand="clamscan --bytecode-timeout=300000 --max-filesize=4000M --max-scansize=4000M $@"
 
@@ -85,7 +85,7 @@ if $optArchPackages
     set -x
 
     cd "$packagesDir" || die 1 "Couldn't cd into $packagesDir"
-    find . -type d -mtime -1 -not -name '.' | xargs $scanCommand
+    find . -mtime -1 | xargs --no-run-if-empty $scanCommand
   else
     set -x
     $scanCommand
