@@ -85,7 +85,7 @@ if $optArchPackages
     set -x
 
     cd "$packagesDir" || die 1 "Couldn't cd into $packagesDir"
-    find . -mtime -1 | xargs --no-run-if-empty $scanCommand
+    find . -type f -mtime -1 | xargs --no-run-if-empty $scanCommand
   else
     set -x
     $scanCommand
