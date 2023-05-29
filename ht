@@ -10,4 +10,4 @@
 # or line numbers.
 # The command below post-processes the output to remove these lines and writes
 # to the default filename, tags.
-hasktags -c . -o - | grep -E ".*[[:space:]].*" - > tags
+hasktags --ctags . --output - | grep -E ".*[[:space:]].*" - > tags
