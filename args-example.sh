@@ -15,7 +15,7 @@ options:
   -b, --arg-b INT  An argument named b
   -h, --help       This help information
 
-v1.2  2020-09-24  Dino Morelli <dino@ui3.info>
+v1.3  2023-06-17  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -36,7 +36,7 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt -o ab:h --long arg-a,arg-b:,help -n "$basename" -- "$@") \
+getoptResults=$(getopt --options ab:h --longoptions arg-a,arg-b:,help --name "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
