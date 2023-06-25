@@ -1,7 +1,8 @@
 #!/bin/bash
 
 
-# Find these for your system in nvidia-settings and/or xrandr output
+# Find these *Display values for your system in nvidia-settings and/or xrandr
+# output
 
 laptopDisplay="DP-4"  # LED panel on Legion 5 Pro (nvidia-settings reports as DPY-5)
 laptopRes="1920x1200"
@@ -18,6 +19,9 @@ extMode="${extDisplay}: nvidia-auto-select @3440x1440 +0+0 {ViewPortIn=3440x1440
 
 
 bothMode="${extMode}, ${laptopDisplay}: nvidia-auto-select @${laptopRes} ${laptopDualPos} ${laptopViewports}"
+
+
+hdmiAutoMode="${extDisplay}: nvidia-auto-select"
 
 
 # xrandr --dpi doesn't work with nvidia
@@ -43,9 +47,10 @@ options:
  -h, --help  This help info
 
 profiles:
-  laptop   Laptop display only
-  ext      External monitor only
-  both     Both of the above outputs
+  laptop      Laptop display only
+  ext         External monitor only
+  both        Both of the above outputs
+  hdmi-auto   External monitor only, auto resolution
 
 USAGE
 
@@ -62,6 +67,9 @@ case "$1" in
     ;;
   both)
     nvidia-settings --assign CurrentMetaMode="${bothMode}"
+    ;;
+  hdmi-auto)
+    nvidia-settings --assign CurrentMetaMode="${hdmiAutoMode}"
     ;;
   *) usage ;;
 esac
