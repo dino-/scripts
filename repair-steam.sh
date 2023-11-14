@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 
 basename=$(basename "$0")
@@ -47,7 +47,7 @@ If the --serious switch is used, only this will be kept:
 Be VERY CAREFUL with find commands like the one in this script, very dangerous!
 In fact, not bad to have a good backup before running this.
 
-v1.2  2022-12-14  Dino Morelli <dino@ui3.info>
+v1.3  2023-11-13  Dino Morelli <dino@ui3.info>
 
 USAGE
 )

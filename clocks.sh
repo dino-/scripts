@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # For a list of files for TZ, see /usr/share/zoneinfo
 

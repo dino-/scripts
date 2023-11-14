@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 src=$1
 dest="$(basename $src .jpg)-sw.jpg"

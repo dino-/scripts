@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 basename=$(basename "$0")
 

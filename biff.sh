@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # A low-tech biff program for times when X isn't readily available
 

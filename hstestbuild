@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 # Perform a test build on a Haskell package, to be done between
 # `stack sdist` or `darcs dist` and Hackage upload

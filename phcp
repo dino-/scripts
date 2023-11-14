@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 #photoSrcPath=/media/sd-reader
 photoSrcPath=/media/panasonic_DMC-FX07

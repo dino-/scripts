@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 # This script wraps the behavior of establishing a tunnel on a remote
 # host that comes back here to this system.

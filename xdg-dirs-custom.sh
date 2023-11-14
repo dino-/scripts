@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # This script will result in the creation of a
 # ~/.config/user-dirs.dirs file

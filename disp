@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 
 # Find these *Display values for your system in nvidia-settings and/or xrandr

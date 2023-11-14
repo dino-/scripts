@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # Script to perform the common-case data DVD burning. Argument should be a
 # directory at a minimum. Any other growisofs or mkisofs args are

@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # Script to thoroughly check the contents of a CD against the directory
 # it was burned from, using md5sum

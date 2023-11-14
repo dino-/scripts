@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 
 basename=$(basename "$0")
@@ -32,7 +32,7 @@ So, you plug the PID from the Vim warning message into this script and get a
 screen session name, that's where the Vim is running, you can now reattach to
 that to continue editing.
 
-v1.0  2019-08-20  Dino Morelli <dino@ui3.info>
+v1.1  2023-11-13  Dino Morelli <dino@ui3.info>
 
 USAGE
 }

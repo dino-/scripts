@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 
 basename=`basename $0`
@@ -21,7 +21,7 @@ options:
 
 Not specifying a term title will use the $termBin default
 
-2007-12-17  Dino Morelli <dino@ui3.info>
+2023-11-13  Dino Morelli <dino@ui3.info>
 
 USAGE
 

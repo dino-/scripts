@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 
 basename=$(basename "$0")
@@ -36,7 +36,7 @@ this:
 
 No output means no rsync warning messages were found in the log.
 
-v2.4  2023-02-07  Dino Morelli <dino@ui3.info>
+v2.5  2023-11-13  Dino Morelli <dino@ui3.info>
 
 USAGE
 }

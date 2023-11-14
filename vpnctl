@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 
 basename=$(basename "$0")
@@ -35,7 +35,7 @@ If you are seeing failures, this may help to explore them
 
   journalctl -u $vpnservice -S today | grep -B1 FAILURE
 
-v1.1  2021-01-09  Dino Morelli <dino@ui3.info>
+v1.2  2023-11-13  Dino Morelli <dino@ui3.info>
 
 USAGE
 )

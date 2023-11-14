@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 inputFile="${1:?An input MP4 video must be supplied}"
 outputFile="${inputFile%.*}.webm"

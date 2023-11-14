@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # This is the default set of files to be archived into the care package
 # Add to this list as needed, these are relative to ~

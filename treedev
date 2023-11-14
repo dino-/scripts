@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # Specialized switches for tree for development directories which often contain
 # a lot of noisy build artifacts.

@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # Some useful optional switches:
 #   -silent       When running from cron to suppress normal output

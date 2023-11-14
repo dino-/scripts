@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 tidy --indent yes --indent-spaces 3 --wrap 0 -xml $*
 

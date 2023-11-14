@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 basename=$(basename "$0")
 defaultSubject="no subject"
@@ -30,7 +30,7 @@ script will produce, it may be dependent on the sendmail configuration. In
 those cases, try a valid email address for the account instead with the --from
 switch.
 
-v1.3  2023-04-28  Dino Morelli <dino@ui3.info>
+v1.4  2023-11-13  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
