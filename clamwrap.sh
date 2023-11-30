@@ -37,7 +37,7 @@ If you get reports of a file or files infected with Unix.Trojan.Mirai, it may
 be a false-positive with the local clamav. Try checking the files with an
 online scanner like https://www.virustotal.com
 
-v1.3  2023-04-29  Dino Morelli <dino@ui3.info>
+v1.4  2023-11-30  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -78,7 +78,7 @@ $optUpdateDefs && sudo freshclam
 
 packagesDir="/var/cache/pacman/pkg"
 
-scanCommand="clamscan --bytecode-timeout=300000 --max-filesize=4000M --max-scansize=4000M $@"
+scanCommand="clamscan --bytecode-timeout=300000 --max-filesize=2G --max-scansize=4000M $@"
 
 if $optArchPackages
   then
