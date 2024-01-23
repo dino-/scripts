@@ -29,7 +29,7 @@ echo "Package $package unpacked into /tmp/${buildDir}. If something goes wrong a
 # Compare the directories
 echo
 echo "Checking directory contents"
-diff --brief --recursive --exclude _darcs --exclude .git --exclude ./*.swp --exclude .stack-work "$devDir" "/tmp/$buildDir"
+diff --brief --recursive --exclude _darcs --exclude .git --exclude ./*.swp --exclude .stack-work --exclude tags "$devDir" "/tmp/$buildDir"
 echo "Done checking directory contents"
 echo
 
