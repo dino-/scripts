@@ -14,7 +14,6 @@ usage:
 
 options:
   -n, --notes-path PATH   Notes file to open, default: ${defaultNotesDir}/{current-directory}_notes.md
-                          Ignored if -e|--edit is used.
   -e, --edit              Make an editor-only session, named with an '-edit' suffix
   -h, --help              This help information
 
@@ -24,8 +23,8 @@ the session using that directory name.
 Defaults to starting a tmux session with 3 tabs: git, build, and a tab with a
 notes file open in vim if found.
 
-If invoked with 'edit' will make a tmux session intended primarily for editing
-without the tabs listed above.
+When invoked with -e|--edit this script will make a tmux session intended
+primarily for editing without the tabs listed above.
 
 Examples
 
@@ -34,7 +33,7 @@ Examples
 
 This will make a tmux session in 'some/project' named 'project'
 
-v1.1  2024-03-06  Dino Morelli <dino@ui3.info>
+v1.2  2024-03-15  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
