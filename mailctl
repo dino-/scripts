@@ -15,7 +15,8 @@ usage:
   $basename [OPTIONS] COMMAND
 
 options:
-  -h, --help       This help information
+  -q, --quiet   Suppress unnecessary output, for use with the health command
+  -h, --help    This help information
 
 commands:
 
@@ -58,17 +59,19 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt -o h --long help -n "$basename" -- "$@") \
+getoptResults=$(getopt -o h,q --long help,quiet -n "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
 optHelp=false
+optQuiet=false
 
 while true ; do
   case "$1" in
     -h|--help) optHelp=true; shift;;
+    -q|--quiet) optQuiet=true; shift;;
     --) shift; break;;
   esac
 done
@@ -91,15 +94,11 @@ case "$command" in
     systemctl --user --no-pager status mbsync.timer
     systemctl --user --no-pager list-timers mbsync.timer;;
   log)     set -x; journalctl --user -u mbsync --since "$timerInterval minutes ago";;
-  # 2021-08-15 `health` not working at this time
-  # 2023-07-06 Trying again
-  # 2023-10-19 Trying again via the mbsync.service unit
   health)
-    ( journalctl --user -u mbsync --since '1 hour ago' | grep -q "Finished Mailbox synchronization service" ) || ( \
-        warn "mbsync mail sync has not succeeded for over one hour!"
-        sleep 1  # This warn message was never being logged by systemd, so an ugly sleep
-        exit 1
-    );;
+    if ( journalctl --user -u mbsync --since '1 hour ago' | grep -q "Finished Mailbox synchronization service" )
+      then $optQuiet || die 0 "Mail has succeeded in the past hour"
+      else die 1 "mbsync mail sync has not succeeded for over one hour!"
+    fi ;;
   start)   set -x; systemctl --user start mbsync.timer;;
   stop)    set -x; systemctl --user stop  mbsync.timer;;
   restart)
