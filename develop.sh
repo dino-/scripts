@@ -4,17 +4,19 @@
 basename=$(basename "$0")
 
 defaultNotesDir="$HOME/doc/notes"
+devDir="$(basename $PWD)"
 
 
 usage=$(cat <<USAGE
 Set up tmux environments for development
 
 usage:
-  $basename [(-n|--notes-path PATH) | (-e|--edit)]
+  $basename [(-n|--notes-path PATH) | (-e|--edit)] [NAME]
 
 options:
   -n, --notes-path PATH   Notes file to open, default: ${defaultNotesDir}/{current-directory}_notes.md
   -e, --edit              Make an editor-only session, named with an '-edit' suffix
+  NAME                    Optional name for this tmux session. Default: ${devDir} (current working dir)
   -h, --help              This help information
 
 Creates tmux sessions for developing in the current directory, and will name
@@ -33,7 +35,7 @@ Examples
 
 This will make a tmux session in 'some/project' named 'project'
 
-v1.2  2024-03-15  Dino Morelli <dino@ui3.info>
+v1.3  2024-04-17  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -69,16 +71,16 @@ done
 
 $optHelp && die 0 "$usage"
 
-devDir="$(basename $PWD)"
-
 tmuxOptions=(-T 256,focus,title new-session)
 
-if [ $optEdit ]
-  then tmuxOptions+=(-s "${devDir}-edit")
-  else
-    tmuxOptions+=(-s "${devDir}" -n git \; new-window -n build)
+sessionName=${1:-$devDir}
 
-    notesPath="${optNotesPath:-${defaultNotesDir}/${devDir}_notes.md}"
+if [ $optEdit ]
+  then tmuxOptions+=(-s "${sessionName}-edit")
+  else
+    tmuxOptions+=(-s "${sessionName}" -n git \; new-window -n build)
+
+    notesPath="${optNotesPath:-${defaultNotesDir}/${sessionName}_notes.md}"
     [ -f "$notesPath" ] && tmuxOptions+=(\; new-window -n notes "vim $notesPath")
 
     tmuxOptions+=(\; select-window -t 0)
