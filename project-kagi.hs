@@ -60,15 +60,13 @@ data ProjectedUsage
       , unusedSearches :: Integer
       }
 
-data Usage = Usage CurrentUsage ProjectedUsage
-
 
 standardSubscriptionQuota :: Integer
 standardSubscriptionQuota = 3600
 
 
-calculateUsage :: Day -> (Day, Integer) -> Usage
-calculateUsage today' (subStart, searchCount) = Usage currentUsage projectedUsage
+calculateUsage :: Day -> (Day, Integer) -> (CurrentUsage, ProjectedUsage)
+calculateUsage today' (subStart, searchCount) = (currentUsage, projectedUsage)
   where
     elapsedDays = diffDays today' subStart
     projectedDays :: Integer = floor $ (fromIntegral elapsedDays)
@@ -133,6 +131,6 @@ handleFailure errMsg = do
 handleSuccess :: (Day, Integer) -> IO ()
 handleSuccess parsedArgs = do
   today' <- utctDay <$> getCurrentTime
-  let (Usage currentUsage projectedUsage) = calculateUsage today' parsedArgs
+  let (currentUsage, projectedUsage) = calculateUsage today' parsedArgs
   displayCurrent currentUsage
   displayProjection projectedUsage
