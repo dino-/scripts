@@ -2,7 +2,7 @@
 {- stack --resolver lts-20.12 runghc --package mtl --package safe -}
 -- NOTE: lts-20.12 uses GHC 9.2.x which we need for overloaded record dot
 
-{-# LANGUAGE OverloadedRecordDot, ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 
 -- If you need a specific resolver, do this:
 -- stack --resolver lts-7.8 runghc
