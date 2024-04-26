@@ -12,8 +12,10 @@
 -}
 
 import Control.Monad.Except (runExcept, throwError)
-import Data.Time (Day, UTCTime (utctDay), addDays, diffDays, getCurrentTime)
+import Data.Time (Day, addDays, diffDays)
 import Data.Time.Format (defaultTimeLocale, formatTime, parseTimeM)
+import Data.Time.LocalTime (LocalTime (localDay), ZonedTime (zonedTimeToLocalTime),
+  getZonedTime)
 import Safe (readMay)
 import System.Environment (getArgs)
 import System.Exit (exitFailure)
@@ -130,7 +132,7 @@ handleFailure errMsg = do
 
 handleSuccess :: (Day, Integer) -> IO ()
 handleSuccess parsedArgs = do
-  today' <- utctDay <$> getCurrentTime
+  today' <- localDay . zonedTimeToLocalTime <$> getZonedTime
   let (currentUsage, projectedUsage) = calculateUsage today' parsedArgs
   displayCurrent currentUsage
   displayProjection projectedUsage
