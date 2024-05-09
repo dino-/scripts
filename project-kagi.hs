@@ -11,13 +11,13 @@
 #! /usr/bin/env runhaskell
 -}
 
-import Control.Monad.Except (runExcept, throwError)
+import Control.Monad.Except (MonadError, runExcept, throwError)
 import Data.Time (Day, addDays, diffDays)
 import Data.Time.Format (defaultTimeLocale, formatTime, parseTimeM)
 import Data.Time.LocalTime (LocalTime (localDay), ZonedTime (zonedTimeToLocalTime),
   getZonedTime)
 import Safe (readMay)
-import System.Environment (getArgs)
+import System.Environment (getArgs, lookupEnv)
 import System.Exit (exitFailure)
 import Text.Printf (printf)
 
@@ -26,21 +26,26 @@ dayFormat :: String
 dayFormat = "%Y-%m-%d"
 
 
-defaultSubStart :: String
-defaultSubStart = "2024-04-11"
+parseTime :: MonadError String m => String -> m Day
+parseTime timeString =
+  maybe (throwError $ "Can't parse date from '" <> timeString <> "'") pure
+    $ parseTimeM False defaultTimeLocale dayFormat timeString
 
 
-parseArgs :: [String] -> Either String (Day, Integer)
+parseArgs :: [String] -> Maybe String -> Either String (Day, Integer)
 
-parseArgs (searchCountS : []) = parseArgs [searchCountS, defaultSubStart]
-
-parseArgs (searchCountS : subStartS : []) = runExcept $ do
-  subStart <- maybe (throwError $ "can't parse date") pure
-    $ parseTimeM False defaultTimeLocale dayFormat subStartS
+parseArgs (searchCountS : subStartS : []) _ = runExcept $ do
+  subStart <- parseTime subStartS
   searchCount <- maybe (throwError $ "bad search count") pure $ readMay searchCountS
   pure (subStart, searchCount)
 
-parseArgs _ = runExcept . throwError $ "must supply a search count"
+parseArgs (searchCountS : _) (Just subStartS) =
+  parseArgs [searchCountS, subStartS] Nothing
+
+parseArgs (searchCountS : []) Nothing =
+  runExcept . throwError $ "No sub start date supplied"
+
+parseArgs _ _ = runExcept . throwError $ "must supply a search count"
 
 
 data CurrentUsage = CurrentUsage
@@ -115,18 +120,21 @@ displayProjection (Under projectedUsedSearches' unusedSearches') = do
   printf "%d unused searches during the subscription period\n" unusedSearches'
 
 
+subStartEnvName = "KAGI_SUB_START"
+
+
 main :: IO ()
 main = do
-  eParsedArgs <- parseArgs <$> getArgs
+  eParsedArgs <- parseArgs <$> getArgs <*> lookupEnv subStartEnvName
   either handleFailure handleSuccess eParsedArgs
 
 
 handleFailure :: String -> IO ()
 handleFailure errMsg = do
   printf "ERROR %s\n" errMsg
-  putStrLn "  project-kagi.hs SEARCHES_USED [SUB_START_DATE]"
-  putStrLn "  project-kagi.hs 42 2011-04-11"
-  printf "\n  Default SUB_START_DATE: %s\n" defaultSubStart
+  printf "  [%s=\"SUB_START_DATE\"] project-kagi.hs SEARCHES_USED [SUB_START_DATE]\n\n" subStartEnvName
+  printf "  %s=\"2025-04-11\" project-kagi.hs 42\n" subStartEnvName
+  putStrLn "  project-kagi.hs 42 2025-04-11"
   exitFailure
 
 
