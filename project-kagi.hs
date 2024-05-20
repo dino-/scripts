@@ -11,6 +11,7 @@
 #! /usr/bin/env runhaskell
 -}
 
+import Control.Monad (when)
 import Control.Monad.Except (MonadError, runExcept, throwError)
 import Data.Time (Day, addDays, diffDays)
 import Data.Time.Format (defaultTimeLocale, formatTime, parseTimeM)
@@ -139,8 +140,9 @@ handleFailure errMsg = do
 
 
 handleSuccess :: (Day, Integer) -> IO ()
-handleSuccess parsedArgs = do
+handleSuccess parsedArgs@(subStart, _) = do
   today' <- localDay . zonedTimeToLocalTime <$> getZonedTime
+  when (subStart > today') $ handleFailure $ printf "Sub start date is in the future: %s" (show subStart)
   let (currentUsage, projectedUsage) = calculateUsage today' parsedArgs
   displayCurrent currentUsage
   displayProjection projectedUsage
