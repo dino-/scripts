@@ -27,16 +27,11 @@ dayFormat :: String
 dayFormat = "%Y-%m-%d"
 
 
-parseTime :: MonadError String m => String -> m Day
-parseTime timeString =
-  maybe (throwError $ "Can't parse date from '" <> timeString <> "'") pure
-    $ parseTimeM False defaultTimeLocale dayFormat timeString
-
-
 parseArgs :: [String] -> Maybe String -> Either String (Day, Integer)
 
 parseArgs (searchCountS : subStartS : []) _ = runExcept $ do
-  subStart <- parseTime subStartS
+  subStart <- maybe (throwError $ "Can't parse date from '" <> subStartS <> "'") pure
+    $ parseTimeM False defaultTimeLocale dayFormat subStartS
   searchCount <- maybe (throwError $ "bad search count") pure $ readMay searchCountS
   pure (subStart, searchCount)
 
