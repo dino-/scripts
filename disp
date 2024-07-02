@@ -1,24 +1,38 @@
 #! /usr/bin/env bash
 
+# NOTE: The 'nvidia-auto-select' res_refresh mode will use the native
+# resolution of the display and will use a default refresh rate, probably close
+# to 60Hz. And possibly not as high as your monitor can go.
+
 
 # Find these *Display values for your system in nvidia-settings and/or xrandr
 # output
 
 laptopDisplay="DP-4"  # LED panel on Legion 5 Pro (nvidia-settings reports as DPY-5)
-laptopRes="1920x1200"
+laptopResNative="2560x1600"
+laptopResDesired="1920x1200"
+laptopRefresh="165"
 laptopSinglePos="+0+0"
 laptopDualPos="+3440+240"
-laptopViewports="{ViewPortIn=${laptopRes}, ViewPortOut=2560x1600+0+0}"
+# laptopViewports="{ViewPortIn=${laptopResDesired}, ViewPortOut=${laptopResNative}+0+0}"
+laptopViewports="{ViewPortIn=${laptopResDesired}}"
 
-laptopMode="${laptopDisplay}: nvidia-auto-select @${laptopRes} ${laptopSinglePos} ${laptopViewports}"
+# laptopMode="${laptopDisplay}: nvidia-auto-select @${laptopResDesired} ${laptopSinglePos} ${laptopViewports}"
+laptopMode="${laptopDisplay}: ${laptopResNative}_${laptopRefresh} @${laptopResDesired} ${laptopSinglePos} ${laptopViewports}"
 
 
 extDisplay="HDMI-0"  # Rear HDMI socket on Legion 5 Pro (nvidia-settings reports as DPY-4)
+extResNative="3440x1440"
+extRefresh="50"
 
-extMode="${extDisplay}: nvidia-auto-select @3440x1440 +0+0 {ViewPortIn=3440x1440, ViewPortOut=3440x1440+0+0}"
+# extMode="${extDisplay}: nvidia-auto-select @3440x1440 +0+0 {ViewPortIn=3440x1440, ViewPortOut=3440x1440+0+0}"
+# 2024-07-01: This is to help with the 555.58 nvidia driver bug: picking a shit
+# vertical refresh rate at the native res. Nice!
+extMode="${extDisplay}: ${extResNative}_${extRefresh} @${extResNative} +0+0"
 
 
-bothMode="${extMode}, ${laptopDisplay}: nvidia-auto-select @${laptopRes} ${laptopDualPos} ${laptopViewports}"
+# bothMode="${extMode}, ${laptopDisplay}: nvidia-auto-select @${laptopResDesired} ${laptopDualPos} ${laptopViewports}"
+bothMode="${extMode}, ${laptopDisplay}: ${laptopResNative}_${laptopRefresh} @${laptopResDesired} ${laptopDualPos} ${laptopViewports}"
 
 
 hdmiAutoMode="${extDisplay}: nvidia-auto-select"
