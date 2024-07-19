@@ -92,4 +92,4 @@ esac
 $optQuiet || set -x
 
 # shellcheck disable=SC2086
-convert "$inputImage" $switches "$outputImage"
+magick "$inputImage" $switches "$outputImage"

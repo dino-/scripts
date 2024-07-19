@@ -57,7 +57,7 @@ newSize size = error $ printf "ERROR unexpected image size: %d" size
 -}
 buildCmd :: Maybe String -> String
 buildCmd Nothing     = "cp"
-buildCmd (Just size) = printf "convert -quality 80 -resize %sx%s" size size
+buildCmd (Just size) = printf "magick -quality 80 -resize %sx%s" size size
 
 
 exec :: (String, FilePath) -> IO ()
