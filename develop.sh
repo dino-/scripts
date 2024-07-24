@@ -35,7 +35,7 @@ Examples
 
 This will make a tmux session in 'some/project' named 'project'
 
-v1.3  2024-04-17  Dino Morelli <dino@ui3.info>
+v1.4  2024-07-24  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -57,7 +57,7 @@ getoptResults=$(getopt --options en:h --longoptions edit,notes-path:,help --name
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
-opeEdit=false
+optEdit=false
 optHelp=false
 
 while true ; do
@@ -75,7 +75,7 @@ tmuxOptions=(-T 256,focus,title new-session)
 
 sessionName=${1:-$devDir}
 
-if [ $optEdit ]
+if [ "$optEdit" = true ]
   then tmuxOptions+=(-s "${sessionName}-edit")
   else
     tmuxOptions+=(-s "${sessionName}" -n git \; new-window -n build)
