@@ -95,7 +95,7 @@ case "$command" in
     systemctl --user --no-pager list-timers mbsync.timer;;
   log)     set -x; journalctl --user -u mbsync --since "$timerInterval minutes ago";;
   health)
-    if ( journalctl --user -u mbsync --since '1 hour ago' | grep -q "Finished Mailbox synchronization service" )
+    if ( journalctl --user -u mbsync --since '1 hour ago' | grep -Eq "Finished Mailbox synchronization service|No entries" )
       then $optQuiet || die 0 "Mail has succeeded in the past hour"
       else die 1 "mbsync mail sync has not succeeded for over one hour!"
     fi ;;
