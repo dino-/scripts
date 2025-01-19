@@ -31,6 +31,8 @@ usageAndExit ec = do
     , printf "  %s some-system-service.service" pn
     , printf "  %s -S today some-system-service" pn
     , printf "  %s --user some-user-service" pn
+    , ""
+    , "v1.0  2025-01-19  Dino Morelli <dino@ui3.info>"
     ]
   exitWith ec
 
