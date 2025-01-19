@@ -19,11 +19,15 @@ big enough to have a project of their own.
 Much of this is specific to something I needed, but some of these may be of use
 to you.
 
+   * **any2webp.sh** - Convert JPG, PNG and GIF image files to WEBP with some
+      default settings. Uses magick
    * **args-example.sh** - Example of args parsing with usage output
    * **burn-cd** - Perform the common-case CD burning I often need
    * **burn-dvd** - Perform the common-case DVD burning I often need
    * **cdcheck** - Thoroughly check the contents of a CD or DVD
       using md5sum
+   * **clamwrap.sh** - Wrapper script to add some useful defaults to clamscan.
+     Uses clamscan from clamav
    * **clrvimtmp** - List and optionally remove Vim swap files
    * **disp** - Change active video outputs using xrandr, for
       docking laptops
