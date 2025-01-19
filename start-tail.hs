@@ -2,12 +2,12 @@
 
 -- Script to start a systemd service unit and tail its log at the same time
 
-import Control.Arrow ( (&&&) )
-import Control.Monad ( void )
-import System.Environment ( getArgs, getProgName )
-import System.Exit ( ExitCode (ExitFailure, ExitSuccess), exitWith )
-import System.Process ( callProcess, spawnProcess )
-import Text.Printf ( printf )
+import Control.Arrow ((&&&))
+import Control.Monad (void)
+import System.Environment (getArgs, getProgName)
+import System.Exit (ExitCode (ExitFailure, ExitSuccess), exitWith)
+import System.Process (callProcess, spawnProcess)
+import Text.Printf (printf)
 
 
 main :: IO ()
