@@ -39,5 +39,5 @@ usageAndExit ec = do
 
 startService :: ([String], String) -> IO ()
 startService (args, service) = do
-  void $ spawnProcess "systemctl" $ args ++ ["start", service]
-  callProcess "journalctl" $ args ++ ["-u", service, "-f"]
+  void $ spawnProcess "systemctl" $ args <> ["start", service]
+  callProcess "journalctl" $ args <> ["-u", service, "-f"]
