@@ -17,6 +17,9 @@ When you get a zip file made by a Mac user, often it will contain some Apple
 metadata including a '__MACOSX' directory and some files with names ending in
 '.DS_Store'. Completely useless for anyone who doesn't use a Mac.
 
+This script will strip these files and directories from a zip file in-place or
+from a directory that's already been unzipped.
+
 Usage examples
 
   $basename           Clean up the current directory (.)
