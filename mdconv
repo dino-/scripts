@@ -145,7 +145,6 @@ while true ; do
     *)
       warn "ERROR: Unknown format"
       die 1 "$usage"
-      break;;
   esac
 done
 
