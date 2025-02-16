@@ -13,6 +13,7 @@ usage:
 options:
   --header FILE     Optional header to be included, see HEADER below
   -m, --margin STR  Specify PDF margin measurement. Examples: '2cm' '1mm'. Default: '1cm'
+  --verbose         Passed to pandoc for more debugging, more useful for pdf than html
   -h, --help        This help information
 
 OUTPUT_FORMAT is one of: html, pdf
@@ -86,20 +87,22 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt --options m:h --longoptions header:,margin:,help --name "$basename" -- "$@") \
+getoptResults=$(getopt --options m:h --longoptions header:,margin:,verbose,help --name "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
-optMargin="1cm"
 unset optHeader
+optMargin="1cm"
+optVerbose=false
 optHelp=false
 
 while true ; do
   case "$1" in
     --header) optHeader="$2"; shift 2;;
     -m|--margin) optMargin="$2"; shift 2;;
+    --verbose) optVerbose=true; shift;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
   esac
@@ -126,6 +129,7 @@ outfile="${filename}.$format"
 
 # Special 'from' handling for Literate Haskell source code with Markdown
 [[ "${extension}" == "lhs" ]] && switches+=("--from=markdown+lhs")
+[[ "${optVerbose}" == true ]] && switches+=("--verbose")
 
 while true ; do
   case "$format" in
