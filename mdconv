@@ -11,7 +11,7 @@ usage:
   $basename [OPTIONS] OUTPUT_FORMAT MARKDOWN_DOCUMENT
 
 options:
-  -c, --css FILE    Optional CSS to be included in the HTML header
+  --header FILE     Optional header to be included, see HEADER below
   -m, --margin STR  Specify PDF margin measurement. Examples: '2cm' '1mm'. Default: '1cm'
   -h, --help        This help information
 
@@ -20,13 +20,50 @@ OUTPUT_FORMAT is one of: html, pdf
 The new file will be in the same directory and named just like the
 Markdown file with the appropriate extension.
 
-Note, on Arch Linux, creating PDFs this way required the installation
+Note, on Arch Linux, creating PDFs this way requires the installation
 of texlive-core and texlive-bin
 
 If you are ultimately trying to print a Markdown document, use the pdf output
 format and then:
 
     $ lpr file-this-script-created.pdf
+
+HEADER
+
+When used with html this is often for adding CSS styles via the
+--include-in-header pandoc switch.
+
+When used with pdf this is often for adding a header-includes section to the
+Markdown before pandoc processing, also for styling.
+
+example HTML CSS header
+
+    <style type="text/css">
+    h1, h2, h3, h4 {
+       font-family: Sans-Serif;
+    }
+
+    h3 {
+       margin-bottom: 0.2em;
+    }
+
+    h3 + h4 {
+       margin-top: 0.2em;
+    }
+    </style>
+
+example PDF header (include the hyphen lines in your file, they're significant in Markdown)
+
+    ---
+    header-includes:
+      - \\AtBeginDocument {
+          \\hypersetup {
+            colorlinks=false,
+            allbordercolors={0 0 0},
+            pdfborderstyle={/S/U/W 1}
+          }
+        }
+    ---
 
 v1.2  2025-02-16  Dino Morelli <dino@ui3.info>
 
@@ -49,32 +86,24 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt --options c:m:h --longoptions css:,margin:,help --name "$basename" -- "$@") \
+getoptResults=$(getopt --options m:h --longoptions header:,margin:,help --name "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
 optMargin="1cm"
-unset optCSS
+unset optHeader
 optHelp=false
 
 while true ; do
   case "$1" in
-    -c|--css) optCSS="$2"; shift 2;;
+    --header) optHeader="$2"; shift 2;;
     -m|--margin) optMargin="$2"; shift 2;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
   esac
 done
-
-echo "detail of arguments"
-echo "optMargin: $optMargin"
-echo "optCSS: $optCSS"
-echo "optHelp: $optHelp"
-echo "number of remaining parameters: $#"
-echo "remaining parameters: $*"
-echo
 
 $optHelp && die 0 "$usage"
 
@@ -92,8 +121,11 @@ switches=("--standalone")
 # assign them to nice variables here.
 filename="${infile%.*}"
 extension="${infile##*.}"
-# echo "filename=${filename}"
-# exit 2
+
+outfile="${filename}.$format"
+
+# Special 'from' handling for Literate Haskell source code with Markdown
+[[ "${extension}" == "lhs" ]] && switches+=("--from=markdown+lhs")
 
 while true ; do
   case "$format" in
@@ -101,10 +133,14 @@ while true ; do
       switches+=("--metadata title=")
       switches+=("--variable pagetitle:${filename}")
       switches+=("--metadata lang=en-US")
-      [[ "$optCSS" ]] && switches+=("--include-in-header=${optCSS}")
+      if [ "$optHeader" ]
+      then
+        switches+=("--include-in-header=${optHeader}")
+        unset optHeader
+      fi
       break;;
     pdf)
-      switches+=("--variable=geometry:margin=${optMargin}")
+      switches+=("--variable geometry:margin=${optMargin}")
       break;;
     *)
       warn "ERROR: Unknown format"
@@ -113,13 +149,8 @@ while true ; do
   esac
 done
 
-outfile="${filename}.$format"
-
-# Special 'from' handling for Literate Haskell source code with Markdown
-[[ "${extension}" == "lhs" ]] && switches+=("--from=markdown+lhs")
-
 set -x
 # These checks are for whitespace, globbing and quoting. We want the whitespace
 # in this expanded array.
 # shellcheck disable=SC2048 disable=SC2086
-pandoc ${switches[*]} --output "$outfile" "$infile"
+cat $optHeader ${infile} | pandoc ${switches[*]} --output "$outfile"
