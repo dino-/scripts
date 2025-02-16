@@ -38,18 +38,35 @@ format="$1"
 infile="$2"
 switches=("--standalone")
 
+# These bash expressions to parse paths are weird/ugly/arcane, let's just
+# assign them to nice variables here.
+filename="${infile%.*}"
+extension="${infile##*.}"
+# echo "filename=${filename}"
+# exit 2
+
 while true ; do
   case "$format" in
-    html) break;;
-    pdf) switches+=("--variable=geometry:margin=1in"); break;;
-    *) echo "ERROR: Unknown format"; usage; exit 1; break;;
+    html)
+      switches+=("--metadata title=")
+      switches+=("--variable pagetitle:${filename}")
+      switches+=("--metadata lang=en-US")
+      break;;
+    pdf)
+      switches+=("--variable=geometry:margin=2cm")
+      break;;
+    *)
+      echo "ERROR: Unknown format"
+      usage
+      exit 1
+      break;;
   esac
 done
 
-outfile="${infile%.*}.$format"
+outfile="${filename}.$format"
 
 # Special 'from' handling for Literate Haskell source code with Markdown
-[[ "${infile##*.}" == "lhs" ]] && switches+=("--from=markdown+lhs")
+[[ "${extension}" == "lhs" ]] && switches+=("--from=markdown+lhs")
 
 set -x
 # These checks are for whitespace, globbing and quoting. We want the whitespace
