@@ -11,6 +11,7 @@ usage:
   $basename [OPTIONS] OUTPUT_FORMAT MARKDOWN_DOCUMENT
 
 options:
+  -c, --css FILE    Optional CSS to be included in the HTML header
   -m, --margin STR  Specify PDF margin measurement. Examples: '2cm' '1mm'. Default: '1cm'
   -h, --help        This help information
 
@@ -48,17 +49,19 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt --options m:h --longoptions margin:,help --name "$basename" -- "$@") \
+getoptResults=$(getopt --options c:m:h --longoptions css:,margin:,help --name "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
 optMargin="1cm"
+unset optCSS
 optHelp=false
 
 while true ; do
   case "$1" in
+    -c|--css) optCSS="$2"; shift 2;;
     -m|--margin) optMargin="$2"; shift 2;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
@@ -67,6 +70,7 @@ done
 
 echo "detail of arguments"
 echo "optMargin: $optMargin"
+echo "optCSS: $optCSS"
 echo "optHelp: $optHelp"
 echo "number of remaining parameters: $#"
 echo "remaining parameters: $*"
@@ -97,6 +101,7 @@ while true ; do
       switches+=("--metadata title=")
       switches+=("--variable pagetitle:${filename}")
       switches+=("--metadata lang=en-US")
+      [[ "$optCSS" ]] && switches+=("--include-in-header=${optCSS}")
       break;;
     pdf)
       switches+=("--variable=geometry:margin=${optMargin}")
