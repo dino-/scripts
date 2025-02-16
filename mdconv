@@ -19,7 +19,12 @@ Markdown file with the appropriate extension.
 Note, on Arch Linux, creating PDFs this way required the installation
 of texlive-core and texlive-bin
 
-v1.1  2022-11-17  Dino Morelli <dino@ui3.info>
+If you are ultimately trying to print a Markdown document, use the pdf output
+format and then:
+
+    $ lpr file-this-script-created.pdf
+
+v1.2  2025-02-16  Dino Morelli <dino@ui3.info>
 
 USAGE
 }
@@ -53,7 +58,7 @@ while true ; do
       switches+=("--metadata lang=en-US")
       break;;
     pdf)
-      switches+=("--variable=geometry:margin=2cm")
+      switches+=("--variable=geometry:margin=1cm")
       break;;
     *)
       echo "ERROR: Unknown format"
