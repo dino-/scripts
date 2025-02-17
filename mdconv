@@ -3,6 +3,12 @@
 
 basename=$(basename "$0")
 
+unset optHeader
+optMargin="15mm"
+optNoPageNum=false
+optVerbose=false
+optHelp=false
+
 
 usage=$(cat <<USAGE
 Convert Markdown to various formats using Pandoc
@@ -11,10 +17,11 @@ usage:
   $basename [OPTIONS] OUTPUT_FORMAT MARKDOWN_DOCUMENT
 
 options:
-  --header FILE     Optional header to be included, see HEADER below
-  -m, --margin STR  Specify PDF margin measurement. Examples: '2cm' '1mm'. Default: '1cm'
-  --verbose         Passed to pandoc for more debugging, more useful for pdf than html
-  -h, --help        This help information
+  --header FILE      Optional header to be included, see HEADER below
+  -m, --margin STR   Specify PDF margin measurement. Examples: '2cm' '10mm'. Default: '${optMargin}'
+  -N, --no-page-num  No page numbers in PDF documents
+  --verbose          Passed to pandoc for more debugging, more useful for pdf than html
+  -h, --help         This help information
 
 OUTPUT_FORMAT is one of: html, pdf
 
@@ -87,21 +94,17 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt --options m:h --longoptions header:,margin:,verbose,help --name "$basename" -- "$@") \
+getoptResults=$(getopt --options m:Nh --longoptions header:,margin:,no-page-num,verbose,help --name "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
 
-unset optHeader
-optMargin="1cm"
-optVerbose=false
-optHelp=false
-
 while true ; do
   case "$1" in
     --header) optHeader="$2"; shift 2;;
     -m|--margin) optMargin="$2"; shift 2;;
+    -N|--no-page-num) optNoPageNum=true; shift;;
     --verbose) optVerbose=true; shift;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
@@ -145,6 +148,7 @@ while true ; do
       break;;
     pdf)
       switches+=("--variable geometry:margin=${optMargin}")
+      [[ "${optNoPageNum}" == true ]] && switches+=("--variable pagestyle:empty")
       break;;
     *)
       warn "ERROR: Unknown format"
