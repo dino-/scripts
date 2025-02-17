@@ -60,7 +60,9 @@ example HTML CSS header
     }
     </style>
 
-example PDF header (include the hyphen lines in your file, they're significant in Markdown)
+example PDF header (include the hyphen lines in your file, they're significant
+in Markdown). By default links in PDFs are not styled in any way. The header
+below underlines them as a visual indicator.
 
     ---
     header-includes:
@@ -132,6 +134,7 @@ outfile="${filename}.$format"
 
 # Special 'from' handling for Literate Haskell source code with Markdown
 [[ "${extension}" == "lhs" ]] && switches+=("--from=markdown+lhs")
+
 [[ "${optVerbose}" == true ]] && switches+=("--verbose")
 
 while true ; do
