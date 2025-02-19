@@ -133,7 +133,7 @@ switches=(--standalone)
 filename="${infile%.*}"
 extension="${infile##*.}"
 
-outfile="${filename}.$format"
+# outfile="${filename}.$format"
 
 # Special 'from' handling for Literate Haskell source code with Markdown
 [[ "${extension}" == "lhs" ]] && switches+=(--from=markdown+lhs)
@@ -172,5 +172,15 @@ while true ; do
   esac
 done
 
+outfile="-"
+if [ "$outfile" == "-" ]
+then
+  switches+=(--to "${format}")
+else
+  switches+=(--output "${filename}.${format}")
+fi
+
 set -x
-cat "${inputList[@]}" | pandoc "${switches[@]}" --output "$outfile"
+cat "${inputList[@]}" | pandoc "${switches[@]}"
+# cat "${inputList[@]}" | pandoc "${switches[@]}" --output "$outfile"
+# cat "$optHeader" "${infile}" | pandoc "${switches[@]}" --output "$outfile"
