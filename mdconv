@@ -90,7 +90,7 @@ There are three ways to use this:
     -o -               Output to stdout
     -o somefile.ext    Explicit file name for output
 
-v1.4  2025-02-18  Dino Morelli <dino@ui3.info>
+v1.5  2025-02-19  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
