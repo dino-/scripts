@@ -153,10 +153,16 @@ while true ; do
       if [ "$optHeader" ]
       then
         switches+=(--include-in-header "${optHeader}")
-        unset optHeader
       fi
+      inputList=("${infile}")
       break;;
     pdf)
+      if [ "$optHeader" ]
+      then
+        inputList=("${optHeader}" "${infile}")
+      else
+        inputList=("${infile}")
+      fi
       switches+=(--variable "geometry:margin=${optMargin}")
       [[ "${optNoPageNum}" == true ]] && switches+=(--variable pagestyle:empty)
       break;;
@@ -167,4 +173,4 @@ while true ; do
 done
 
 set -x
-cat "$optHeader" "${infile}" | pandoc "${switches[@]}" --output "$outfile"
+cat "${inputList[@]}" | pandoc "${switches[@]}" --output "$outfile"
