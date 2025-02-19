@@ -23,15 +23,15 @@ options:
   --header FILE      Optional header to be included, see HEADER below
   -m, --margin STR   Specify PDF margin measurement. Examples: '2cm' '10mm'. Default: '${optMargin}'
   -N, --no-page-num  No page numbers in PDF documents
-  -o, --output       Output file path, see OUTPUT below
-  -t, --title        Specify title string for HTML pages. Defaults to the Markdown filename without extention.
+  -o, --output FILE  Optional output file path, see OUTPUT below
+  -t, --title STR    Specify title string for HTML pages. Defaults to the Markdown filename without extention.
   --verbose          Passed to pandoc for more debugging, more useful for pdf than html
   -h, --help         This help information
 
 OUTPUT_FORMAT is one of: html, pdf
 
-The new file will be in the same directory and named just like the
-Markdown file with the appropriate extension.
+By default, the new file will be in the same directory and named just like the
+Markdown file with an appropriate extension.
 
 Note, on Arch Linux, creating PDFs this way requires the installation
 of texlive-core and texlive-bin
