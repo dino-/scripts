@@ -6,6 +6,7 @@ basename=$(basename "$0")
 unset optHeader
 optMargin="15mm"
 optNoPageNum=false
+unset optTitle
 optVerbose=false
 optHelp=false
 
@@ -20,6 +21,7 @@ options:
   --header FILE      Optional header to be included, see HEADER below
   -m, --margin STR   Specify PDF margin measurement. Examples: '2cm' '10mm'. Default: '${optMargin}'
   -N, --no-page-num  No page numbers in PDF documents
+  -t, --title        Specify title string for HTML pages. Defaults to the Markdown filename without extention.
   --verbose          Passed to pandoc for more debugging, more useful for pdf than html
   -h, --help         This help information
 
@@ -75,7 +77,7 @@ below underlines them as a visual indicator.
         }
     ---
 
-v1.3  2025-02-17  Dino Morelli <dino@ui3.info>
+v1.4  2025-02-18  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -96,7 +98,7 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt --options m:Nh --longoptions header:,margin:,no-page-num,verbose,help --name "$basename" -- "$@") \
+getoptResults=$(getopt --options m:Nt:h --longoptions header:,margin:,no-page-num,title:,verbose,help --name "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
@@ -107,6 +109,7 @@ while true ; do
     --header) optHeader="$2"; shift 2;;
     -m|--margin) optMargin="$2"; shift 2;;
     -N|--no-page-num) optNoPageNum=true; shift;;
+    -t|--title) optTitle="$2"; shift 2;;
     --verbose) optVerbose=true; shift;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
@@ -123,7 +126,7 @@ fi
 
 format="$1"
 infile="$2"
-switches=("--standalone")
+switches=(--standalone)
 
 # These bash expressions to parse paths are weird/ugly/arcane, let's just
 # assign them to nice variables here.
@@ -133,25 +136,29 @@ extension="${infile##*.}"
 outfile="${filename}.$format"
 
 # Special 'from' handling for Literate Haskell source code with Markdown
-[[ "${extension}" == "lhs" ]] && switches+=("--from=markdown+lhs")
+[[ "${extension}" == "lhs" ]] && switches+=(--from=markdown+lhs)
 
-[[ "${optVerbose}" == true ]] && switches+=("--verbose")
+[[ "${optVerbose}" == true ]] && switches+=(--verbose)
+
+[[ "${optTitle}" ]] || optTitle="$filename"
 
 while true ; do
   case "$format" in
     html)
-      switches+=("--metadata title=")
-      switches+=("--variable pagetitle:${filename}")
-      switches+=("--metadata lang=en-US")
+      # This title shows up in the page body! Do not want
+      switches+=(--metadata title=)
+      # This becomes the actual <title> tag contents
+      switches+=(--variable "pagetitle:${optTitle}")
+      switches+=(--metadata lang=en-US)
       if [ "$optHeader" ]
       then
-        switches+=("--include-in-header=${optHeader}")
+        switches+=(--include-in-header "${optHeader}")
         unset optHeader
       fi
       break;;
     pdf)
-      switches+=("--variable geometry:margin=${optMargin}")
-      [[ "${optNoPageNum}" == true ]] && switches+=("--variable pagestyle:empty")
+      switches+=(--variable "geometry:margin=${optMargin}")
+      [[ "${optNoPageNum}" == true ]] && switches+=(--variable pagestyle:empty)
       break;;
     *)
       warn "ERROR: Unknown format"
@@ -160,7 +167,4 @@ while true ; do
 done
 
 set -x
-# These checks are for whitespace, globbing and quoting. We want the whitespace
-# in this expanded array.
-# shellcheck disable=SC2048 disable=SC2086
-cat $optHeader ${infile} | pandoc ${switches[*]} --output "$outfile"
+cat "$optHeader" "${infile}" | pandoc "${switches[@]}" --output "$outfile"
