@@ -3,9 +3,11 @@
 
 basename=$(basename "$0")
 
+# Initial/default values
 unset optHeader
 optMargin="15mm"
 optNoPageNum=false
+unset optOutfile
 unset optTitle
 optVerbose=false
 optHelp=false
@@ -21,6 +23,7 @@ options:
   --header FILE      Optional header to be included, see HEADER below
   -m, --margin STR   Specify PDF margin measurement. Examples: '2cm' '10mm'. Default: '${optMargin}'
   -N, --no-page-num  No page numbers in PDF documents
+  -o, --output       Output file path, see OUTPUT below
   -t, --title        Specify title string for HTML pages. Defaults to the Markdown filename without extention.
   --verbose          Passed to pandoc for more debugging, more useful for pdf than html
   -h, --help         This help information
@@ -33,10 +36,10 @@ Markdown file with the appropriate extension.
 Note, on Arch Linux, creating PDFs this way requires the installation
 of texlive-core and texlive-bin
 
-If you are ultimately trying to print a Markdown document, use the pdf output
-format and then:
+If you are ultimately trying to print a Markdown document and don't need to
+keep a PDF around, use the pdf output format, output to stdout and pipe to lpr:
 
-    $ lpr file-this-script-created.pdf
+    $ $basename -o - pdf OTHER_OPTIONS | lpr
 
 HEADER
 
@@ -77,6 +80,16 @@ below underlines them as a visual indicator.
         }
     ---
 
+OUTPUT
+
+There are three ways to use this:
+
+    -o/--output arg    behavior
+    -----------------------------------------------------------------------------
+    (nothing)          Input markdown filename with appropriate output extension
+    -o -               Output to stdout
+    -o somefile.ext    Explicit file name for output
+
 v1.4  2025-02-18  Dino Morelli <dino@ui3.info>
 
 USAGE
@@ -98,7 +111,7 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt --options m:Nt:h --longoptions header:,margin:,no-page-num,title:,verbose,help --name "$basename" -- "$@") \
+getoptResults=$(getopt --options m:No:t:h --longoptions header:,margin:,no-page-num,output:,title:,verbose,help --name "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
@@ -109,6 +122,7 @@ while true ; do
     --header) optHeader="$2"; shift 2;;
     -m|--margin) optMargin="$2"; shift 2;;
     -N|--no-page-num) optNoPageNum=true; shift;;
+    -o|--output) optOutfile="$2"; shift 2;;
     -t|--title) optTitle="$2"; shift 2;;
     --verbose) optVerbose=true; shift;;
     -h|--help) optHelp=true; shift;;
@@ -132,8 +146,6 @@ switches=(--standalone)
 # assign them to nice variables here.
 filename="${infile%.*}"
 extension="${infile##*.}"
-
-# outfile="${filename}.$format"
 
 # Special 'from' handling for Literate Haskell source code with Markdown
 [[ "${extension}" == "lhs" ]] && switches+=(--from=markdown+lhs)
@@ -172,15 +184,11 @@ while true ; do
   esac
 done
 
-outfile="-"
-if [ "$outfile" == "-" ]
-then
-  switches+=(--to "${format}")
-else
-  switches+=(--output "${filename}.${format}")
-fi
+case "$optOutfile" in
+  "") switches+=(--output "${filename}.${format}");;
+  -) switches+=(--to "${format}");;
+  *) switches+=(--output "${optOutfile}");;
+esac
 
 set -x
 cat "${inputList[@]}" | pandoc "${switches[@]}"
-# cat "${inputList[@]}" | pandoc "${switches[@]}" --output "$outfile"
-# cat "$optHeader" "${infile}" | pandoc "${switches[@]}" --output "$outfile"
