@@ -3,6 +3,9 @@
 
 basename=$(basename "$0")
 
+optA=false
+optHelp=false
+
 
 usage=$(cat <<USAGE
 Argument parsing demo script
@@ -44,9 +47,6 @@ getoptResults=$(getopt --options ab:h --longoptions arg-a,arg-b:,help --name "$b
 
 # Note the quotes around "$getoptResults": they are essential!
 eval set -- "$getoptResults"
-
-optA=false
-optHelp=false
 
 while true ; do
   case "$1" in
