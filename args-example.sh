@@ -15,7 +15,7 @@ options:
   -b, --arg-b INT  An argument named b
   -h, --help       This help information
 
-v1.3  2023-06-17  Dino Morelli <dino@ui3.info>
+v1.4  2025-02-23  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -29,7 +29,10 @@ warn () {
 die () {
   rc="$1"
   shift
-  warn "$@"
+  if [ "$rc" -eq 0 ]
+    then echo "$basename:" "$@"
+    else warn "$@"
+  fi
   exit "$rc"
 }
 

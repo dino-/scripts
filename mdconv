@@ -90,7 +90,7 @@ There are three ways to use this:
     -o -               Output to stdout
     -o somefile.ext    Explicit file name for output
 
-v1.5  2025-02-19  Dino Morelli <dino@ui3.info>
+v1.6  2025-02-23  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -104,7 +104,10 @@ warn () {
 die () {
   rc="$1"
   shift
-  warn "$@"
+  if [ "$rc" -eq 0 ]
+    then echo "$basename:" "$@"
+    else warn "$@"
+  fi
   exit "$rc"
 }
 
