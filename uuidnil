@@ -1,0 +1,8 @@
+#! /usr/bin/env bash
+
+# Generate a UUID using SHA1 and the nil namespace (all zeroes) for the given
+# string
+
+nilNamespace="00000000-0000-0000-0000-000000000000"
+
+uuidgen --sha1 --namespace "$nilNamespace" --name "$1"
