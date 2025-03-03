@@ -28,7 +28,7 @@ PNG and GIF files will be converted losslessly.
 
 If DESTFILE is omitted, SRCFILE will be used with the extension changed to '.webp'
 
-v1.2  2022-01-07  Dino Morelli <dino@ui3.info>
+v1.3  2025-03-03  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -84,12 +84,11 @@ outputImage=${2:-${filename}${optSuffix}.webp}
 
 
 case "$extension" in
-  jpg|JPG|jpeg|JPEG) switches="-quality $optQuality";;
-  png|PNG|gif|GIF|tiff|TIFF) switches="-define webp:lossless=true";;
+  jpg|JPG|jpeg|JPEG) switches=(-quality "$optQuality");;
+  png|PNG|gif|GIF|tiff|TIFF) switches=(-define webp:lossless=true);;
   *) die 1 "Unknown file type: $inputImage";;
 esac
 
 $optQuiet || set -x
 
-# shellcheck disable=SC2086
-magick "$inputImage" $switches "$outputImage"
+magick "$inputImage" "${switches[@]}" "$outputImage"
