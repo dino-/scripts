@@ -19,6 +19,7 @@ ignoreDirs=(
   'node_modules'    # npm download directories
 
   # Maven, sbt, JVM, Java and Scala
+  '.bsp'            # artifacts from using sbt (2025-03)
   'project/target'  # maven/sbt build artifacts
   'target'          # maven/sbt build artifacts
 
