@@ -8,7 +8,6 @@
 ignoreDirs=(
   '.idea'           # IntelliJ
   '*cache*'         # We never want to see caches of any kind
-  '.import'         # Godot
 
   # Haskell
   'dist'            # cabal build artifacts directory (old-school?)
