@@ -6,29 +6,29 @@
 
 # Add directories to this list
 ignoreDirs=(
-  '.idea'           # IntelliJ
-  '*cache*'         # We never want to see caches of any kind
+  .idea           # IntelliJ
+  *cache*         # We never want to see caches of any kind
 
   # Haskell
-  'dist'            # cabal build artifacts directory (old-school?)
-  'dist-newstyle'   # cabal build artifacts directory
-  '.stack-work'     # stack build artifacts directory
+  dist            # cabal build artifacts directory (old-school?)
+  dist-newstyle   # cabal build artifacts directory
+  .stack-work     # stack build artifacts directory
 
   # JavaScript, ECMAScript, TypeScript
-  'node_modules'    # npm download directories
+  node_modules    # npm download directories
 
   # Maven, sbt, JVM, Java and Scala
-  '.bsp'            # artifacts from using sbt (2025-03)
-  'project/target'  # maven/sbt build artifacts
-  'target'          # maven/sbt build artifacts
+  .bsp            # artifacts from using sbt (2025-03)
+  project/target  # maven/sbt build artifacts
+  target          # maven/sbt build artifacts
 
   # Python
-  '__pycache__'     # Python cache directory
-  '.venv'           # Conventional Python virtual env directory
+  __pycache__     # Python cache directory
+  .venv           # Conventional Python virtual env directory
 
   # Source control
-  '_darcs'          # darcs
-  '.git'            # git
+  _darcs          # darcs
+  .git            # git
 )
 
 # Combine the dirs together delimited with | chars
