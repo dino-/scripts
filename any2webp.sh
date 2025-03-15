@@ -8,6 +8,7 @@ optHelp=false
 optQuality="90"
 optQuiet=false
 optSuffix=""
+optForce=false
 
 usage=$(cat <<USAGE
 Convert JPG, PNG and GIF image files to WEBP with some default settings
@@ -19,6 +20,7 @@ options:
   -q, --quality INT  JPG to WEBP quality setting, default $optQuality
   -s, --suffix STR   Text to be placed in the DEST filename before the '.webp'
                      extension. Ignored if a DESTFILE argument was specified.
+  -f, --force        Overwrite existing output file, default $optForce
   -Q, --quiet        Don't echo the convert command
   -h, --help         This help information
 
@@ -28,7 +30,7 @@ PNG and GIF files will be converted losslessly.
 
 If DESTFILE is omitted, SRCFILE will be used with the extension changed to '.webp'
 
-v1.3  2025-03-03  Dino Morelli <dino@ui3.info>
+v1.4  2025-03-15  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -49,7 +51,7 @@ die () {
 
 # arg parsing
 
-getoptResults=$(getopt -o q:Qs:h --long quality:,quiet,suffix:,help -n "$basename" -- "$@") \
+getoptResults=$(getopt -o q:Qs:fh --long quality:,quiet,suffix:,force,help -n "$basename" -- "$@") \
   || die 1 "$usage"
 
 # Note the quotes around "$getoptResults": they are essential!
@@ -60,6 +62,7 @@ while true ; do
     -q|--quality) optQuality="$2"; shift 2;;
     -Q|--quiet) optQuiet=true; shift;;
     -s|--suffix) optSuffix="$2"; shift 2;;
+    -f|--force) optForce=true; shift;;
     -h|--help) optHelp=true; shift;;
     --) shift; break;;
   esac
@@ -80,7 +83,9 @@ extension="${inputImage##*.}"
 
 outputImage=${2:-${filename}${optSuffix}.webp}
 
-[ -e "$outputImage" ] && die 1 "Output file $outputImage already exists!"
+if [ "$optForce" == false ] && [ -e "$outputImage" ]; then
+  die 1 "Output file $outputImage already exists!"
+fi
 
 
 case "$extension" in
