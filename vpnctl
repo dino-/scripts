@@ -3,10 +3,7 @@
 
 basename=$(basename "$0")
 
-# Edit the vpnservice variable below to refer to a specific vpn
-# YOURVPN corresponds to a file /etc/openvpn/client/YOURVPN.conf that you
-# already have present
-vpnservice="openvpn-client@YOURVPN.service"
+vpnservice="$VPNCTL_SERVICE"
 
 
 usage=$(cat <<USAGE
@@ -27,6 +24,15 @@ commands:
   restart  Restart $vpnservice
   help     This help information, same as using -h, --help
 
+This script looks for the environment variable VPNCTL_SERVICE containing which
+service to start/stop/restart. A value like this should be set
+
+      VPNCTL_SERVICE="wg-quick@WIREGUARD_CONF.service"
+      VPNCTL_SERVICE="openvpn-client@OPENVPN_CONF.service"
+
+where WIREGUARD_CONF or OPENVPN_CONF are config files in /etc minus the .conf
+extension.
+
 log is performing this command:
 
   journalctl -u $vpnservice --since today
@@ -35,7 +41,7 @@ If you are seeing failures, this may help to explore them
 
   journalctl -u $vpnservice -S today | grep -B1 FAILURE
 
-v1.2  2023-11-13  Dino Morelli <dino@ui3.info>
+v1.3  2025-03-31  Dino Morelli <dino@ui3.info>
 
 USAGE
 )
@@ -81,6 +87,12 @@ fi
 
 command=$1
 shift
+
+if [ -z "$vpnservice" ]
+then
+  warn "ERROR Can't continue because VPNCTL_SERVICE variable isn't set"
+  die 1 "$usage"
+fi
 
 case "$command" in
   status)  set -x ; systemctl --no-pager status "$vpnservice" ;;
